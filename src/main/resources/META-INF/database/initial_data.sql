@@ -1,0 +1,1 @@
+insert into product (id,name,description,price) values (1,'Kindle','Conheça o novo Kindle, agora com mais memória',499.0);
