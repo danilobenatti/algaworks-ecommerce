@@ -11,6 +11,21 @@ import com.algaworks.ecommerce.model.Product;
 class OperationWithTransactionTest extends EntityManagerTest {
 	
 	@Test
+	void updateObjectManaged() {
+		Product p = entityManager.find(Product.class, 1);
+		p.setName("Kindle Paperwhite 2ª Geração");
+		
+		entityManager.getTransaction().begin();
+		p.setPrice(BigDecimal.valueOf(600.99));
+		entityManager.getTransaction().commit();
+		
+		entityManager.clear();
+		
+		Assertions.assertEquals("Kindle Paperwhite 2ª Geração", p.getName());
+		Assertions.assertEquals(BigDecimal.valueOf(600.99), p.getPrice());
+	}
+	
+	@Test
 	void updateObject() {
 		Product p = new Product();
 		p.setId(1);
