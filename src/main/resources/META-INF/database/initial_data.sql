@@ -1,1 +1,2 @@
-insert into product (id,name,description,price) values (1,'Kindle','Conheça o novo Kindle, agora com mais memória',499.0);
+insert into product (id,name,description,price) values (1,'Kindle','Conheça o novo Kindle, agora com mais memória',499.5);
+insert into product (id,name,description,price) values (3,'Câmera GoPro Hero','Câmera de ação e alto desempenho',1506.72);
