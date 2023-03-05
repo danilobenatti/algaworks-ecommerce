@@ -11,6 +11,28 @@ import com.algaworks.ecommerce.model.Product;
 class OperationWithTransactionTest extends EntityManagerTest {
 	
 	@Test
+	void updateObject() {
+		Product p = new Product();
+		p.setId(1);
+		p.setName("Kindle Paperwhite");
+		p.setDescription("Conheça o novo Kindle!");
+		p.setPrice(new BigDecimal(599.99));
+		
+		entityManager.getTransaction().begin();
+		entityManager.merge(p);
+		entityManager.getTransaction().commit();
+		
+		entityManager.clear();
+		
+		Product pUp = entityManager.find(Product.class, p.getId());
+		
+		Assertions.assertNotNull(pUp);
+		Assertions.assertEquals("Kindle Paperwhite", pUp.getName());
+		Assertions.assertEquals("Conheça o novo Kindle!", pUp.getDescription());
+		Assertions.assertEquals(BigDecimal.valueOf(599.99), pUp.getPrice());
+	}
+	
+	@Test
 	void removeObject() {
 		Product product = entityManager.find(Product.class, 3);
 		
@@ -50,7 +72,7 @@ class OperationWithTransactionTest extends EntityManagerTest {
 //		entityManager.remove(product);
 		
 		entityManager.getTransaction().commit();
-		
+		Assertions.assertNull(null);
 	}
 	
 }
