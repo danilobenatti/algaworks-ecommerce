@@ -11,6 +11,41 @@ import com.algaworks.ecommerce.model.Product;
 class OperationWithTransactionTest extends EntityManagerTest {
 	
 	@Test
+	void showDiferenceBetweenPersistAndMerge() {
+		Product pp = new Product();
+//		p.setId(5);
+		pp.setName("Smartphone One Plus");
+		pp.setDescription("Tela e processador de última geração.");
+		pp.setPrice(BigDecimal.valueOf(1750.87));
+		
+		entityManager.getTransaction().begin();
+		entityManager.persist(pp);
+		pp.setName("Smartphone One Gold Edition");
+		entityManager.getTransaction().commit();
+		
+		entityManager.clear();
+		
+		Product persistProduct = entityManager.find(Product.class, pp.getId());
+		Assertions.assertNotNull(persistProduct);
+		
+		Product pm = new Product();
+//		p.setId(6);
+		pm.setName("Notebook Dell");
+		pm.setDescription("Inspiron 5000 Series");
+		pm.setPrice(BigDecimal.valueOf(5500.00));
+		
+		entityManager.getTransaction().begin();
+		pm = entityManager.merge(pm);
+		pm.setName("Notebook Dell 5530 i7 3.8Ghz");
+		entityManager.getTransaction().commit();
+		
+		entityManager.clear();
+		
+		Product mergeProduct = entityManager.find(Product.class, pm.getId());
+		Assertions.assertNotNull(mergeProduct);
+	}
+	
+	@Test
 	void insertObjectWithMerge() {
 		Product p = new Product();
 		p.setId(4);
