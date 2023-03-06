@@ -11,6 +11,24 @@ import com.algaworks.ecommerce.model.Product;
 class OperationWithTransactionTest extends EntityManagerTest {
 	
 	@Test
+	void insertObjectWithMerge() {
+		Product p = new Product();
+		p.setId(4);
+		p.setName("Microfone Rode Videomic Go");
+		p.setDescription("Qualidade insuperável.");
+		p.setPrice(BigDecimal.valueOf(850.24));
+		
+		entityManager.getTransaction().begin();
+		entityManager.merge(p);
+		entityManager.getTransaction().commit();
+		
+		entityManager.clear();
+		
+		Product insertedProduct = entityManager.find(Product.class, p.getId());
+		Assertions.assertNotNull(insertedProduct);
+	}
+	
+	@Test
 	void updateObjectManaged() {
 		Product p = entityManager.find(Product.class, 1);
 		p.setName("Kindle Paperwhite 2ª Geração");
