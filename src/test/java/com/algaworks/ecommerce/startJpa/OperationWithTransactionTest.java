@@ -125,7 +125,6 @@ class OperationWithTransactionTest extends EntityManagerTest {
 		
 		Product insertedProduct = entityManager.find(Product.class,
 				product.getId());
-		System.out.println(insertedProduct);
 		Assertions.assertNotNull(insertedProduct);
 	}
 	
