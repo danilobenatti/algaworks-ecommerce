@@ -1,7 +1,6 @@
 package com.algaworks.ecommerce.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,23 +20,20 @@ import lombok.Setter;
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "tbl_products")
-public class Product implements Serializable {
+@Table(name = "tbl_categories")
+public class Category implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_product")
+	@Column(name = "id_category")
 	private Long id;
 	
 	@Column(name = "col_name")
 	private String name;
 	
-	@Column(name = "col_description")
-	private String description;
-	
-	@Column(name = "col_price")
-	private BigDecimal price;
+	@Column(name = "col_parent_category")
+	private Integer parentCategory;
 	
 }

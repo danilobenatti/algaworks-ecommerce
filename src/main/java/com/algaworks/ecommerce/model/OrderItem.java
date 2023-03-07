@@ -21,23 +21,26 @@ import lombok.Setter;
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "tbl_products")
-public class Product implements Serializable {
+@Table(name = "tbl_order_items")
+public class OrderItem implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_product")
+	@Column(name = "id_orderitem")
 	private Long id;
 	
-	@Column(name = "col_name")
-	private String name;
+	@Column(name = "id_order")
+	private Order order;
 	
-	@Column(name = "col_description")
-	private String description;
+	@Column(name = "id_product")
+	private Product product;
 	
-	@Column(name = "col_price")
-	private BigDecimal price;
+	@Column(name = "col_quantity")
+	private Double quantity;
+	
+	@Column(name = "col_subtotal")
+	private BigDecimal subtotal;
 	
 }

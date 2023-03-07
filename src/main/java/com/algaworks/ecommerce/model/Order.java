@@ -2,6 +2,9 @@ package com.algaworks.ecommerce.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+import com.algaworks.ecommerce.model.enums.OrderStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,23 +24,36 @@ import lombok.Setter;
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "tbl_products")
-public class Product implements Serializable {
+@Table(name = "tbl_orders")
+public class Order implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_product")
+	@Column(name = "id_order")
 	private Long id;
 	
-	@Column(name = "col_name")
-	private String name;
+	@Column(name = "col_order_date")
+	private LocalDateTime orderDate;
 	
-	@Column(name = "col_description")
-	private String description;
+	@Column(name = "col_execution_date")
+	private LocalDateTime executionDate;
 	
-	@Column(name = "col_price")
-	private BigDecimal price;
+	@Column(name = "id_invoice")
+	private Invoice invoice;
 	
+	@Column(name = "col_total")
+	private BigDecimal total;
+	
+	@Column(name = "col_status")
+	private Byte status;
+	
+	public OrderStatus getStatus() {
+		return OrderStatus.toEnum(this.status);
+	}
+	
+	public void setStatus(OrderStatus status) {
+		this.status = status.getCode();
+	}
 }

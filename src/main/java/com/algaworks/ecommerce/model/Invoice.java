@@ -1,7 +1,7 @@
 package com.algaworks.ecommerce.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,23 +21,22 @@ import lombok.Setter;
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "tbl_products")
-public class Product implements Serializable {
+@Table(name = "tbl_invoices")
+public class Invoice implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_product")
+	@Column(name = "id_invoice")
 	private Long id;
 	
-	@Column(name = "col_name")
-	private String name;
+	@Column(name = "id_order")
+	private Order order;
 	
-	@Column(name = "col_description")
-	private String description;
+	@Column(name = "col_xml")
+	private String xml;
 	
-	@Column(name = "col_price")
-	private BigDecimal price;
-	
+	@Column(name = "col_issue_date")
+	private LocalDate issueDate;
 }
