@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import com.algaworks.ecommerce.model.enums.OrderStatus;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -37,7 +38,7 @@ public class Order implements Serializable {
 	@Column(name = "col_order_date")
 	private LocalDateTime orderDate;
 	
-	@Column(name = "col_execution_date")
+	@Column(name = "col_executiondate")
 	private LocalDateTime executionDate;
 	
 	@Column(name = "id_invoice")
@@ -48,6 +49,9 @@ public class Order implements Serializable {
 	
 	@Column(name = "col_status")
 	private Byte status;
+	
+	@Embedded
+	private Address deliveryAddress;
 	
 	public OrderStatus getStatus() {
 		return OrderStatus.toEnum(this.status);
