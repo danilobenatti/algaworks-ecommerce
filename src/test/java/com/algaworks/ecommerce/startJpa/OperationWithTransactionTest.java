@@ -22,7 +22,7 @@ class OperationWithTransactionTest extends EntityManagerTest {
 		entityManager.clear();
 		
 		Product updatedProduct = entityManager.find(Product.class, p.getId());
-		Assertions.assertEquals("Kindle", updatedProduct.getName());
+		Assertions.assertEquals("Kindle Paperwhite", updatedProduct.getName());
 	}
 	
 	@Test
@@ -63,18 +63,18 @@ class OperationWithTransactionTest extends EntityManagerTest {
 	@Test
 	void insertObjectWithMerge() {
 		Product p = new Product();
-		p.setId(4L);
+		p.setId(null);
 		p.setName("Microfone Rode Videomic Go");
 		p.setDescription("Qualidade insuperável.");
 		p.setPrice(BigDecimal.valueOf(850.24));
 		
 		entityManager.getTransaction().begin();
-		entityManager.merge(p);
+		Product p1 = entityManager.merge(p);
 		entityManager.getTransaction().commit();
 		
 		entityManager.clear();
 		
-		Product insertedProduct = entityManager.find(Product.class, p.getId());
+		Product insertedProduct = entityManager.find(Product.class, p1.getId());
 		Assertions.assertNotNull(insertedProduct);
 	}
 	
