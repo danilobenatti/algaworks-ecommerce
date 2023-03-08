@@ -8,8 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.TableGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -30,9 +30,10 @@ public class Product implements Serializable {
 	
 	@Id
 	@EqualsAndHashCode.Include
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_prod")
-	@SequenceGenerator(name = "seq_prod", sequenceName = "tbl_products_seq",
-		initialValue = 10, allocationSize = 50)
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "seq_generate")
+	@TableGenerator(name = "seq_generate", table = "hibernate_sequences",
+		pkColumnName = "sequence_name", pkColumnValue = "tbl_products",
+		valueColumnName = "next_val", initialValue = 10, allocationSize = 50)
 	@Column(name = "id_product")
 	private Long id;
 	
