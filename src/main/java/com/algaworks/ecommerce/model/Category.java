@@ -1,14 +1,18 @@
 package com.algaworks.ecommerce.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.TableGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -29,17 +33,17 @@ public class Category implements Serializable {
 	
 	@Id
 	@EqualsAndHashCode.Include
-	@GeneratedValue(strategy = GenerationType.TABLE, generator = "seq_generate")
-	@TableGenerator(name = "seq_categories", table = "hibernate_sequences",
-		pkColumnName = "sequence_name", pkColumnValue = "tbl_categories",
-		valueColumnName = "next_val", initialValue = 10, allocationSize = 50)
-	@Column(name = "id_category")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@Column(name = "col_name")
 	private String name;
 	
-	@Column(name = "col_parent_category")
-	private Integer parentCategory;
+	@ManyToOne
+	@JoinColumn(name = "parent_category_id",
+		foreignKey = @ForeignKey(name = "fk_category_category_id"))
+	private Category parentCategory;
 	
+	@OneToMany(mappedBy = "parentCategory")
+	private List<Category> categories;
 }

@@ -11,7 +11,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.TableGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -32,10 +31,7 @@ public class Product implements Serializable {
 	
 	@Id
 	@EqualsAndHashCode.Include
-	@GeneratedValue(strategy = GenerationType.TABLE, generator = "seq_generate")
-	@TableGenerator(name = "seq_products", table = "hibernate_sequences",
-		pkColumnName = "sequence_name", pkColumnValue = "tbl_products",
-		valueColumnName = "next_val", initialValue = 10, allocationSize = 50)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@Column(name = "col_name")

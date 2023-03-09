@@ -63,7 +63,6 @@ class OperationWithTransactionTest extends EntityManagerTest {
 	@Test
 	void insertObjectWithMerge() {
 		Product p = new Product();
-		p.setId(null);
 		p.setName("Microfone Rode Videomic Go");
 		p.setDescription("Qualidade insuperável.");
 		p.setPrice(BigDecimal.valueOf(850.24));
