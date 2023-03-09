@@ -129,8 +129,9 @@ class OperationWithTransactionTest extends EntityManagerTest {
 	
 	@Test
 	void insertFirstObject() {
-		Product product = new Product(null, "Câmera Canon",
-				"A melhor definição para suas fotos", new BigDecimal(5500.65));
+		var product = Product.builder().name("Câmera Canon")
+				.description("A melhor definição para suas fotos")
+				.price(BigDecimal.valueOf(5500.65)).build();
 		
 		entityManager.getTransaction().begin();
 		entityManager.persist(product);

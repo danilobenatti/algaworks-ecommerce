@@ -15,7 +15,7 @@ class PersonCrudTest extends EntityManagerTest {
 	@Test
 	void createPerson() {
 		Person person = new Person(null, "José Lucas",
-				LocalDate.of(1985, Month.OCTOBER, 14), Gender.MALE);
+				LocalDate.of(1985, Month.OCTOBER, 14), Gender.MALE, null);
 		
 		entityManager.getTransaction().begin();
 		entityManager.persist(person);
@@ -44,7 +44,7 @@ class PersonCrudTest extends EntityManagerTest {
 	@Test
 	void updatePerson() {
 		Person person = new Person(1L, "Fernando Medeiros Júnior",
-				LocalDate.of(1958, Month.NOVEMBER, 5), Gender.MALE);
+				LocalDate.of(1958, Month.NOVEMBER, 5), Gender.MALE, null);
 		
 		entityManager.getTransaction().begin();
 		entityManager.merge(person);

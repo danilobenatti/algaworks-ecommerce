@@ -30,7 +30,7 @@ public class Category implements Serializable {
 	@Id
 	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "seq_generate")
-	@TableGenerator(name = "seq_generate", table = "hibernate_sequences",
+	@TableGenerator(name = "seq_categories", table = "hibernate_sequences",
 		pkColumnName = "sequence_name", pkColumnValue = "tbl_categories",
 		valueColumnName = "next_val", initialValue = 10, allocationSize = 50)
 	@Column(name = "id_category")

@@ -15,7 +15,7 @@ class MappingEnumsTest extends EntityManagerTest {
 	@Test
 	void enumTest() {
 		Person p = new Person(null, "Alice",
-				LocalDate.of(1945, Month.JANUARY, 9), Gender.FEMALE);
+				LocalDate.of(1945, Month.JANUARY, 9), Gender.FEMALE, null);
 		
 		entityManager.getTransaction().begin();
 		entityManager.persist(p);

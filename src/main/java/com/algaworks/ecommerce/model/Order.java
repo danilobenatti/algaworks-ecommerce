@@ -3,15 +3,20 @@ package com.algaworks.ecommerce.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.algaworks.ecommerce.model.enums.OrderStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -32,13 +37,12 @@ public class Order implements Serializable {
 	@Id
 	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_order")
 	private Long id;
 	
 	@Column(name = "col_order_date")
 	private LocalDateTime orderDate;
 	
-	@Column(name = "col_executiondate")
+	@Column(name = "col_execution_date")
 	private LocalDateTime executionDate;
 	
 	@Column(name = "id_invoice")
@@ -50,6 +54,14 @@ public class Order implements Serializable {
 	@Column(name = "col_status")
 	private Byte status;
 	
+	@ManyToOne
+	@JoinColumn(name = "person_id",
+		foreignKey = @ForeignKey(name = "fk_order_person_id"))
+	private Person person;
+	
+	@OneToMany(mappedBy = "order")
+	private List<OrderItem> orderitems;
+	
 	@Embedded
 	private Address deliveryAddress;
 	
@@ -60,4 +72,10 @@ public class Order implements Serializable {
 	public void setStatus(OrderStatus status) {
 		this.status = status.getCode();
 	}
+	
+	public BigDecimal calcTotal() {
+		return this.orderitems.stream().map(i -> i.calcSubTotal())
+				.reduce(BigDecimal.ZERO, BigDecimal::add);
+	}
+	
 }

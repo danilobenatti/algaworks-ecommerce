@@ -5,9 +5,12 @@ import java.math.BigDecimal;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -28,13 +31,16 @@ public class OrderItem implements Serializable {
 	@Id
 	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_orderitem")
 	private Long id;
 	
-	@Column(name = "id_order")
+	@ManyToOne
+	@JoinColumn(name = "order_id",
+		foreignKey = @ForeignKey(name = "fk_orderitem_order_id"))
 	private Order order;
 	
-	@Column(name = "id_product")
+	@ManyToOne
+	@JoinColumn(name = "product_id",
+		foreignKey = @ForeignKey(name = "fk_orderitem_product_id"))
 	private Product product;
 	
 	@Column(name = "col_quantity")
@@ -42,5 +48,10 @@ public class OrderItem implements Serializable {
 	
 	@Column(name = "col_subtotal")
 	private BigDecimal subtotal;
+	
+	public BigDecimal calcSubTotal() {
+		return this.product.getPrice()
+				.multiply(BigDecimal.valueOf(this.quantity));
+	}
 	
 }

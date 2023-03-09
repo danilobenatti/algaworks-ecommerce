@@ -2,6 +2,7 @@ package com.algaworks.ecommerce.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 import com.algaworks.ecommerce.model.enums.Gender;
 
@@ -12,6 +13,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -32,7 +34,6 @@ public class Person implements Serializable {
 	@Id
 	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_person")
 	private Long id;
 	
 	@Column(name = "col_name")
@@ -44,5 +45,8 @@ public class Person implements Serializable {
 	@Column(name = "col_gender")
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
+	
+	@OneToMany(mappedBy = "person")
+	private List<Order> orders;
 	
 }
