@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.algaworks.ecommerce.model.enums.OrderStatus;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -59,7 +60,7 @@ public class Order implements Serializable {
 		foreignKey = @ForeignKey(name = "fk_order_person_id"))
 	private Person person;
 	
-	@OneToMany(mappedBy = "order")
+	@OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE)
 	private List<OrderItem> orderitems;
 	
 	@Embedded
