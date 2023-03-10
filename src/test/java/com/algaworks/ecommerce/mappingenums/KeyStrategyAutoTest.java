@@ -13,10 +13,12 @@ class KeyStrategyAutoTest extends EntityManagerTest {
 	
 	@Test
 	void KeyStrategyTest() {
-		var p = Product.builder().name("iPad mini 6")
-				.description("A experiência completa do iPad na palma da mão.")
-				.price(BigDecimal.valueOf(5999.00)).build();
-		var c = Category.builder().name("Jardinagem").build();
+		Product p = new Product();
+		p.setName("iPad mini 6");
+		p.setDescription("A experiência completa do iPad na palma da mão.");
+		p.setPrice(BigDecimal.valueOf(5999.00));
+		Category c = new Category();
+		c.setName("Jardinagem");
 		
 		entityManager.getTransaction().begin();
 		entityManager.persist(p);
