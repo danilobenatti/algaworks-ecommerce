@@ -1,14 +1,18 @@
 package com.algaworks.ecommerce.model;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -21,22 +25,25 @@ import lombok.Setter;
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "tbl_invoices")
+@Table(name = "tbl_invoices",
+	uniqueConstraints = @UniqueConstraint(name = "uk_invoice_order_id",
+		columnNames = "oreder_id"))
 public class Invoice implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_invoice")
 	private Long id;
 	
-	@Column(name = "id_order")
+	@OneToOne
+	@JoinColumn(name = "oreder_id",
+		foreignKey = @ForeignKey(name = "fk_invoice_order_id"))
 	private Order order;
 	
 	@Column(name = "col_xml")
 	private String xml;
 	
 	@Column(name = "col_issue_date")
-	private LocalDate issueDate;
+	private LocalDateTime issueDate;
 }

@@ -6,5 +6,5 @@ INSERT INTO tbl_product_category (product_id, category_id) VALUES(1, 1);
 INSERT INTO tbl_product_category (product_id, category_id) VALUES(3, 2);
 INSERT INTO tbl_persons (id, col_birthday, col_gender, col_name) VALUES(1, '1958-10-05', 'MALE', 'Fernando Medeiros');
 INSERT INTO tbl_persons (id, col_birthday, col_gender, col_name) VALUES(2, '1974-05-17', 'MALE', 'Marcos Mariano');
-INSERT INTO tbl_orders (id, col_execution_date, id_invoice, col_order_date, col_status, col_total, person_id) VALUES(1, null, null, '2023-03-25', 1, null, 1);
+INSERT INTO tbl_orders (id, col_execution_date, col_order_date, col_status, col_total, person_id) VALUES(1, null, '2023-03-25 13:30:30', 1, 1998.0, 1);
 INSERT INTO tbl_order_items (id, col_quantity, col_subtotal, order_id, product_id) VALUES(1, 2, 999.0, 1, 1);

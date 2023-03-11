@@ -18,6 +18,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -46,7 +47,7 @@ public class Order implements Serializable {
 	@Column(name = "col_execution_date")
 	private LocalDateTime executionDate;
 	
-	@Column(name = "id_invoice")
+	@OneToOne(mappedBy = "order", cascade = CascadeType.REMOVE)
 	private Invoice invoice;
 	
 	@Column(name = "col_total")
@@ -62,6 +63,9 @@ public class Order implements Serializable {
 	
 	@OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE)
 	private List<OrderItem> orderitems;
+	
+	@OneToOne(mappedBy = "order")
+	private Payment payment;
 	
 	@Embedded
 	private Address deliveryAddress;

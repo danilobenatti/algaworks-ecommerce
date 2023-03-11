@@ -23,7 +23,7 @@
 			<property name="hibernate.format_sql" value="true" />
 			<property name="hibernate.use_sql_comments" value="true" />
 			<property name="hibernate.hbm2ddl.auto" value="create" />
-			<property name="hibernate.jdbc.time_zone" value="UTC"/>
+			<property name="hibernate.jdbc.time_zone" value="America/Sao_Paulo"/>
 		</properties>
 	</persistence-unit>
 </persistence>

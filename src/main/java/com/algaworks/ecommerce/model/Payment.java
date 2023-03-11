@@ -11,6 +11,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -32,10 +34,10 @@ public abstract class Payment implements Serializable {
 	@Id
 	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_payment")
 	private Long id;
 	
-	@Column(name = "id_order")
+	@OneToOne
+	@JoinColumn(name = "order_id")
 	private Order order;
 	
 	@Column(name = "col_status")
