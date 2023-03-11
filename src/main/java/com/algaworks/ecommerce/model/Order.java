@@ -11,6 +11,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -56,12 +57,13 @@ public class Order implements Serializable {
 	@Column(name = "col_status")
 	private Byte status;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "person_id",
 		foreignKey = @ForeignKey(name = "fk_order_person_id"))
 	private Person person;
 	
-	@OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "order", fetch = FetchType.EAGER,
+		cascade = CascadeType.REMOVE)
 	private List<OrderItem> orderitems;
 	
 	@OneToOne(mappedBy = "order")
