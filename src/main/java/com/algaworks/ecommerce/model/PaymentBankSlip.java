@@ -16,7 +16,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "tbl_payment_bankslip")
+@Table(name = "tbl_payments_bankslip")
 @PrimaryKeyJoinColumn(name = "id")
 public class PaymentBankSlip extends Payment {
 	private static final long serialVersionUID = 1L;

@@ -36,7 +36,7 @@ public class Invoice implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@OneToOne
+	@OneToOne(optional = false)
 	@JoinColumn(name = "oreder_id",
 		foreignKey = @ForeignKey(name = "fk_invoice_order_id"))
 	private Order order;

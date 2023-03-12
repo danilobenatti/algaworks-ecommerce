@@ -33,12 +33,12 @@ public class OrderItem implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@ManyToOne
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "order_id",
 		foreignKey = @ForeignKey(name = "fk_orderitem_order_id"))
 	private Order order;
 	
-	@ManyToOne
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "product_id",
 		foreignKey = @ForeignKey(name = "fk_orderitem_product_id"))
 	private Product product;

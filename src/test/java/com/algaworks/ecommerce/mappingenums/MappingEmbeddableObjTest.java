@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.Address;
 import com.algaworks.ecommerce.model.Order;
+import com.algaworks.ecommerce.model.Person;
 import com.algaworks.ecommerce.model.enums.OrderStatus;
 
 class MappingEmbeddableObjTest extends EntityManagerTest {
@@ -25,6 +26,7 @@ class MappingEmbeddableObjTest extends EntityManagerTest {
 		order.setStatus(OrderStatus.WAITING);
 		order.setTotal(BigDecimal.valueOf(1500.54));
 		order.setDeliveryAddress(address);
+		order.setPerson(entityManager.find(Person.class, 1L));
 		
 		entityManager.getTransaction().begin();
 		entityManager.persist(order);

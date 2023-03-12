@@ -14,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -55,5 +56,8 @@ public class Product implements Serializable {
 		inverseJoinColumns = @JoinColumn(name = "category_id",
 			foreignKey = @ForeignKey(name = "fk_productcategory__category_id")))
 	private List<Category> categories;
+	
+	@OneToOne(mappedBy = "product")
+	private ProductStock stock;
 	
 }

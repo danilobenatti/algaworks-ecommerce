@@ -57,7 +57,7 @@ public class Order implements Serializable {
 	@Column(name = "col_status")
 	private Byte status;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "person_id",
 		foreignKey = @ForeignKey(name = "fk_order_person_id"))
 	private Person person;
