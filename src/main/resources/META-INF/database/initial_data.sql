@@ -1,7 +1,7 @@
 INSERT INTO tbl_categories (id, col_name, parent_category_id) VALUES(1, 'Eletrônicos', null);
 INSERT INTO tbl_categories (id, col_name, parent_category_id) VALUES(2, 'Informática', 1);
-INSERT INTO tbl_products (id, col_description, col_name, col_price) VALUES(1, 'Conheça o novo Kindle, agora com mais memória', 'Kindle', 499.5);
-INSERT INTO tbl_products (id, col_description, col_name, col_price) VALUES(3, 'Câmera de ação e alto desempenho', 'Câmera GoPro Hero', 1506.72);
+INSERT INTO tbl_products (id, col_description, col_name, col_unitprice) VALUES(1, 'Conheça o novo Kindle, agora com mais memória', 'Kindle', 499.5);
+INSERT INTO tbl_products (id, col_description, col_name, col_unitprice) VALUES(3, 'Câmera de ação e alto desempenho', 'Câmera GoPro Hero', 1506.72);
 INSERT INTO tbl_product_category (product_id, category_id) VALUES(1, 1);
 INSERT INTO tbl_product_category (product_id, category_id) VALUES(3, 2);
 INSERT INTO tbl_persons (id, col_birthday, col_gender, col_name) VALUES(1, '1958-10-05', 'MALE', 'Fernando Medeiros');

@@ -16,7 +16,7 @@ class KeyStrategyAutoTest extends EntityManagerTest {
 		Product p = new Product();
 		p.setName("iPad mini 6");
 		p.setDescription("A experiência completa do iPad na palma da mão.");
-		p.setPrice(BigDecimal.valueOf(5999.00));
+		p.setUnitPrice(BigDecimal.valueOf(5999.00));
 		Category c = new Category();
 		c.setName("Jardinagem");
 		

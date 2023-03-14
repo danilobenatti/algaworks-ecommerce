@@ -32,17 +32,13 @@ class RelationshipsManyToOneTest extends EntityManagerTest {
 		oi1.setOrder(o1);
 		oi1.setProduct(p1);
 		oi1.setQuantity(2d);
-		oi1.setSubtotal(oi1.calcSubTotal());
 		
 		OrderItem oi2 = new OrderItem();
 		oi2.setOrder(o1);
 		oi2.setProduct(p3);
 		oi2.setQuantity(2d);
-		oi2.setSubtotal(oi2.calcSubTotal());
 		
 		o1.setOrderitems(Arrays.asList(oi1, oi2));
-		
-		o1.setTotal(o1.calcTotal());
 		
 		entityManager.getTransaction().begin();
 		entityManager.persist(o1);
@@ -53,8 +49,10 @@ class RelationshipsManyToOneTest extends EntityManagerTest {
 		entityManager.clear();
 		
 		Order findOrder1 = entityManager.find(Order.class, o1.getId());
-		OrderItem findOrderItem1 = entityManager.find(OrderItem.class, oi1.getId());
-		OrderItem findOrderItem2 = entityManager.find(OrderItem.class, oi2.getId());
+		OrderItem findOrderItem1 = entityManager.find(OrderItem.class,
+				oi1.getId());
+		OrderItem findOrderItem2 = entityManager.find(OrderItem.class,
+				oi2.getId());
 		
 		Assertions.assertEquals(o1.getId(), findOrder1.getId());
 		Assertions.assertEquals(oi1.getId(), findOrderItem1.getId());

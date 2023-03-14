@@ -11,6 +11,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -49,9 +51,34 @@ public class OrderItem implements Serializable {
 	@Column(name = "col_subtotal")
 	private BigDecimal subtotal;
 	
-	public BigDecimal calcSubTotal() {
-		return this.product.getPrice()
-				.multiply(BigDecimal.valueOf(this.quantity));
+	public void setSubtotal() {
+		this.subtotal = calcSubTotal(this.product, this.quantity);
 	}
 	
+	public BigDecimal calcSubTotal(Product product, Double quantity) {
+		if (!product.getUnitPrice().equals(BigDecimal.ZERO) && quantity > 0) {
+			return product.getUnitPrice()
+					.multiply(BigDecimal.valueOf(quantity));
+		}
+		return BigDecimal.ZERO;
+	}
+	
+	public BigDecimal calcSubTotal() {
+		if (!product.getUnitPrice().equals(BigDecimal.ZERO)
+				&& this.quantity > 0) {
+			return this.product.getUnitPrice()
+					.multiply(BigDecimal.valueOf(this.quantity));
+		}
+		return BigDecimal.ZERO;
+	}
+	
+	@PrePersist
+	public void onPersist() {
+		setSubtotal();
+	}
+	
+	@PreUpdate
+	public void onUpdate() {
+		setSubtotal();
+	}
 }

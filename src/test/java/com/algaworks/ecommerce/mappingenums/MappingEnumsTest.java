@@ -14,12 +14,14 @@ class MappingEnumsTest extends EntityManagerTest {
 	
 	@Test
 	void enumTest() {
-		Person p = new Person(null, "Alice",
-				LocalDate.of(1945, Month.JANUARY, 9), Gender.FEMALE, null);
+		Person p = new Person();
+		p.setBirthday(LocalDate.of(1945, Month.JANUARY, 9));
+		p.setGender(Gender.FEMALE);
 		
 		entityManager.getTransaction().begin();
 		entityManager.persist(p);
 		entityManager.getTransaction().commit();
+		
 		entityManager.clear();
 		
 		Person personFind = entityManager.find(Person.class, p.getId());

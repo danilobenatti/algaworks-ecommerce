@@ -29,4 +29,16 @@ class RelationshipsOneToOneTest extends EntityManagerTest {
 		
 	}
 	
+	@Test
+	void verifyOneToOneDeleteTest() {
+		Order o = entityManager.find(Order.class, 1L);
+		
+		entityManager.getTransaction().begin();
+		entityManager.remove(o);
+		entityManager.getTransaction().commit();
+		
+		Order findOrder = entityManager.find(Order.class, o.getId());
+		Assertions.assertNull(findOrder);
+		
+	}
 }

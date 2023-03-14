@@ -28,7 +28,18 @@ class RelationshipsOneToOneOrderInvoiceTest extends EntityManagerTest {
 		
 		Invoice findInvoice = entityManager.find(Invoice.class, order.getId());
 		Assertions.assertNotNull(findInvoice.getId());
+	}
+	
+	@Test
+	void verifyOneToOneDeleteTest() {
+		Order order = entityManager.find(Order.class, 1L);
 		
+		entityManager.getTransaction().begin();
+		entityManager.remove(order);
+		entityManager.getTransaction().commit();
+		
+		Invoice findInvoice = entityManager.find(Invoice.class, order.getId());
+		Assertions.assertNull(findInvoice);
 	}
 	
 }

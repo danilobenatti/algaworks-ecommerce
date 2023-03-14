@@ -31,7 +31,7 @@ class OperationWithTransactionTest extends EntityManagerTest {
 //		p.setId(5);
 		pp.setName("Smartphone One Plus");
 		pp.setDescription("Tela e processador de última geração.");
-		pp.setPrice(BigDecimal.valueOf(1750.87));
+		pp.setUnitPrice(BigDecimal.valueOf(1750.87));
 		
 		entityManager.getTransaction().begin();
 		entityManager.persist(pp);
@@ -47,7 +47,7 @@ class OperationWithTransactionTest extends EntityManagerTest {
 //		p.setId(6);
 		pm.setName("Notebook Dell");
 		pm.setDescription("Inspiron 5000 Series");
-		pm.setPrice(BigDecimal.valueOf(5500.00));
+		pm.setUnitPrice(BigDecimal.valueOf(5500.00));
 		
 		entityManager.getTransaction().begin();
 		pm = entityManager.merge(pm);
@@ -65,7 +65,7 @@ class OperationWithTransactionTest extends EntityManagerTest {
 		Product p = new Product();
 		p.setName("Microfone Rode Videomic Go");
 		p.setDescription("Qualidade insuperável.");
-		p.setPrice(BigDecimal.valueOf(850.24));
+		p.setUnitPrice(BigDecimal.valueOf(850.24));
 		
 		entityManager.getTransaction().begin();
 		Product p1 = entityManager.merge(p);
@@ -83,13 +83,13 @@ class OperationWithTransactionTest extends EntityManagerTest {
 		p.setName("Kindle Paperwhite 2ª Geração");
 		
 		entityManager.getTransaction().begin();
-		p.setPrice(BigDecimal.valueOf(600.99));
+		p.setUnitPrice(BigDecimal.valueOf(600.99));
 		entityManager.getTransaction().commit();
 		
 		entityManager.clear();
 		
 		Assertions.assertEquals("Kindle Paperwhite 2ª Geração", p.getName());
-		Assertions.assertEquals(BigDecimal.valueOf(600.99), p.getPrice());
+		Assertions.assertEquals(BigDecimal.valueOf(600.99), p.getUnitPrice());
 	}
 	
 	@Test
@@ -98,7 +98,7 @@ class OperationWithTransactionTest extends EntityManagerTest {
 		p.setId(1L);
 		p.setName("Kindle Paperwhite");
 		p.setDescription("Conheça o novo Kindle!");
-		p.setPrice(new BigDecimal(599.99));
+		p.setUnitPrice(new BigDecimal(599.99));
 		
 		entityManager.getTransaction().begin();
 		entityManager.merge(p);
@@ -111,7 +111,7 @@ class OperationWithTransactionTest extends EntityManagerTest {
 		Assertions.assertNotNull(pUp);
 		Assertions.assertEquals("Kindle Paperwhite", pUp.getName());
 		Assertions.assertEquals("Conheça o novo Kindle!", pUp.getDescription());
-		Assertions.assertEquals(BigDecimal.valueOf(599.99), pUp.getPrice());
+		Assertions.assertEquals(BigDecimal.valueOf(599.99), pUp.getUnitPrice());
 	}
 	
 	@Test
@@ -131,7 +131,7 @@ class OperationWithTransactionTest extends EntityManagerTest {
 		Product product = new Product();
 		product.setName("Câmera Canon");
 		product.setDescription("A melhor definição para suas fotos");
-		product.setPrice(BigDecimal.valueOf(5500.65));
+		product.setUnitPrice(BigDecimal.valueOf(5500.65));
 		
 		entityManager.getTransaction().begin();
 		entityManager.persist(product);
