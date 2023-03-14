@@ -42,7 +42,7 @@ class CallBacksTest extends EntityManagerTest {
 		entityManager.clear();
 		
 		Order orderVerify = entityManager.find(Order.class, order.getId());
-		Assertions.assertNotNull(orderVerify.getOrderDate());
+		Assertions.assertNotNull(orderVerify.getOrderDateInsert());
 		
 	}
 	

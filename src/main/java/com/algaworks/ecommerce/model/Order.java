@@ -49,10 +49,10 @@ public class Order implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "col_order_date")
-	private LocalDateTime orderDate;
+	@Column(name = "col_order_date", updatable = false)
+	private LocalDateTime orderDateInsert;
 	
-	@Column(name = "col_order_dateupdate")
+	@Column(name = "col_order_dateupdate", insertable = false)
 	private LocalDateTime orderDateUpdate;
 	
 	@Column(name = "col_execution_date")
@@ -117,7 +117,7 @@ public class Order implements Serializable {
 	@PrePersist
 	public void onPersist() {
 		setTotal();
-		this.orderDate = LocalDateTime.now();
+		this.orderDateInsert = LocalDateTime.now();
 	}
 	
 	@PreUpdate

@@ -23,7 +23,7 @@ class RelationshipsManyToOneTest extends EntityManagerTest {
 		
 		Order o1 = new Order();
 		o1.setStatus(OrderStatus.WAITING);
-		o1.setOrderDate(LocalDateTime.now());
+		o1.setOrderDateInsert(LocalDateTime.now());
 		o1.setPerson(c1);
 		
 		c1.setOrders(Arrays.asList(o1));

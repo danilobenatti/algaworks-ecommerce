@@ -22,7 +22,7 @@ class MappingEmbeddableObjTest extends EntityManagerTest {
 		
 		Order order = new Order();
 		order.setId(null);
-		order.setOrderDate(LocalDateTime.now());
+		order.setOrderDateInsert(LocalDateTime.now());
 		order.setStatus(OrderStatus.WAITING);
 		order.setTotal(BigDecimal.valueOf(1500.54));
 		order.setDeliveryAddress(address);

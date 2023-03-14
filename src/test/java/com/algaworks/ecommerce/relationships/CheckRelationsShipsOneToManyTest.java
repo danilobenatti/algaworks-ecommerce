@@ -18,7 +18,7 @@ class CheckRelationsShipsOneToManyTest extends EntityManagerTest {
 		
 		Order order = new Order();
 		order.setStatus(OrderStatus.WAITING);
-		order.setOrderDate(LocalDateTime.now());
+		order.setOrderDateInsert(LocalDateTime.now());
 		order.setPerson(client);
 		
 		entityManager.getTransaction().begin();

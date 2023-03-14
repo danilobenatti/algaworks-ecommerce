@@ -2,6 +2,7 @@ package com.algaworks.ecommerce.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.algaworks.ecommerce.listener.GenericListener;
@@ -66,5 +67,11 @@ public class Product implements Serializable {
 	
 	@OneToOne(mappedBy = "product")
 	private ProductStock stock;
+	
+	@Column(name = "col_create_date", updatable = false)
+	private LocalDateTime createDate;
+	
+	@Column(name = "col_update_date", insertable = false)
+	private LocalDateTime updateDate;
 	
 }
