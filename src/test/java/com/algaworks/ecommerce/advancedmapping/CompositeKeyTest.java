@@ -1,6 +1,5 @@
-package com.algaworks.ecommerce.relationships;
+package com.algaworks.ecommerce.advancedmapping;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import org.junit.jupiter.api.Assertions;
@@ -14,10 +13,10 @@ import com.algaworks.ecommerce.model.Person;
 import com.algaworks.ecommerce.model.Product;
 import com.algaworks.ecommerce.model.enums.OrderStatus;
 
-class RelationshipsManyToOneTest extends EntityManagerTest {
+class CompositeKeyTest extends EntityManagerTest {
 	
 	@Test
-	void verifyManyToOneRelationshipTest() {
+	void saveOrderItem() {
 		
 		entityManager.getTransaction().begin();
 		
@@ -26,10 +25,8 @@ class RelationshipsManyToOneTest extends EntityManagerTest {
 		Product product3 = entityManager.find(Product.class, 3L);
 		
 		Order order = new Order();
-		order.setStatus(OrderStatus.WAITING);
-		order.setOrderDateInsert(LocalDateTime.now());
 		order.setPerson(person);
-		
+		order.setStatus(OrderStatus.WAITING);
 		person.setOrders(Arrays.asList(order));
 		
 		entityManager.persist(order);
@@ -48,27 +45,28 @@ class RelationshipsManyToOneTest extends EntityManagerTest {
 		item2.setProductId(product3.getId());
 		item2.setOrder(order);
 		item2.setProduct(product3);
-		item2.setQuantity(2d);
+		item2.setQuantity(1d);
 		
 		order.setOrderitems(Arrays.asList(item1, item2));
 		
 		entityManager.persist(item1);
 		entityManager.persist(item2);
-		
 		entityManager.getTransaction().commit();
 		
 		entityManager.clear();
 		
 		Order findOrder = entityManager.find(Order.class, order.getId());
-		OrderItem findItem1 = entityManager.find(OrderItem.class,
-				new OrderItemPk(order.getId(), product1.getId()));
-		OrderItem findItem2 = entityManager.find(OrderItem.class,
-				new OrderItemPk(order.getId(), product3.getId()));
-		
-		Assertions.assertEquals(order.getId(), findOrder.getId());
-		Assertions.assertEquals(order.getId(), findItem1.getOrderId());
-		Assertions.assertEquals(order.getId(), findItem2.getOrderId());
-		
+		Assertions.assertNotNull(findOrder);
+		Assertions.assertFalse(findOrder.getOrderitems().isEmpty());
 	}
 	
+	@Test
+	void searchOrderItem() {
+		OrderItem findItem1 = entityManager.find(OrderItem.class,
+				new OrderItemPk(2L, 1L));
+		Assertions.assertNotNull(findItem1);
+		OrderItem findItem2 = entityManager.find(OrderItem.class,
+				new OrderItemPk(2L, 3L));
+		Assertions.assertNotNull(findItem2);
+	}
 }

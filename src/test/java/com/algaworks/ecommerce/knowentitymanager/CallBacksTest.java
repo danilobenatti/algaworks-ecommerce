@@ -16,6 +16,9 @@ class CallBacksTest extends EntityManagerTest {
 	
 	@Test
 	void callBacksTest() {
+		
+		entityManager.getTransaction().begin();
+		
 		Person person = entityManager.find(Person.class, 1L);
 		Product product = entityManager.find(Product.class, 1L);
 		
@@ -23,16 +26,21 @@ class CallBacksTest extends EntityManagerTest {
 		order.setPerson(person);
 		order.setStatus(OrderStatus.WAITING);
 		
+		entityManager.persist(order);
+		
+		entityManager.flush();
+		
 		OrderItem item = new OrderItem();
+		item.setOrderId(order.getId());
+		item.setProductId(product.getId());
 		item.setOrder(order);
 		item.setProduct(product);
 		item.setQuantity(2d);
 		
 		order.setOrderitems(Arrays.asList(item));
 		
-		entityManager.getTransaction().begin();
-		entityManager.persist(order);
 		entityManager.persist(item);
+		
 		entityManager.flush();
 		
 		order.setStatus(OrderStatus.PAID);

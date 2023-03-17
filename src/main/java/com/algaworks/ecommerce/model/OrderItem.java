@@ -6,9 +6,8 @@ import java.math.BigDecimal;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
@@ -25,6 +24,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@IdClass(OrderItemPk.class)
 @Entity
 @Table(name = "tbl_order_items")
 public class OrderItem implements Serializable {
@@ -32,16 +32,21 @@ public class OrderItem implements Serializable {
 	
 	@Id
 	@EqualsAndHashCode.Include
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@Column(name = "order_id")
+	private Long orderId;
+	
+	@Id
+	@EqualsAndHashCode.Include
+	@Column(name = "product_id")
+	private Long productId;
 	
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "order_id",
+	@JoinColumn(name = "order_id", insertable = false, updatable = false,
 		foreignKey = @ForeignKey(name = "fk_orderitem_order_id"))
 	private Order order;
 	
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "product_id",
+	@JoinColumn(name = "product_id", insertable = false, updatable = false,
 		foreignKey = @ForeignKey(name = "fk_orderitem_product_id"))
 	private Product product;
 	
