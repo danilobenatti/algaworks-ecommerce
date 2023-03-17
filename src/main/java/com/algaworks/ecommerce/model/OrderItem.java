@@ -4,10 +4,9 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
@@ -24,21 +23,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@IdClass(OrderItemPk.class)
 @Entity
 @Table(name = "tbl_order_items")
 public class OrderItem implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	@Id
-	@EqualsAndHashCode.Include
-	@Column(name = "order_id")
-	private Long orderId;
-	
-	@Id
-	@EqualsAndHashCode.Include
-	@Column(name = "product_id")
-	private Long productId;
+	@EmbeddedId
+	private OrderItemPk id;
 	
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "order_id", insertable = false, updatable = false,

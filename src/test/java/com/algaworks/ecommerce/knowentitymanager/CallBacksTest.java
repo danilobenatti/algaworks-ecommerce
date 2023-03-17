@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.Order;
 import com.algaworks.ecommerce.model.OrderItem;
+import com.algaworks.ecommerce.model.OrderItemPk;
 import com.algaworks.ecommerce.model.Person;
 import com.algaworks.ecommerce.model.Product;
 import com.algaworks.ecommerce.model.enums.OrderStatus;
@@ -31,8 +32,7 @@ class CallBacksTest extends EntityManagerTest {
 		entityManager.flush();
 		
 		OrderItem item = new OrderItem();
-		item.setOrderId(order.getId());
-		item.setProductId(product.getId());
+		item.setId(new OrderItemPk(order.getId(), product.getId()));
 		item.setOrder(order);
 		item.setProduct(product);
 		item.setQuantity(2d);
