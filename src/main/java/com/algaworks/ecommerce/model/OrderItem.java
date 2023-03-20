@@ -9,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -31,13 +32,15 @@ public class OrderItem implements Serializable {
 	@EmbeddedId
 	private OrderItemPk id;
 	
+	@MapsId(value = "orderId")
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "order_id", insertable = false, updatable = false,
+	@JoinColumn(name = "order_id",
 		foreignKey = @ForeignKey(name = "fk_orderitem_order_id"))
 	private Order order;
 	
+	@MapsId(value = "productId")
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "product_id", insertable = false, updatable = false,
+	@JoinColumn(name = "product_id",
 		foreignKey = @ForeignKey(name = "fk_orderitem_product_id"))
 	private Product product;
 	
