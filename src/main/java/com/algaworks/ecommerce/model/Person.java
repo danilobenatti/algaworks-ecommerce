@@ -19,6 +19,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -40,8 +41,12 @@ public class Person implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "col_name")
-	private String name;
+	@Column(name = "col_firstname")
+	private String firstname;
+	
+	@Transient
+	@Column(name = "col_lastname")
+	private String lastname;
 	
 	@Column(name = "col_birthday")
 	private LocalDate birthday;

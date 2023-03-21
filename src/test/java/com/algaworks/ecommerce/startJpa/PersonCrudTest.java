@@ -15,7 +15,7 @@ class PersonCrudTest extends EntityManagerTest {
 	@Test
 	void createPerson() {
 		Person person = new Person();
-		person.setName("José Lucas");
+		person.setFirstname("José Lucas");
 		person.setBirthday(LocalDate.of(1985, Month.OCTOBER, 14));
 		person.setGender(Gender.MALE);
 		
@@ -49,7 +49,7 @@ class PersonCrudTest extends EntityManagerTest {
 	void updatePerson() {
 		Person person = new Person();
 		person.setId(1L);
-		person.setName("Fernando Medeiros Júnior");
+		person.setFirstname("Fernando Medeiros Júnior");
 		person.setBirthday(LocalDate.of(1958, Month.NOVEMBER, 5));
 		person.setGender(Gender.MALE);
 		
@@ -62,7 +62,7 @@ class PersonCrudTest extends EntityManagerTest {
 		Person updatedPerson = entityManager.find(Person.class, 1);
 		Assertions.assertNotNull(updatedPerson);
 		Assertions.assertEquals("Fernando Medeiros Júnior",
-				updatedPerson.getName());
+				updatedPerson.getFirstname());
 	}
 	
 	@Test
@@ -83,13 +83,13 @@ class PersonCrudTest extends EntityManagerTest {
 	
 	@Test
 	void deletePerson() {
-		Person person = entityManager.find(Person.class, 2);
+		Person person = entityManager.find(Person.class, 2L);
 		
 		entityManager.getTransaction().begin();
 		entityManager.remove(person);
 		entityManager.getTransaction().commit();
 		
-		Person deletedPerson = entityManager.find(Person.class, 2);
+		Person deletedPerson = entityManager.find(Person.class, 2L);
 		Assertions.assertNull(deletedPerson);
 	}
 }
