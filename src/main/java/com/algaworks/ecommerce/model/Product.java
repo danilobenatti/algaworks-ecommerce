@@ -77,6 +77,12 @@ public class Product implements Serializable {
 	@Column(name = "col_tag")
 	private List<String> tags;
 	
+	@ElementCollection
+	@CollectionTable(name = "tbl_product_attribute",
+		joinColumns = @JoinColumn(name = "product_id",
+			foreignKey = @ForeignKey(name = "fk_productattribute_product_id")))
+	private List<Attribute> attributes;
+	
 	@Column(name = "col_create_date", updatable = false)
 	private LocalDateTime createDate;
 	
