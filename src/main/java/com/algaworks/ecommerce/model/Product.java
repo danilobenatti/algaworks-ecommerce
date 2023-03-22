@@ -7,7 +7,9 @@ import java.util.List;
 
 import com.algaworks.ecommerce.listener.GenericListener;
 
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.ForeignKey;
@@ -67,6 +69,13 @@ public class Product implements Serializable {
 	
 	@OneToOne(mappedBy = "product")
 	private ProductStock stock;
+	
+	@ElementCollection
+	@CollectionTable(name = "tbl_product_tag",
+		joinColumns = @JoinColumn(name = "product_id",
+			foreignKey = @ForeignKey(name = "fk_producttag_product_id")))
+	@Column(name = "col_tag")
+	private List<String> tags;
 	
 	@Column(name = "col_create_date", updatable = false)
 	private LocalDateTime createDate;
