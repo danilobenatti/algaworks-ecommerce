@@ -4,17 +4,23 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 import com.algaworks.ecommerce.model.enums.Gender;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapKeyColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
@@ -63,6 +69,14 @@ public class Person implements Serializable {
 	
 	@Column(name = "col_date_update")
 	private LocalDateTime dateUpdate;
+	
+	@ElementCollection
+	@CollectionTable(name = "tbl_person_phones",
+		joinColumns = @JoinColumn(name = "person_id",
+			foreignKey = @ForeignKey(name = "fk_personphone_person_id")))
+	@MapKeyColumn(name = "col_type")
+	@Column(name = "col_number")
+	private Map<String, String> phones;
 	
 	@PrePersist
 	private void onPersist() {

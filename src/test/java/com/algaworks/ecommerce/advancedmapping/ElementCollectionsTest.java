@@ -1,12 +1,14 @@
 package com.algaworks.ecommerce.advancedmapping;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.Attribute;
+import com.algaworks.ecommerce.model.Person;
 import com.algaworks.ecommerce.model.Product;
 
 class ElementCollectionsTest extends EntityManagerTest {
@@ -47,4 +49,20 @@ class ElementCollectionsTest extends EntityManagerTest {
 		
 	}
 	
+	@Test
+	void applyingMapKey() {
+		entityManager.getTransaction().begin();
+		
+		Person person = entityManager.find(Person.class, 1L);
+		person.setPhones(Collections.singletonMap("mobile", "123456789"));
+		
+		entityManager.getTransaction().commit();
+		
+		entityManager.clear();
+		
+		Person findPerson = entityManager.find(Person.class, person.getId());
+		Assertions.assertEquals(person.getPhones().get("mobile"),
+				findPerson.getPhones().get("mobile"));
+		
+	}
 }
