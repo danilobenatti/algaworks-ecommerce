@@ -22,7 +22,7 @@ class MapsIdTest extends EntityManagerTest {
 		
 		Invoice invoice = new Invoice();
 		invoice.setOrder(order);
-		invoice.setXml("<xml/>");
+		invoice.setXml(Invoice.uploadInvoice());
 		
 		entityManager.getTransaction().begin();
 		entityManager.persist(invoice);
@@ -34,6 +34,9 @@ class MapsIdTest extends EntityManagerTest {
 				invoice.getId());
 		Assertions.assertNotNull(findInvoice);
 		Assertions.assertEquals(order.getId(), findInvoice.getId());
+		Assertions.assertNotNull(findInvoice.getXml());
+		Assertions.assertTrue(findInvoice.getXml().length > 0);
+		
 	}
 	
 	@Test

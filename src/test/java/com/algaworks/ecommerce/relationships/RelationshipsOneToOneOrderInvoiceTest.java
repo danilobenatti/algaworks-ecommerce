@@ -16,7 +16,7 @@ class RelationshipsOneToOneOrderInvoiceTest extends EntityManagerTest {
 		Order order = entityManager.find(Order.class, 1L);
 		
 		Invoice invoice = new Invoice();
-		invoice.setXml("TESTE XML");
+		invoice.setXml(Invoice.uploadInvoice());
 		invoice.setIssueDate(LocalDateTime.now());
 		invoice.setOrder(order);
 		
@@ -28,6 +28,9 @@ class RelationshipsOneToOneOrderInvoiceTest extends EntityManagerTest {
 		
 		Invoice findInvoice = entityManager.find(Invoice.class, order.getId());
 		Assertions.assertNotNull(findInvoice.getId());
+		Assertions.assertNotNull(findInvoice.getXml());
+		Assertions.assertTrue(findInvoice.getXml().length > 0);
+		
 	}
 	
 	@Test
