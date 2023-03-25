@@ -1,7 +1,6 @@
 package com.algaworks.ecommerce.model;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -43,7 +42,8 @@ public class Invoice implements Serializable {
 	private Order order;
 	
 	@Lob
-	@Column(name = "col_xml", columnDefinition = "BLOB", length = 20971520)
+//	@Column(name = "col_xml", columnDefinition = "BLOB")
+	@Column(name = "col_xml", length = 10485760) // 10485760 Bytes = 10MB
 	private byte[] xml;
 	
 	@Column(name = "col_issue_date")

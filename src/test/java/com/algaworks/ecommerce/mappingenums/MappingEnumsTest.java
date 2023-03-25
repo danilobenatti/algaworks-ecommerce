@@ -26,6 +26,8 @@ class MappingEnumsTest extends EntityManagerTest {
 		
 		Person personFind = entityManager.find(Person.class, p.getId());
 		Assertions.assertNotNull(personFind);
+		Assertions.assertEquals(p.getGender().getCode(),
+				personFind.getGender().getCode());
 		
 	}
 }

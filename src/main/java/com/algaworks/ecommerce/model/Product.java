@@ -1,5 +1,7 @@
 package com.algaworks.ecommerce.model;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -83,10 +85,23 @@ public class Product implements Serializable {
 			foreignKey = @ForeignKey(name = "fk_productattribute_product_id")))
 	private List<Attribute> attributes;
 	
+	@Column(name = "col_image", length = 5242880) // 5242880 Bytes = 5MB
+	private byte[] image;
+	
 	@Column(name = "col_create_date", updatable = false)
 	private LocalDateTime createDate;
 	
 	@Column(name = "col_update_date", insertable = false)
 	private LocalDateTime updateDate;
+	
+	public static byte[] uploadImage(File file) {
+		try {
+			return Product.class.getResourceAsStream(file.getName())
+					.readAllBytes();
+		} catch (IOException ex) {
+			throw new RuntimeException("File not found.", ex);
+		}
+		
+	}
 	
 }

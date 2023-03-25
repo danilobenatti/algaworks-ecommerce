@@ -1,5 +1,6 @@
 package com.algaworks.ecommerce.relationships;
 
+import java.io.File;
 import java.util.Arrays;
 
 import org.junit.jupiter.api.Assertions;
@@ -20,7 +21,11 @@ class RelationshipsManyToOneTest extends EntityManagerTest {
 		
 		Person person = entityManager.find(Person.class, 1L);
 		Product product1 = entityManager.find(Product.class, 1L);
+		product1.setImage(Product.uploadImage(new File(
+				"./src/main/java/com/algaworks/ecommerce/model/kindle_paperwhite.jpg")));
 		Product product3 = entityManager.find(Product.class, 3L);
+		product3.setImage(Product.uploadImage(new File(
+				"./src/main/java/com/algaworks/ecommerce/model/gopro_hero.jpg")));
 		
 		Order order = new Order();
 		order.setStatus(OrderStatus.WAITING);
