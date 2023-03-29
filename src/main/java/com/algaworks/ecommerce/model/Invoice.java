@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import com.algaworks.ecommerce.exception.FileNotFoundException;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
@@ -59,7 +61,7 @@ public class Invoice implements Serializable {
 			return Invoice.class.getResourceAsStream("NFe_assinada.xml")
 					.readAllBytes();
 		} catch (IOException ex) {
-			throw new RuntimeException("File not found.", ex);
+			throw new FileNotFoundException("File not found.", ex);
 		}
 		
 	}

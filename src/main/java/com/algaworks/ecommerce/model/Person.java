@@ -24,6 +24,8 @@ import jakarta.persistence.MapKeyColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.SecondaryTable;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
@@ -37,6 +39,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@SecondaryTable(name = "tbl_person_detail",
+	foreignKey = @ForeignKey(name = "fk_persondetail_person_id"),
+	pkJoinColumns = @PrimaryKeyJoinColumn(name = "person_id"))
 @Entity
 @Table(name = "tbl_persons")
 public class Person implements Serializable {
@@ -54,10 +59,10 @@ public class Person implements Serializable {
 	@Column(name = "col_lastname")
 	private String lastname;
 	
-	@Column(name = "col_birthday")
+	@Column(name = "col_birthday", table = "tbl_person_detail")
 	private LocalDate birthday;
 	
-	@Column(name = "col_gender")
+	@Column(name = "col_gender", table = "tbl_person_detail")
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
 	

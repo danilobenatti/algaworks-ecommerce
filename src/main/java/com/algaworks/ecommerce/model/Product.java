@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.algaworks.ecommerce.exception.FileNotFoundException;
 import com.algaworks.ecommerce.listener.GenericListener;
 
 import jakarta.persistence.CollectionTable;
@@ -99,7 +100,7 @@ public class Product implements Serializable {
 			return Product.class.getResourceAsStream(file.getName())
 					.readAllBytes();
 		} catch (IOException ex) {
-			throw new RuntimeException("File not found.", ex);
+			throw new FileNotFoundException("File not found.", ex);
 		}
 		
 	}
