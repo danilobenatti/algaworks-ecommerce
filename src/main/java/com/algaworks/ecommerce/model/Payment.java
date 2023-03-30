@@ -7,12 +7,10 @@ import com.algaworks.ecommerce.model.enums.PaymentStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -25,18 +23,14 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "tbl_payments")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Payment implements Serializable {
+public abstract class Payment extends BaseEntityLong implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	@Id
-	@EqualsAndHashCode.Include
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
+	@MapsId
 	@OneToOne(optional = false)
 	@JoinColumn(name = "order_id",
 		foreignKey = @ForeignKey(name = "fk_payments_order_id"))

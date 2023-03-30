@@ -1,24 +1,31 @@
 package com.algaworks.ecommerce.relationships;
 
+import java.io.File;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.Order;
 import com.algaworks.ecommerce.model.PaymentCreditCard;
+import com.algaworks.ecommerce.model.Product;
+import com.algaworks.ecommerce.model.ProductStock;
 import com.algaworks.ecommerce.model.enums.PaymentStatus;
 
 class RelationshipsOneToOneTest extends EntityManagerTest {
 	
 	@Test
 	void verifyOneToOneRelationshipTest() {
-		Order o = entityManager.find(Order.class, 1L);
+		Order o = entityManager.find(Order.class, 2L);
 		PaymentCreditCard pcc = new PaymentCreditCard();
 		pcc.setOrder(o);
 		pcc.setNumberOfInstallments(3);
 		pcc.setStatus(PaymentStatus.PROCESSING);
 		
+		o.setPayment(pcc);
+		
 		entityManager.getTransaction().begin();
+		o.getPayment().setStatus(PaymentStatus.RECEIVED);
 		entityManager.persist(pcc);
 		entityManager.getTransaction().commit();
 		
@@ -39,6 +46,25 @@ class RelationshipsOneToOneTest extends EntityManagerTest {
 		
 		Order findOrder = entityManager.find(Order.class, o.getId());
 		Assertions.assertNull(findOrder);
+		
+	}
+	
+	@Test
+	void verifyOneToOneRelationshipProductStockTest() {
+		Product product = entityManager.find(Product.class, 3L);
+		product.setImage(Product.uploadImage(new File(
+			"./src/main/java/com/algaworks/ecommerce/model/gopro_hero.jpg")));
+		ProductStock stock = new ProductStock(product, Double.valueOf(12));
+		
+		entityManager.getTransaction().begin();
+		entityManager.persist(stock);
+		entityManager.getTransaction().commit();
+		
+		entityManager.clear();
+		
+		ProductStock findStock = entityManager.find(ProductStock.class,
+			stock.getId());
+		Assertions.assertEquals(12d, findStock.getQuantity());
 		
 	}
 }

@@ -22,10 +22,10 @@ class RelationshipsManyToOneTest extends EntityManagerTest {
 		Person person = entityManager.find(Person.class, 1L);
 		Product product1 = entityManager.find(Product.class, 1L);
 		product1.setImage(Product.uploadImage(new File(
-				"./src/main/java/com/algaworks/ecommerce/model/kindle_paperwhite.jpg")));
+			"./src/main/java/com/algaworks/ecommerce/model/kindle_paperwhite.jpg")));
 		Product product3 = entityManager.find(Product.class, 3L);
 		product3.setImage(Product.uploadImage(new File(
-				"./src/main/java/com/algaworks/ecommerce/model/gopro_hero.jpg")));
+			"./src/main/java/com/algaworks/ecommerce/model/gopro_hero.jpg")));
 		
 		Order order = new Order();
 		order.setStatus(OrderStatus.WAITING);
@@ -56,10 +56,18 @@ class RelationshipsManyToOneTest extends EntityManagerTest {
 		entityManager.clear();
 		
 		Order findOrder = entityManager.find(Order.class, order.getId());
+		findOrder.setStatus(OrderStatus.CANCELED);
+		
+		entityManager.getTransaction().begin();
+		entityManager.merge(findOrder);
+		entityManager.getTransaction().commit();
+		
+		entityManager.clear();
+		
 		OrderItem findItem1 = entityManager.find(OrderItem.class,
-				new OrderItemPk(order.getId(), product1.getId()));
+			new OrderItemPk(order.getId(), product1.getId()));
 		OrderItem findItem2 = entityManager.find(OrderItem.class,
-				new OrderItemPk(order.getId(), product3.getId()));
+			new OrderItemPk(order.getId(), product3.getId()));
 		
 		Assertions.assertEquals(order.getId(), findOrder.getId());
 		Assertions.assertEquals(order.getId(), findItem1.getOrder().getId());

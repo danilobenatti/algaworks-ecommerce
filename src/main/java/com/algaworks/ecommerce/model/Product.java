@@ -16,14 +16,13 @@ import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.ForeignKey;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
@@ -36,17 +35,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(callSuper = true)
 @EntityListeners({ GenericListener.class })
 @Entity
 @Table(name = "tbl_products")
-public class Product implements Serializable {
+public class Product extends BaseEntityLong implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@EqualsAndHashCode.Include
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
 	
 	@Column(name = "col_name")
 	private String name;
@@ -98,11 +92,21 @@ public class Product implements Serializable {
 	public static byte[] uploadImage(File file) {
 		try {
 			return Product.class.getResourceAsStream(file.getName())
-					.readAllBytes();
+				.readAllBytes();
 		} catch (IOException ex) {
 			throw new FileNotFoundException("File not found.", ex);
 		}
 		
+	}
+	
+	@PrePersist
+	public void onPersist() {
+		this.createDate = LocalDateTime.now();
+	}
+	
+	@PreUpdate
+	public void onUpdate() {
+		this.updateDate = LocalDateTime.now();
 	}
 	
 }

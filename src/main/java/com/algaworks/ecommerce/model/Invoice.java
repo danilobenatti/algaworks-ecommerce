@@ -9,7 +9,6 @@ import com.algaworks.ecommerce.exception.FileNotFoundException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.MapsId;
@@ -26,16 +25,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "tbl_invoices")
-public class Invoice implements Serializable {
+public class Invoice extends BaseEntityLong implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@EqualsAndHashCode.Include
-	@Column(name = "order_id")
-	private Long id;
 	
 	@MapsId
 	@OneToOne(optional = false)
@@ -59,7 +53,7 @@ public class Invoice implements Serializable {
 	public static byte[] uploadInvoice() {
 		try {
 			return Invoice.class.getResourceAsStream("NFe_assinada.xml")
-					.readAllBytes();
+				.readAllBytes();
 		} catch (IOException ex) {
 			throw new FileNotFoundException("File not found.", ex);
 		}
