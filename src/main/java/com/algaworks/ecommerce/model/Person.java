@@ -16,9 +16,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.ForeignKey;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapKeyColumn;
 import jakarta.persistence.OneToMany;
@@ -38,19 +35,14 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(callSuper = true)
 @SecondaryTable(name = "tbl_person_detail",
 	foreignKey = @ForeignKey(name = "fk_persondetail_person_id"),
 	pkJoinColumns = @PrimaryKeyJoinColumn(name = "person_id"))
 @Entity
 @Table(name = "tbl_persons")
-public class Person implements Serializable {
+public class Person extends BaseEntityLong implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@EqualsAndHashCode.Include
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
 	
 	@Column(name = "col_firstname")
 	private String firstname;

@@ -27,9 +27,9 @@ public class PaymentBankSlip extends Payment {
 	@Column(name = "col_payday")
 	private LocalDate payDay;
 	
-	public PaymentBankSlip(Long id, Order order, Byte status,
+	public PaymentBankSlip(Order order, Byte status,
 			LocalDate expirationDate, LocalDate payDay) {
-		super(id, order, status);
+		super(order, status);
 		this.expirationDate = expirationDate;
 		this.payDay = payDay;
 	}

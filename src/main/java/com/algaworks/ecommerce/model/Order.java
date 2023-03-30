@@ -17,9 +17,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -37,17 +34,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(callSuper = true)
 @EntityListeners({ GenerateInvoiceListener.class, GenericListener.class })
 @Entity
 @Table(name = "tbl_orders")
-public class Order implements Serializable {
+public class Order extends BaseEntityLong implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@EqualsAndHashCode.Include
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
 	
 	@Column(name = "col_order_date", updatable = false)
 	private LocalDateTime orderDateInsert;
@@ -101,7 +93,7 @@ public class Order implements Serializable {
 	public BigDecimal calcTotal(List<OrderItem> orderitems) {
 		if (!orderitems.isEmpty()) {
 			return orderitems.stream().map(OrderItem::calcSubTotal)
-					.reduce(BigDecimal.ZERO, BigDecimal::add);
+				.reduce(BigDecimal.ZERO, BigDecimal::add);
 		}
 		return BigDecimal.ZERO;
 	}
@@ -109,7 +101,7 @@ public class Order implements Serializable {
 	public BigDecimal calcTotal() {
 		if (!this.orderitems.isEmpty()) {
 			return this.orderitems.stream().map(OrderItem::calcSubTotal)
-					.reduce(BigDecimal.ZERO, BigDecimal::add);
+				.reduce(BigDecimal.ZERO, BigDecimal::add);
 		}
 		return BigDecimal.ZERO;
 	}
@@ -125,4 +117,5 @@ public class Order implements Serializable {
 		setTotal();
 		this.orderDateUpdate = LocalDateTime.now();
 	}
+	
 }

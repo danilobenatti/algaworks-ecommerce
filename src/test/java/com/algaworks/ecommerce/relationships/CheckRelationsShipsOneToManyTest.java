@@ -41,7 +41,7 @@ class CheckRelationsShipsOneToManyTest extends EntityManagerTest {
 		
 		Order findOrder = entityManager.find(Order.class, order.getId());
 		Person findClient = entityManager.find(Person.class, client.getId());
-		Assertions.assertEquals(client, findOrder.getPerson());
+		Assertions.assertEquals(client.getId(), findOrder.getPerson().getId());
 		Assertions.assertFalse(findClient.getOrders().isEmpty());
 	}
 }

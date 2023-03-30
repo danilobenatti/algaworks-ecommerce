@@ -22,9 +22,9 @@ public class PaymentCreditCard extends Payment {
 	@Column(name = "col_number_installments")
 	private Integer numberOfInstallments;
 	
-	public PaymentCreditCard(Long id, Order order, Byte status,
+	public PaymentCreditCard(Order order, Byte status,
 			Integer numberOfInstallments) {
-		super(id, order, status);
+		super(order, status);
 		this.numberOfInstallments = numberOfInstallments;
 	}
 	
