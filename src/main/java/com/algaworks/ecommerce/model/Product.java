@@ -10,6 +10,7 @@ import java.util.List;
 import com.algaworks.ecommerce.exception.FileNotFoundException;
 import com.algaworks.ecommerce.listener.GenericListener;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -51,7 +52,7 @@ public class Product extends BaseEntityLong implements Serializable {
 	@Column(name = "col_unitprice")
 	private BigDecimal unitPrice;
 	
-	@OneToMany(mappedBy = "product")
+	@OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
 	private List<OrderItem> orderItems;
 	
 	@ManyToMany

@@ -15,7 +15,7 @@ class FlushTest extends EntityManagerTest {
 			try {
 				entityManager.getTransaction().begin();
 				
-				Order order = entityManager.find(Order.class, 1L);
+				Order order = entityManager.find(Order.class, 2L);
 				order.setStatus(OrderStatus.PAID);
 				
 				entityManager.flush();

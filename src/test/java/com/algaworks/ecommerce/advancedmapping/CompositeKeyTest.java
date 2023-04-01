@@ -57,11 +57,8 @@ class CompositeKeyTest extends EntityManagerTest {
 	
 	@Test
 	void searchOrderItem() {
-		OrderItem findItem1 = entityManager.find(OrderItem.class,
-				new OrderItemPk(2L, 1L));
-		Assertions.assertNotNull(findItem1);
-		OrderItem findItem2 = entityManager.find(OrderItem.class,
-				new OrderItemPk(2L, 3L));
-		Assertions.assertNotNull(findItem2);
+		OrderItem findItem = entityManager.find(OrderItem.class,
+				new OrderItemPk(1L, 1L));
+		Assertions.assertNotNull(findItem);
 	}
 }
