@@ -12,6 +12,7 @@ import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -24,7 +25,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Table(name = "tbl_payments")
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Payment extends BaseEntityLong implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
