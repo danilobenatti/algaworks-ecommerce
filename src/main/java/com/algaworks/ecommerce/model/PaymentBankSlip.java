@@ -3,8 +3,8 @@ package com.algaworks.ecommerce.model;
 import java.time.LocalDate;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@DiscriminatorValue(value = "1")
+@Table(name = "tbl_payments_bankslip")
 public class PaymentBankSlip extends Payment {
 	private static final long serialVersionUID = 1L;
 	
