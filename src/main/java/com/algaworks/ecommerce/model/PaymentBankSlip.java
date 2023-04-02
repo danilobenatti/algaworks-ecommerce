@@ -3,10 +3,8 @@ package com.algaworks.ecommerce.model;
 import java.time.LocalDate;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.ForeignKey;
-import jakarta.persistence.PrimaryKeyJoinColumn;
-import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,9 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "tbl_payments_bankslip")
-@PrimaryKeyJoinColumn(name = "order_id",
-	foreignKey = @ForeignKey(name = "fk_paymentsbankslip_order_id"))
+@DiscriminatorValue(value = "1")
 public class PaymentBankSlip extends Payment {
 	private static final long serialVersionUID = 1L;
 	
