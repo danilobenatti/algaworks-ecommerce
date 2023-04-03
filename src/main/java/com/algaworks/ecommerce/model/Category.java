@@ -12,6 +12,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -24,11 +25,13 @@ import lombok.Setter;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "tbl_categories")
+@Table(name = "tbl_categories",
+	uniqueConstraints = @UniqueConstraint(name = "uk_categories_name",
+		columnNames = { "col_name" }))
 public class Category extends BaseEntityLong implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	@Column(name = "col_name")
+	@Column(name = "col_name", nullable = false)
 	private String name;
 	
 	@ManyToOne

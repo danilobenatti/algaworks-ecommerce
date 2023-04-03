@@ -44,11 +44,11 @@ public class OrderItem implements Serializable {
 		foreignKey = @ForeignKey(name = "fk_orderitem_product_id"))
 	private Product product;
 	
-	@Column(name = "col_quantity")
-	private Double quantity;
+	@Column(name = "col_quantity", nullable = false)
+	private Double quantity = 0.0;
 	
-	@Column(name = "col_subtotal")
-	private BigDecimal subtotal;
+	@Column(name = "col_subtotal", nullable = false)
+	private BigDecimal subtotal = BigDecimal.ZERO;
 	
 	public void setSubtotal() {
 		this.subtotal = calcSubTotal(this.product, this.quantity);
@@ -57,16 +57,16 @@ public class OrderItem implements Serializable {
 	public BigDecimal calcSubTotal(Product product, Double quantity) {
 		if (!product.getUnitPrice().equals(BigDecimal.ZERO) && quantity > 0) {
 			return product.getUnitPrice()
-					.multiply(BigDecimal.valueOf(quantity));
+				.multiply(BigDecimal.valueOf(quantity));
 		}
 		return BigDecimal.ZERO;
 	}
 	
 	public BigDecimal calcSubTotal() {
 		if (!product.getUnitPrice().equals(BigDecimal.ZERO)
-				&& this.quantity > 0) {
+			&& this.quantity > 0) {
 			return this.product.getUnitPrice()
-					.multiply(BigDecimal.valueOf(this.quantity));
+				.multiply(BigDecimal.valueOf(this.quantity));
 		}
 		return BigDecimal.ZERO;
 	}

@@ -53,10 +53,10 @@ public class Order extends BaseEntityLong implements Serializable {
 	@OneToOne(mappedBy = "order", cascade = CascadeType.REMOVE)
 	private Invoice invoice;
 	
-	@Column(name = "col_total")
-	private BigDecimal total;
+	@Column(name = "col_total", nullable = false)
+	private BigDecimal total = BigDecimal.ZERO;
 	
-	@Column(name = "col_status")
+	@Column(name = "col_status", nullable = false)
 	private Byte status;
 	
 	@ManyToOne(optional = false)

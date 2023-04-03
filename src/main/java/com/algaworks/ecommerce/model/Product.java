@@ -17,6 +17,7 @@ import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.ForeignKey;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
@@ -39,18 +40,21 @@ import lombok.Setter;
 @EqualsAndHashCode(callSuper = true)
 @EntityListeners({ GenericListener.class })
 @Entity
-@Table(name = "tbl_products")
+@Table(name = "tbl_products",
+	uniqueConstraints = @UniqueConstraint(name = "uk_product_name",
+		columnNames = { "col_name" }),
+	indexes = @Index(name = "idx_product_name", columnList = "col_name"))
 public class Product extends BaseEntityLong implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	@Column(name = "col_name")
+	@Column(name = "col_name", nullable = false)
 	private String name;
 	
-	@Column(name = "col_description")
+	@Column(name = "col_description", nullable = false)
 	private String description;
 	
-	@Column(name = "col_unitprice")
-	private BigDecimal unitPrice;
+	@Column(name = "col_unitprice", nullable = false)
+	private BigDecimal unitPrice = BigDecimal.ZERO;
 	
 	@OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
 	private List<OrderItem> orderItems;
