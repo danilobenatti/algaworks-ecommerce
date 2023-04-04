@@ -15,6 +15,8 @@ class MappingEnumsTest extends EntityManagerTest {
 	@Test
 	void enumTest() {
 		Person p = new Person();
+		p.setFirstname("Mary");
+		p.setTaxIdNumber("43684100099");
 		p.setBirthday(LocalDate.of(1945, Month.JANUARY, 9));
 		p.setGender(Gender.FEMALE);
 		
@@ -27,7 +29,7 @@ class MappingEnumsTest extends EntityManagerTest {
 		Person personFind = entityManager.find(Person.class, p.getId());
 		Assertions.assertNotNull(personFind);
 		Assertions.assertEquals(p.getGender().getCode(),
-				personFind.getGender().getCode());
+			personFind.getGender().getCode());
 		
 	}
 }

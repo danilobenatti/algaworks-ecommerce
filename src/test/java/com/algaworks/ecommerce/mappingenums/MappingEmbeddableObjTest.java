@@ -1,7 +1,6 @@
 package com.algaworks.ecommerce.mappingenums;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -16,13 +15,12 @@ class MappingEmbeddableObjTest extends EntityManagerTest {
 	
 	@Test
 	void embeddableObjTest() {
-		var address = Address.builder().street("Street One Level").number("145")
+		Address address = Address.builder().street("Street One Level").number("145")
 				.complement("Ap5").district("Townsville").city("Newaldr")
 				.estate("WD").zipCode("123456").build();
 		
 		Order order = new Order();
 		order.setId(null);
-		order.setOrderDateInsert(LocalDateTime.now());
 		order.setStatus(OrderStatus.WAITING);
 		order.setTotal(BigDecimal.valueOf(1500.54));
 		order.setDeliveryAddress(address);

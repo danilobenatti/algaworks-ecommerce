@@ -19,25 +19,25 @@ import lombok.Setter;
 public class Address implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	@Column(name = "col_street")
+	@Column(name = "col_street", length = 50)
 	private String street;
 	
-	@Column(name = "col_number")
+	@Column(name = "col_number", length = 10)
 	private String number;
 	
-	@Column(name = "col_complement")
+	@Column(name = "col_complement", length = 20)
 	private String complement;
 	
-	@Column(name = "col_district")
+	@Column(name = "col_district", length = 20)
 	private String district;
 	
-	@Column(name = "col_city")
+	@Column(name = "col_city", length = 20)
 	private String city;
 	
-	@Column(name = "col_estate")
+	@Column(name = "col_estate", length = 2)
 	private String estate;
 	
-	@Column(name = "col_zipcode")
+	@Column(name = "col_zipcode", length = 10)
 	private String zipCode;
 	
 }

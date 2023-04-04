@@ -31,7 +31,8 @@ public class ProductStock extends BaseEntityLong implements Serializable {
 		foreignKey = @ForeignKey(name = "fk_productstock_product_id"))
 	private Product product;
 	
-	@Column(name = "col_quantity", columnDefinition = "double default 0.0")
-	private Double quantity;
+	@Column(name = "col_quantity", columnDefinition = "double default 0",
+		nullable = false)
+	private Double quantity = 0d;
 	
 }

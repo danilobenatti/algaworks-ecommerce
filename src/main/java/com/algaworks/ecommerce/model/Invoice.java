@@ -2,7 +2,6 @@ package com.algaworks.ecommerce.model;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 import com.algaworks.ecommerce.exception.FileNotFoundException;
 
@@ -13,7 +12,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -41,14 +39,6 @@ public class Invoice extends BaseEntityLong implements Serializable {
 //	@Column(name = "col_xml", columnDefinition = "BLOB")
 	@Column(name = "col_xml", length = 10485760) // 10485760 Bytes = 10MB
 	private byte[] xml;
-	
-	@Column(name = "col_issue_date")
-	private LocalDateTime issueDate;
-	
-	@PrePersist
-	public void onPersist() {
-		this.issueDate = LocalDateTime.now();
-	}
 	
 	public static byte[] uploadInvoice() {
 		try {

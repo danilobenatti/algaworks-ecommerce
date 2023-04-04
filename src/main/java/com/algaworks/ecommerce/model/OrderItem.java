@@ -44,8 +44,9 @@ public class OrderItem implements Serializable {
 		foreignKey = @ForeignKey(name = "fk_orderitem_product_id"))
 	private Product product;
 	
-	@Column(name = "col_quantity", nullable = false)
-	private Double quantity = 0.0;
+	@Column(name = "col_quantity", columnDefinition = "double default 0",
+		nullable = false)
+	private Double quantity = 0d;
 	
 	@Column(name = "col_subtotal", nullable = false)
 	private BigDecimal subtotal = BigDecimal.ZERO;

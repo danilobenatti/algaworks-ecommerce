@@ -1,7 +1,6 @@
 package com.algaworks.ecommerce.model;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 import com.algaworks.ecommerce.model.enums.PaymentStatus;
 
@@ -13,8 +12,6 @@ import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -42,33 +39,12 @@ public abstract class Payment extends BaseEntityLong implements Serializable {
 	@Column(name = "col_status")
 	private Byte status;
 	
-	@Column(name = "col_date_create")
-	private LocalDateTime dateCreate;
-	
-	@Column(name = "col_date_update")
-	private LocalDateTime dateUpdate;
-	
-	protected Payment(Order order, Byte status) {
-		this.order = order;
-		this.status = status;
-	}
-	
 	public PaymentStatus getStatus() {
 		return PaymentStatus.toEnum(this.status);
 	}
 	
 	public void setStatus(PaymentStatus status) {
 		this.status = status.getCode();
-	}
-	
-	@PrePersist
-	private void onPersist() {
-		this.dateCreate = LocalDateTime.now();
-	}
-	
-	@PreUpdate
-	private void onUpdate() {
-		this.dateUpdate = LocalDateTime.now();
 	}
 	
 }

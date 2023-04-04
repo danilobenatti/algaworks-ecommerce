@@ -17,7 +17,7 @@ import lombok.Setter;
 public class Attribute implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	@Column(name = "col_description")
+	@Column(name = "col_description", length = 100, nullable = false)
 	private String description;
 	
 	@Column(name = "col_value")

@@ -4,11 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import com.algaworks.ecommerce.exception.FileNotFoundException;
 import com.algaworks.ecommerce.listener.GenericListener;
+import com.algaworks.ecommerce.model.enums.ProductUnit;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
@@ -23,8 +23,6 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
@@ -47,14 +45,18 @@ import lombok.Setter;
 public class Product extends BaseEntityLong implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	@Column(name = "col_name", nullable = false)
+	@Column(name = "col_name", length = 150, nullable = false)
 	private String name;
 	
-	@Column(name = "col_description", nullable = false)
+	@Column(name = "col_description", length = 275, nullable = false)
 	private String description;
 	
-	@Column(name = "col_unitprice", nullable = false)
-	private BigDecimal unitPrice = BigDecimal.ZERO;
+	@Column(name = "col_unit")
+	private Byte unit;
+	
+	@Column(name = "col_unitprice",
+		columnDefinition = "decimal(12,2) unsigned not null default 0")
+	private BigDecimal unitPrice = BigDecimal.valueOf(0.00);
 	
 	@OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
 	private List<OrderItem> orderItems;
@@ -76,7 +78,7 @@ public class Product extends BaseEntityLong implements Serializable {
 	@CollectionTable(name = "tbl_product_tag",
 		joinColumns = @JoinColumn(name = "product_id",
 			foreignKey = @ForeignKey(name = "fk_producttag_product_id")))
-	@Column(name = "col_tag")
+	@Column(name = "col_tag", length = 50, nullable = false)
 	private List<String> tags;
 	
 	@ElementCollection
@@ -88,12 +90,6 @@ public class Product extends BaseEntityLong implements Serializable {
 	@Column(name = "col_image", length = 5242880) // 5242880 Bytes = 5MB
 	private byte[] image;
 	
-	@Column(name = "col_create_date", updatable = false)
-	private LocalDateTime createDate;
-	
-	@Column(name = "col_update_date", insertable = false)
-	private LocalDateTime updateDate;
-	
 	public static byte[] uploadImage(File file) {
 		try {
 			return Product.class.getResourceAsStream(file.getName())
@@ -101,17 +97,14 @@ public class Product extends BaseEntityLong implements Serializable {
 		} catch (IOException ex) {
 			throw new FileNotFoundException("File not found.", ex);
 		}
-		
 	}
 	
-	@PrePersist
-	public void onPersist() {
-		this.createDate = LocalDateTime.now();
+	public ProductUnit getUnit() {
+		return ProductUnit.toEnum(this.unit);
 	}
 	
-	@PreUpdate
-	public void onUpdate() {
-		this.updateDate = LocalDateTime.now();
+	public void setUnit(ProductUnit unit) {
+		this.unit = unit.getCode();
 	}
 	
 }

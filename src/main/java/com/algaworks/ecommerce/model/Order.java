@@ -21,8 +21,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -41,13 +39,7 @@ import lombok.Setter;
 public class Order extends BaseEntityLong implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	@Column(name = "col_order_date", updatable = false)
-	private LocalDateTime orderDateInsert;
-	
-	@Column(name = "col_order_dateupdate", insertable = false)
-	private LocalDateTime orderDateUpdate;
-	
-	@Column(name = "col_execution_date")
+	@Column(name = "col_execution_date", columnDefinition = "timestamp")
 	private LocalDateTime executionDate;
 	
 	@OneToOne(mappedBy = "order", cascade = CascadeType.REMOVE)
@@ -104,18 +96,6 @@ public class Order extends BaseEntityLong implements Serializable {
 				.reduce(BigDecimal.ZERO, BigDecimal::add);
 		}
 		return BigDecimal.ZERO;
-	}
-	
-	@PrePersist
-	public void onPersist() {
-		setTotal();
-		this.orderDateInsert = LocalDateTime.now();
-	}
-	
-	@PreUpdate
-	public void onUpdate() {
-		setTotal();
-		this.orderDateUpdate = LocalDateTime.now();
 	}
 	
 }

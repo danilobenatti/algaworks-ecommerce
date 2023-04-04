@@ -2,7 +2,6 @@ package com.algaworks.ecommerce.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -20,8 +19,6 @@ import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapKeyColumn;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.SecondaryTable;
 import jakarta.persistence.Table;
@@ -50,7 +47,7 @@ import lombok.Setter;
 public class Person extends BaseEntityLong implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	@Column(name = "col_firstname")
+	@Column(name = "col_firstname", length = 100, nullable = false)
 	private String firstname;
 	
 	@Transient
@@ -67,14 +64,8 @@ public class Person extends BaseEntityLong implements Serializable {
 	@OneToMany(mappedBy = "person", cascade = CascadeType.REMOVE)
 	private List<Order> orders;
 	
-	@Column(name = "col_taxidnumber")
+	@Column(name = "col_taxidnumber", length = 14, nullable = false)
 	private String taxIdNumber;
-	
-	@Column(name = "col_date_create")
-	private LocalDateTime dateCreate;
-	
-	@Column(name = "col_date_update")
-	private LocalDateTime dateUpdate;
 	
 	@ElementCollection
 	@CollectionTable(name = "tbl_person_phones",
@@ -83,15 +74,5 @@ public class Person extends BaseEntityLong implements Serializable {
 	@MapKeyColumn(name = "col_type")
 	@Column(name = "col_number")
 	private Map<String, String> phones;
-	
-	@PrePersist
-	private void onPersist() {
-		this.dateCreate = LocalDateTime.now();
-	}
-	
-	@PreUpdate
-	private void onUpdate() {
-		this.dateUpdate = LocalDateTime.now();
-	}
 	
 }

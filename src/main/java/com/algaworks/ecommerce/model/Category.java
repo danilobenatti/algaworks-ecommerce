@@ -31,7 +31,7 @@ import lombok.Setter;
 public class Category extends BaseEntityLong implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	@Column(name = "col_name", nullable = false)
+	@Column(name = "col_name", length = 100, nullable = false)
 	private String name;
 	
 	@ManyToOne

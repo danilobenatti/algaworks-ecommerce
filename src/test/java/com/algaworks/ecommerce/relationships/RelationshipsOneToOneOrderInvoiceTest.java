@@ -1,7 +1,5 @@
 package com.algaworks.ecommerce.relationships;
 
-import java.time.LocalDateTime;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +15,6 @@ class RelationshipsOneToOneOrderInvoiceTest extends EntityManagerTest {
 		
 		Invoice invoice = new Invoice();
 		invoice.setXml(Invoice.uploadInvoice());
-		invoice.setIssueDate(LocalDateTime.now());
 		invoice.setOrder(order);
 		
 		entityManager.getTransaction().begin();

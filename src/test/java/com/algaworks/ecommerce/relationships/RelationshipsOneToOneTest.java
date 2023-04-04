@@ -54,7 +54,9 @@ class RelationshipsOneToOneTest extends EntityManagerTest {
 		Product product = entityManager.find(Product.class, 3L);
 		product.setImage(Product.uploadImage(new File(
 			"./src/main/java/com/algaworks/ecommerce/model/gopro_hero.jpg")));
-		ProductStock stock = new ProductStock(product, Double.valueOf(12));
+		ProductStock stock = new ProductStock();
+		stock.setProduct(product);
+		stock.setQuantity(12d);
 		
 		entityManager.getTransaction().begin();
 		entityManager.persist(stock);

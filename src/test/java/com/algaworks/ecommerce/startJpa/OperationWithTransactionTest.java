@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.Product;
+import com.algaworks.ecommerce.model.enums.ProductUnit;
 
 class OperationWithTransactionTest extends EntityManagerTest {
 	
@@ -31,6 +32,7 @@ class OperationWithTransactionTest extends EntityManagerTest {
 //		p.setId(5);
 		pp.setName("Smartphone One Plus");
 		pp.setDescription("Tela e processador de última geração.");
+		pp.setUnit(ProductUnit.UNITY);
 		pp.setUnitPrice(BigDecimal.valueOf(1750.87));
 		
 		entityManager.getTransaction().begin();
@@ -47,6 +49,7 @@ class OperationWithTransactionTest extends EntityManagerTest {
 //		p.setId(6);
 		pm.setName("Notebook Dell");
 		pm.setDescription("Inspiron 5000 Series");
+		pm.setUnit(ProductUnit.UNITY);
 		pm.setUnitPrice(BigDecimal.valueOf(5500.00));
 		
 		entityManager.getTransaction().begin();
@@ -65,6 +68,7 @@ class OperationWithTransactionTest extends EntityManagerTest {
 		Product p = new Product();
 		p.setName("Microfone Rode Videomic Go");
 		p.setDescription("Qualidade insuperável.");
+		p.setUnit(ProductUnit.UNITY);
 		p.setUnitPrice(BigDecimal.valueOf(850.24));
 		
 		entityManager.getTransaction().begin();
@@ -131,6 +135,7 @@ class OperationWithTransactionTest extends EntityManagerTest {
 		Product product = new Product();
 		product.setName("Câmera Canon");
 		product.setDescription("A melhor definição para suas fotos");
+		product.setUnit(ProductUnit.UNITY);
 		product.setUnitPrice(BigDecimal.valueOf(5500.65));
 		
 		entityManager.getTransaction().begin();
@@ -140,7 +145,7 @@ class OperationWithTransactionTest extends EntityManagerTest {
 		entityManager.clear();
 		
 		Product insertedProduct = entityManager.find(Product.class,
-				product.getId());
+			product.getId());
 		Assertions.assertNotNull(insertedProduct);
 	}
 	

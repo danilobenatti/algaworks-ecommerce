@@ -16,6 +16,7 @@ class PersonCrudTest extends EntityManagerTest {
 	void createPerson() {
 		Person person = new Person();
 		person.setFirstname("José Lucas");
+		person.setTaxIdNumber("29225138075");
 		person.setBirthday(LocalDate.of(1985, Month.OCTOBER, 14));
 		person.setGender(Gender.MALE);
 		
@@ -50,6 +51,7 @@ class PersonCrudTest extends EntityManagerTest {
 		Person person = new Person();
 		person.setId(1L);
 		person.setFirstname("Fernando Medeiros Júnior");
+		person.setTaxIdNumber("24685112040");
 		person.setBirthday(LocalDate.of(1958, Month.NOVEMBER, 5));
 		person.setGender(Gender.MALE);
 		

@@ -16,6 +16,7 @@ class SavePersonTest extends EntityManagerTest {
 	void saveClient() {
 		Person person = new Person();
 		person.setFirstname("Pedro Independente");
+		person.setTaxIdNumber("44271024090");
 		person.setGender(Gender.MALE);
 		person.setBirthday(LocalDate.of(1822, Month.SEPTEMBER, 7));
 		
