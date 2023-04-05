@@ -1,5 +1,7 @@
 package com.algaworks.ecommerce.util;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,10 +17,23 @@ public class StartPersistenceUnit {
 	
 	public static void main(String[] args) {
 		
+		Map<String, String> env = System.getenv();
+		HashMap<Object, Object> configOverrides = new HashMap<>();
+		for (Map.Entry<String, String> entry : env.entrySet()) {
+			if (entry.getKey().equals("DB_USERNAME")) {
+				configOverrides.put("jakarta.persistence.jdbc.user",
+					entry.getValue());
+			}
+			if (entry.getKey().equals("DB_PASSWORD")) {
+				configOverrides.put("jakarta.persistence.jdbc.password",
+					entry.getValue());
+			}
+		}
+		
 		EntityManagerFactory entityManagerFactory = Persistence
-				.createEntityManagerFactory("algaworks-ecommerce");
+			.createEntityManagerFactory("algaworks-ecommerce", configOverrides);
 		EntityManager entityManager = entityManagerFactory
-				.createEntityManager();
+			.createEntityManager();
 		
 		Product product = entityManager.find(Product.class, 1L);
 		logger.log(Level.INFO, "{0}", product.getDescription());

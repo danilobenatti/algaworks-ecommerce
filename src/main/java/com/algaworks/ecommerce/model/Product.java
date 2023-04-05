@@ -10,12 +10,14 @@ import com.algaworks.ecommerce.exception.FileNotFoundException;
 import com.algaworks.ecommerce.listener.GenericListener;
 import com.algaworks.ecommerce.model.enums.ProductUnit;
 
+import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
@@ -48,7 +50,10 @@ public class Product extends BaseEntityLong implements Serializable {
 	@Column(name = "col_name", length = 150, nullable = false)
 	private String name;
 	
-	@Column(name = "col_description", length = 275, nullable = false)
+//	@Lob
+	@Basic(fetch = FetchType.LAZY)
+	@Column(name = "col_description", columnDefinition = "mediumtext",
+		nullable = false)
 	private String description;
 	
 	@Column(name = "col_unit")

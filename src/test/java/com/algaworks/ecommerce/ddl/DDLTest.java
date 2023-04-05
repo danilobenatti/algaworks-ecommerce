@@ -3,6 +3,7 @@ package com.algaworks.ecommerce.ddl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 
@@ -26,6 +27,7 @@ class DDLTest extends EntityManagerTest {
 		Product product = new Product();
 		product.setName("Product Test");
 		product.setUnit(ProductUnit.UNITY);
+		product.setUnitPrice(BigDecimal.valueOf(50.89));
 		product.setDescription("Product Description Test");
 		
 		ProductStock stock = new ProductStock();

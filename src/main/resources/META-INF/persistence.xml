@@ -10,8 +10,8 @@
 			<property
 				name="jakarta.persistence.jdbc.url" 
 				value="jdbc:mysql://localhost:3306/algaworks_ecommerce?createDatabaseIfNotExist=true&amp;useTimezone=true" />
-			<property name="jakarta.persistence.jdbc.user" value="root" />
-			<property name="jakarta.persistence.jdbc.password" value="123456" />
+			<property name="jakarta.persistence.jdbc.user" value="DB_USERNAME" />
+			<property name="jakarta.persistence.jdbc.password" value="DB_PASSWORD" />
 			<property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
 			
 			<property name="jakarta.persistence.schema-generation.create-database-schemas" value="true" />
