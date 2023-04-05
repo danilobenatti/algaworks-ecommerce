@@ -1,8 +1,9 @@
 package com.algaworks.ecommerce.advancedmapping;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.time.LocalDate;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
@@ -31,7 +32,7 @@ class InheritanceTest extends EntityManagerTest {
 		entityManager.clear();
 		
 		Order findOrder = entityManager.find(Order.class, order.getId());
-		Assertions.assertEquals(Byte.valueOf("1"),
+		assertEquals(Byte.valueOf("1"),
 			findOrder.getPayment().getStatus().getCode());
 		
 	}

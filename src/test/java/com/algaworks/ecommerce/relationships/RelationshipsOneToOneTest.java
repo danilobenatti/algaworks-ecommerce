@@ -1,8 +1,11 @@
 package com.algaworks.ecommerce.relationships;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import java.io.File;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
@@ -32,7 +35,7 @@ class RelationshipsOneToOneTest extends EntityManagerTest {
 		entityManager.clear();
 		
 		Order findOrder = entityManager.find(Order.class, o.getId());
-		Assertions.assertNotNull(findOrder.getPayment());
+		assertNotNull(findOrder.getPayment());
 		
 	}
 	
@@ -45,7 +48,7 @@ class RelationshipsOneToOneTest extends EntityManagerTest {
 		entityManager.getTransaction().commit();
 		
 		Order findOrder = entityManager.find(Order.class, o.getId());
-		Assertions.assertNull(findOrder);
+		assertNull(findOrder);
 		
 	}
 	
@@ -66,7 +69,7 @@ class RelationshipsOneToOneTest extends EntityManagerTest {
 		
 		ProductStock findStock = entityManager.find(ProductStock.class,
 			stock.getId());
-		Assertions.assertEquals(12d, findStock.getQuantity());
+		assertEquals(12d, findStock.getQuantity());
 		
 	}
 }

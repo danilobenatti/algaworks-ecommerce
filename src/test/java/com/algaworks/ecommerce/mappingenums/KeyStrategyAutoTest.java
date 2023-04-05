@@ -1,8 +1,9 @@
 package com.algaworks.ecommerce.mappingenums;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.math.BigDecimal;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
@@ -31,8 +32,8 @@ class KeyStrategyAutoTest extends EntityManagerTest {
 		
 		Product insertProduct = entityManager.find(Product.class, p.getId());
 		Category insertCategory = entityManager.find(Category.class, c.getId());
-		Assertions.assertNotNull(insertProduct);
-		Assertions.assertNotNull(insertCategory);
+		assertNotNull(insertProduct);
+		assertNotNull(insertCategory);
 		
 	}
 	

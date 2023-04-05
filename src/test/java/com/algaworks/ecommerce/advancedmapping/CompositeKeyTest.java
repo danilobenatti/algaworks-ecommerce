@@ -1,8 +1,10 @@
 package com.algaworks.ecommerce.advancedmapping;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.util.Arrays;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
@@ -51,14 +53,14 @@ class CompositeKeyTest extends EntityManagerTest {
 		entityManager.clear();
 		
 		Order findOrder = entityManager.find(Order.class, order.getId());
-		Assertions.assertNotNull(findOrder);
-		Assertions.assertFalse(findOrder.getOrderitems().isEmpty());
+		assertNotNull(findOrder);
+		assertFalse(findOrder.getOrderitems().isEmpty());
 	}
 	
 	@Test
 	void searchOrderItem() {
 		OrderItem findItem = entityManager.find(OrderItem.class,
 				new OrderItemPk(1L, 1L));
-		Assertions.assertNotNull(findItem);
+		assertNotNull(findItem);
 	}
 }

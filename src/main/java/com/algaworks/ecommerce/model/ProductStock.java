@@ -27,8 +27,8 @@ public class ProductStock extends BaseEntityLong implements Serializable {
 	
 	@MapsId
 	@OneToOne(optional = false)
-	@JoinColumn(name = "product_id",
-		foreignKey = @ForeignKey(name = "fk_productstock_product_id"))
+	@JoinColumn(name = "product_id", nullable = false,
+		foreignKey = @ForeignKey(name = "fk_productstock__product_id"))
 	private Product product;
 	
 	@Column(name = "col_quantity", columnDefinition = "double default 0",

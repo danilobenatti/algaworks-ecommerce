@@ -1,6 +1,8 @@
 package com.algaworks.ecommerce.knowentitymanager;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
@@ -15,8 +17,8 @@ class ListenersTest extends EntityManagerTest {
 	void loadEntitiesAndShowLogs() {
 		Product product = entityManager.find(Product.class, 1L);
 		Order order = entityManager.find(Order.class, 1L);
-		Assertions.assertInstanceOf(Product.class, product);
-		Assertions.assertInstanceOf(Order.class, order);
+		assertInstanceOf(Product.class, product);
+		assertInstanceOf(Order.class, order);
 	}
 	
 	@Test
@@ -37,7 +39,7 @@ class ListenersTest extends EntityManagerTest {
 		entityManager.clear();
 		
 		Order orderVerify = entityManager.find(Order.class, order.getId());
-		Assertions.assertNotNull(orderVerify.getDateCreate());
+		assertNotNull(orderVerify.getDateCreate());
 		
 	}
 	

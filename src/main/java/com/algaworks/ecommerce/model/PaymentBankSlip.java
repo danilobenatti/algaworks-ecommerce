@@ -19,7 +19,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "tbl_payments_bankslip")
 @PrimaryKeyJoinColumn(name = "order_id",
-	foreignKey = @ForeignKey(name = "fk_paymentsbankslip_order_id"))
+	foreignKey = @ForeignKey(name = "fk_paymentsbankslip__order_id"))
 public class PaymentBankSlip extends Payment {
 	private static final long serialVersionUID = 1L;
 	

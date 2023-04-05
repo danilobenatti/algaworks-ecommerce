@@ -31,8 +31,8 @@ public class Invoice extends BaseEntityLong implements Serializable {
 	
 	@MapsId
 	@OneToOne(optional = false)
-	@JoinColumn(name = "order_id",
-		foreignKey = @ForeignKey(name = "fk_invoice_order_id"))
+	@JoinColumn(name = "order_id", nullable = false,
+		foreignKey = @ForeignKey(name = "fk_invoice__order_id"))
 	private Order order;
 	
 	@Lob

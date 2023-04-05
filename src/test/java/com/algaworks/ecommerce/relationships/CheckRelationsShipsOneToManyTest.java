@@ -1,8 +1,10 @@
 package com.algaworks.ecommerce.relationships;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import java.util.Arrays;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
@@ -41,7 +43,7 @@ class CheckRelationsShipsOneToManyTest extends EntityManagerTest {
 		
 		Order findOrder = entityManager.find(Order.class, order.getId());
 		Person findClient = entityManager.find(Person.class, client.getId());
-		Assertions.assertEquals(client.getId(), findOrder.getPerson().getId());
-		Assertions.assertFalse(findClient.getOrders().isEmpty());
+		assertEquals(client.getId(), findOrder.getPerson().getId());
+		assertFalse(findClient.getOrders().isEmpty());
 	}
 }

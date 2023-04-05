@@ -6,10 +6,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
+import com.algaworks.ecommerce.model.Attribute;
 import com.algaworks.ecommerce.model.Person;
 import com.algaworks.ecommerce.model.Product;
 import com.algaworks.ecommerce.model.ProductStock;
@@ -29,6 +31,9 @@ class DDLTest extends EntityManagerTest {
 		product.setUnit(ProductUnit.UNITY);
 		product.setUnitPrice(BigDecimal.valueOf(50.89));
 		product.setDescription("Product Description Test");
+		product.setAttributes(
+			Arrays.asList(new Attribute("First attribute", "Blue color"),
+				new Attribute("Second attribute", "Small size")));
 		
 		ProductStock stock = new ProductStock();
 		stock.setProduct(product);

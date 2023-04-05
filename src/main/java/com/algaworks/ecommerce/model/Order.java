@@ -52,8 +52,8 @@ public class Order extends BaseEntityLong implements Serializable {
 	private Byte status;
 	
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "person_id",
-		foreignKey = @ForeignKey(name = "fk_order_person_id"))
+	@JoinColumn(name = "person_id", nullable = false,
+		foreignKey = @ForeignKey(name = "fk_order__person_id"))
 	private Person person;
 	
 	@OneToMany(mappedBy = "order", fetch = FetchType.EAGER,

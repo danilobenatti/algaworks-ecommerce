@@ -36,13 +36,13 @@ import lombok.Setter;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @SecondaryTable(name = "tbl_person_detail",
-	foreignKey = @ForeignKey(name = "fk_persondetail_person_id"),
+	foreignKey = @ForeignKey(name = "fk_persondetail__person_id"),
 	pkJoinColumns = @PrimaryKeyJoinColumn(name = "person_id"))
 @Entity
 @Table(name = "tbl_persons",
-	uniqueConstraints = @UniqueConstraint(name = "uk_person_taxidnumber",
+	uniqueConstraints = @UniqueConstraint(name = "uk_person__taxidnumber",
 		columnNames = { "col_taxidnumber" }),
-	indexes = @Index(name = "idx_person_firstname",
+	indexes = @Index(name = "idx_person__firstname",
 		columnList = "col_firstname"))
 public class Person extends BaseEntityLong implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -70,7 +70,7 @@ public class Person extends BaseEntityLong implements Serializable {
 	@ElementCollection
 	@CollectionTable(name = "tbl_person_phones",
 		joinColumns = @JoinColumn(name = "person_id",
-			foreignKey = @ForeignKey(name = "fk_personphone_person_id")))
+			foreignKey = @ForeignKey(name = "fk_personphone__person_id")))
 	@MapKeyColumn(name = "col_type")
 	@Column(name = "col_number")
 	private Map<String, String> phones;

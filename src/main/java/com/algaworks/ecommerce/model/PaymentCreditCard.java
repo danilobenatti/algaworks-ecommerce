@@ -17,7 +17,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "tbl_payments_creditcard")
 @PrimaryKeyJoinColumn(name = "order_id",
-	foreignKey = @ForeignKey(name = "fk_paymentscreditcard_order_id"))
+	foreignKey = @ForeignKey(name = "fk_paymentscreditcard__order_id"))
 public class PaymentCreditCard extends Payment {
 	private static final long serialVersionUID = 1L;
 	

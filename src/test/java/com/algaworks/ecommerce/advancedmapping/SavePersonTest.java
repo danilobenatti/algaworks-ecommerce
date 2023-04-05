@@ -1,9 +1,10 @@
 package com.algaworks.ecommerce.advancedmapping;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.time.LocalDate;
 import java.time.Month;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
@@ -27,7 +28,7 @@ class SavePersonTest extends EntityManagerTest {
 		entityManager.clear();
 		
 		Person findPerson = entityManager.find(Person.class, person.getId());
-		Assertions.assertNotNull(findPerson.getGender());
+		assertNotNull(findPerson.getGender());
 		
 	}
 	

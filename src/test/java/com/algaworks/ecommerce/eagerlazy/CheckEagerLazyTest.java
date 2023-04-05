@@ -1,6 +1,7 @@
 package com.algaworks.ecommerce.eagerlazy;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
@@ -12,6 +13,6 @@ class CheckEagerLazyTest extends EntityManagerTest {
 	void EagerLazyTest() {
 		Order order = entityManager.find(Order.class, 1L);
 		
-		Assertions.assertFalse(order.getOrderitems().isEmpty());
+		assertFalse(order.getOrderitems().isEmpty());
 	}
 }

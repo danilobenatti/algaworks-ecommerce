@@ -34,14 +34,14 @@ public class OrderItem implements Serializable {
 	
 	@MapsId(value = "orderId")
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "order_id",
-		foreignKey = @ForeignKey(name = "fk_orderitem_order_id"))
+	@JoinColumn(name = "order_id", nullable = false,
+		foreignKey = @ForeignKey(name = "fk_orderitem__order_id"))
 	private Order order;
 	
 	@MapsId(value = "productId")
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "product_id",
-		foreignKey = @ForeignKey(name = "fk_orderitem_product_id"))
+	@JoinColumn(name = "product_id", nullable = false,
+		foreignKey = @ForeignKey(name = "fk_orderitem__product_id"))
 	private Product product;
 	
 	@Column(name = "col_quantity", columnDefinition = "double default 0",

@@ -32,8 +32,8 @@ public abstract class Payment extends BaseEntityLong implements Serializable {
 	
 	@MapsId
 	@OneToOne(optional = false)
-	@JoinColumn(name = "order_id",
-		foreignKey = @ForeignKey(name = "fk_payments_order_id"))
+	@JoinColumn(name = "order_id", nullable = false,
+		foreignKey = @ForeignKey(name = "fk_payments__order_id"))
 	private Order order;
 	
 	@Column(name = "col_status")

@@ -41,9 +41,9 @@ import lombok.Setter;
 @EntityListeners({ GenericListener.class })
 @Entity
 @Table(name = "tbl_products",
-	uniqueConstraints = @UniqueConstraint(name = "uk_product_name",
+	uniqueConstraints = @UniqueConstraint(name = "uk_product__name",
 		columnNames = { "col_name" }),
-	indexes = @Index(name = "idx_product_name", columnList = "col_name"))
+	indexes = @Index(name = "idx_product__name", columnList = "col_name"))
 public class Product extends BaseEntityLong implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
@@ -82,14 +82,14 @@ public class Product extends BaseEntityLong implements Serializable {
 	@ElementCollection
 	@CollectionTable(name = "tbl_product_tag",
 		joinColumns = @JoinColumn(name = "product_id",
-			foreignKey = @ForeignKey(name = "fk_producttag_product_id")))
+			foreignKey = @ForeignKey(name = "fk_producttag__product_id")))
 	@Column(name = "col_tag", length = 50, nullable = false)
 	private List<String> tags;
 	
 	@ElementCollection
 	@CollectionTable(name = "tbl_product_attribute",
 		joinColumns = @JoinColumn(name = "product_id",
-			foreignKey = @ForeignKey(name = "fk_productattribute_product_id")))
+			foreignKey = @ForeignKey(name = "fk_productattribute__product_id")))
 	private List<Attribute> attributes;
 	
 	@Column(name = "col_image", length = 5242880) // 5242880 Bytes = 5MB

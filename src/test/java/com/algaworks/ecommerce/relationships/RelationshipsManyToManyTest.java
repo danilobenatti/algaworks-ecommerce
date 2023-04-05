@@ -1,8 +1,10 @@
 package com.algaworks.ecommerce.relationships;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import java.util.Arrays;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
@@ -24,7 +26,7 @@ class RelationshipsManyToManyTest extends EntityManagerTest {
 		entityManager.clear();
 		
 		Category findCategory = entityManager.find(Category.class, c1.getId());
-		Assertions.assertFalse(findCategory.getProducts().isEmpty());
+		assertFalse(findCategory.getProducts().isEmpty());
 		
 	}
 	
@@ -37,6 +39,6 @@ class RelationshipsManyToManyTest extends EntityManagerTest {
 		entityManager.getTransaction().commit();
 		
 		Category findCategory = entityManager.find(Category.class, 2L);
-		Assertions.assertNull(findCategory);
+		assertNull(findCategory);
 	}
 }

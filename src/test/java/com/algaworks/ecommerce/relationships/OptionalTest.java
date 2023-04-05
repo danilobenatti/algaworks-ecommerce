@@ -1,6 +1,7 @@
 package com.algaworks.ecommerce.relationships;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
@@ -12,6 +13,6 @@ class OptionalTest extends EntityManagerTest {
 	void verifyBehavior() {
 		Order order = entityManager.find(Order.class, 1L);
 		
-		Assertions.assertNotNull(order);
+		assertNotNull(order);
 	}
 }

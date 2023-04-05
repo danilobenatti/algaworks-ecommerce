@@ -1,6 +1,7 @@
 package com.algaworks.ecommerce.knowentitymanager;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
@@ -22,7 +23,7 @@ class ManagerTransactionsTest extends EntityManagerTest {
 			entityManager.getTransaction().rollback();
 		}
 		
-		Assertions.assertNotNull(order);
+		assertNotNull(order);
 	}
 	
 }

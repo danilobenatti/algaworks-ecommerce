@@ -1,8 +1,11 @@
 package com.algaworks.ecommerce.advancedmapping;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Arrays;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
@@ -31,11 +34,11 @@ class MapsIdTest extends EntityManagerTest {
 		entityManager.clear();
 		
 		Invoice findInvoice = entityManager.find(Invoice.class,
-				invoice.getId());
-		Assertions.assertNotNull(findInvoice);
-		Assertions.assertEquals(order.getId(), findInvoice.getId());
-		Assertions.assertNotNull(findInvoice.getXml());
-		Assertions.assertTrue(findInvoice.getXml().length > 0);
+			invoice.getId());
+		assertNotNull(findInvoice);
+		assertEquals(order.getId(), findInvoice.getId());
+		assertNotNull(findInvoice.getXml());
+		assertTrue(findInvoice.getXml().length > 0);
 		
 	}
 	
@@ -64,10 +67,10 @@ class MapsIdTest extends EntityManagerTest {
 		entityManager.clear();
 		
 		OrderItem findItem = entityManager.find(OrderItem.class, oi.getId());
-		Assertions.assertEquals(p1.getId(), findItem.getProduct().getId());
-		Assertions.assertEquals(o.getId(), findItem.getOrder().getId());
-		Assertions.assertEquals(oi.getSubtotal().doubleValue(),
-				(findItem.getSubtotal().doubleValue()));
+		assertEquals(p1.getId(), findItem.getProduct().getId());
+		assertEquals(o.getId(), findItem.getOrder().getId());
+		assertEquals(oi.getSubtotal().doubleValue(),
+			(findItem.getSubtotal().doubleValue()));
 		
 	}
 	

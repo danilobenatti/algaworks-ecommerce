@@ -1,9 +1,12 @@
 package com.algaworks.ecommerce.startJpa;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import java.time.LocalDate;
 import java.time.Month;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
@@ -27,7 +30,7 @@ class PersonCrudTest extends EntityManagerTest {
 		entityManager.clear();
 		
 		Person createdPerson = entityManager.find(Person.class, person.getId());
-		Assertions.assertNotNull(createdPerson);
+		assertNotNull(createdPerson);
 	}
 	
 	@Test
@@ -42,8 +45,8 @@ class PersonCrudTest extends EntityManagerTest {
 		entityManager.clear();
 		
 		Person readPerson = entityManager.find(Person.class,
-				findPerson.getId());
-		Assertions.assertEquals(findPerson.getId(), readPerson.getId());
+			findPerson.getId());
+		assertEquals(findPerson.getId(), readPerson.getId());
 	}
 	
 	@Test
@@ -62,9 +65,8 @@ class PersonCrudTest extends EntityManagerTest {
 		entityManager.clear();
 		
 		Person updatedPerson = entityManager.find(Person.class, 1);
-		Assertions.assertNotNull(updatedPerson);
-		Assertions.assertEquals("Fernando Medeiros Júnior",
-				updatedPerson.getFirstname());
+		assertNotNull(updatedPerson);
+		assertEquals("Fernando Medeiros Júnior", updatedPerson.getFirstname());
 	}
 	
 	@Test
@@ -78,9 +80,9 @@ class PersonCrudTest extends EntityManagerTest {
 		entityManager.clear();
 		
 		Person updatedPerson = entityManager.find(Person.class, 1);
-		Assertions.assertNotNull(updatedPerson);
-		Assertions.assertEquals(LocalDate.of(1958, Month.DECEMBER, 5),
-				updatedPerson.getBirthday());
+		assertNotNull(updatedPerson);
+		assertEquals(LocalDate.of(1958, Month.DECEMBER, 5),
+			updatedPerson.getBirthday());
 	}
 	
 	@Test
@@ -91,7 +93,7 @@ class PersonCrudTest extends EntityManagerTest {
 		entityManager.remove(person);
 		entityManager.getTransaction().commit();
 		
-		Person deletedPerson = entityManager.find(Person.class, 2L);
-		Assertions.assertNull(deletedPerson);
+		Person findPerson = entityManager.find(Person.class, 2L);
+		assertNull(findPerson);
 	}
 }

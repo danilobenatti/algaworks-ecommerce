@@ -1,9 +1,12 @@
 package com.algaworks.ecommerce.advancedmapping;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import java.math.BigDecimal;
 import java.time.temporal.ChronoUnit;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
@@ -27,8 +30,8 @@ class ColumnsDetailsTest extends EntityManagerTest {
 		entityManager.clear();
 		
 		Product findProduct = entityManager.find(Product.class, p.getId());
-		Assertions.assertNotNull(findProduct.getDateCreate());
-		Assertions.assertNull(findProduct.getDateUpdate());
+		assertNotNull(findProduct.getDateCreate());
+		assertNull(findProduct.getDateUpdate());
 	}
 	
 	@Test
@@ -43,11 +46,9 @@ class ColumnsDetailsTest extends EntityManagerTest {
 		entityManager.clear();
 		
 		Product findProduct = entityManager.find(Product.class, p.getId());
-		Assertions.assertEquals(
-			p.getDateCreate().truncatedTo(ChronoUnit.SECONDS),
+		assertEquals(p.getDateCreate().truncatedTo(ChronoUnit.SECONDS),
 			findProduct.getDateCreate().truncatedTo(ChronoUnit.SECONDS));
-		Assertions.assertEquals(
-			p.getDateUpdate().truncatedTo(ChronoUnit.MINUTES),
+		assertEquals(p.getDateUpdate().truncatedTo(ChronoUnit.MINUTES),
 			findProduct.getDateUpdate().truncatedTo(ChronoUnit.MINUTES));
 	}
 }

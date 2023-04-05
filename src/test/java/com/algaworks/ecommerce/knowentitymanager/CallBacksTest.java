@@ -1,8 +1,9 @@
 package com.algaworks.ecommerce.knowentitymanager;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.util.Arrays;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
@@ -50,7 +51,7 @@ class CallBacksTest extends EntityManagerTest {
 		entityManager.clear();
 		
 		Order orderVerify = entityManager.find(Order.class, order.getId());
-		Assertions.assertNotNull(orderVerify.getDateCreate());
+		assertNotNull(orderVerify.getDateCreate());
 		
 	}
 	

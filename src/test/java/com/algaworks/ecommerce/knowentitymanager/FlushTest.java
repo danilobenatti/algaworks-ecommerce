@@ -1,6 +1,8 @@
 package com.algaworks.ecommerce.knowentitymanager;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
@@ -11,7 +13,7 @@ class FlushTest extends EntityManagerTest {
 	
 	@Test
 	void callFlush() {
-		Exception exception = Assertions.assertThrows(Exception.class, () -> {
+		Exception exception = assertThrows(Exception.class, () -> {
 			try {
 				entityManager.getTransaction().begin();
 				
@@ -30,8 +32,7 @@ class FlushTest extends EntityManagerTest {
 				throw e;
 			}
 		}, "RuntimeException was expected");
-		Assertions.assertEquals("Order has not been paid.",
-				exception.getMessage());
+		assertEquals("Order has not been paid.", exception.getMessage());
 	}
 	
 }

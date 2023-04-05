@@ -1,6 +1,7 @@
 package com.algaworks.ecommerce.relationships;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
@@ -25,12 +26,11 @@ class AutoRelationshipsTest extends EntityManagerTest {
 		entityManager.clear();
 		
 		Category c1 = entityManager.find(Category.class,
-				parentCategory.getId());
+			parentCategory.getId());
 		Category c2 = entityManager.find(Category.class, childCategory.getId());
 		
-		Assertions.assertEquals(childCategory.getParentCategory().getId(),
-				c1.getId());
-		Assertions.assertEquals(childCategory.getId(), c2.getId());
+		assertEquals(childCategory.getParentCategory().getId(), c1.getId());
+		assertEquals(childCategory.getId(), c2.getId());
 		
 	}
 	

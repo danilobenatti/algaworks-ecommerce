@@ -6,6 +6,7 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
@@ -36,10 +37,10 @@ public class Category extends BaseEntityLong implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "parent_category_id",
-		foreignKey = @ForeignKey(name = "fk_category_category_id"))
+		foreignKey = @ForeignKey(name = "fk_category__category_id"))
 	private Category parentCategory;
 	
-	@OneToMany(mappedBy = "parentCategory")
+	@OneToMany(mappedBy = "parentCategory", fetch = FetchType.LAZY)
 	private List<Category> categories;
 	
 	@ManyToMany(mappedBy = "categories", cascade = CascadeType.REMOVE)

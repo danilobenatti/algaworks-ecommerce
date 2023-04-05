@@ -1,8 +1,10 @@
 package com.algaworks.ecommerce.mappingenums;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.math.BigDecimal;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
@@ -15,9 +17,9 @@ class MappingEmbeddableObjTest extends EntityManagerTest {
 	
 	@Test
 	void embeddableObjTest() {
-		Address address = Address.builder().street("Street One Level").number("145")
-				.complement("Ap5").district("Townsville").city("Newaldr")
-				.estate("WD").zipCode("123456").build();
+		Address address = Address.builder().street("Street One Level")
+			.number("145").complement("Ap5").district("Townsville")
+			.city("Newaldr").estate("WD").zipCode("123456").build();
 		
 		Order order = new Order();
 		order.setId(null);
@@ -33,9 +35,9 @@ class MappingEmbeddableObjTest extends EntityManagerTest {
 		entityManager.clear();
 		
 		Order findOrder = entityManager.find(Order.class, order.getId());
-		Assertions.assertNotNull(findOrder);
-		Assertions.assertEquals(OrderStatus.WAITING, findOrder.getStatus());
-		Assertions.assertEquals(order.getDeliveryAddress().getCity(),
-				findOrder.getDeliveryAddress().getCity());
+		assertNotNull(findOrder);
+		assertEquals(OrderStatus.WAITING, findOrder.getStatus());
+		assertEquals(order.getDeliveryAddress().getCity(),
+			findOrder.getDeliveryAddress().getCity());
 	}
 }

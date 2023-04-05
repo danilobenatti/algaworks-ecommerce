@@ -1,9 +1,12 @@
 package com.algaworks.ecommerce.advancedmapping;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import java.util.Arrays;
 import java.util.Collections;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
@@ -25,8 +28,8 @@ class ElementCollectionsTest extends EntityManagerTest {
 		entityManager.clear();
 		
 		Product findProduct = entityManager.find(Product.class,
-				product.getId());
-		Assertions.assertFalse(findProduct.getTags().isEmpty());
+			product.getId());
+		assertFalse(findProduct.getTags().isEmpty());
 		
 	}
 	
@@ -36,16 +39,16 @@ class ElementCollectionsTest extends EntityManagerTest {
 		
 		Product product = entityManager.find(Product.class, 1L);
 		product.setAttributes(
-				Arrays.asList(new Attribute("Screen size", "5 inches"),
-						new Attribute("Battery life", "4 hours")));
+			Arrays.asList(new Attribute("Screen size", "5 inches"),
+				new Attribute("Battery life", "4 hours")));
 		
 		entityManager.getTransaction().commit();
 		
 		entityManager.clear();
 		
 		Product findProduct = entityManager.find(Product.class,
-				product.getId());
-		Assertions.assertFalse(findProduct.getAttributes().isEmpty());
+			product.getId());
+		assertFalse(findProduct.getAttributes().isEmpty());
 		
 	}
 	
@@ -61,8 +64,22 @@ class ElementCollectionsTest extends EntityManagerTest {
 		entityManager.clear();
 		
 		Person findPerson = entityManager.find(Person.class, person.getId());
-		Assertions.assertEquals(person.getPhones().get("mobile"),
-				findPerson.getPhones().get("mobile"));
+		assertEquals(person.getPhones().get("mobile"),
+			findPerson.getPhones().get("mobile"));
 		
 	}
+	
+	@Test
+	void deletedObject() {
+		Product product = entityManager.find(Product.class, 3L);
+		
+		entityManager.getTransaction().begin();
+		entityManager.remove(product);
+		entityManager.getTransaction().commit();
+		
+		Product findProduct = entityManager.find(Product.class,
+			product.getId());
+		assertNull(findProduct);
+	}
+	
 }

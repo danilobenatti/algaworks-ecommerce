@@ -1,9 +1,11 @@
 package com.algaworks.ecommerce.mappingenums;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.time.LocalDate;
 import java.time.Month;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
@@ -27,9 +29,8 @@ class MappingEnumsTest extends EntityManagerTest {
 		entityManager.clear();
 		
 		Person personFind = entityManager.find(Person.class, p.getId());
-		Assertions.assertNotNull(personFind);
-		Assertions.assertEquals(p.getGender().getCode(),
-			personFind.getGender().getCode());
+		assertNotNull(personFind);
+		assertEquals(p.getGender().getCode(), personFind.getGender().getCode());
 		
 	}
 }

@@ -1,6 +1,7 @@
 package com.algaworks.ecommerce.knowentitymanager;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
@@ -22,8 +23,8 @@ class FirstCacheLevelTest extends EntityManagerTest {
 		Product product2 = entityManager.find(Product.class, product.getId());
 		System.out.println(product2.getName());
 		
-		Assertions.assertNotNull(product);
-		Assertions.assertNotNull(product2);
+		assertNotNull(product);
+		assertNotNull(product2);
 		
 	}
 	
