@@ -2,6 +2,7 @@ package com.algaworks.ecommerce.ddl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -59,6 +60,11 @@ class DDLTest extends EntityManagerTest {
 		assertNotNull(findProduct.getName());
 		assertEquals(findStock.getId(), stock.getId());
 		
+	}
+	
+	@Test
+	void generatorDDL2() {
+		assertNull(null);
 	}
 	
 }

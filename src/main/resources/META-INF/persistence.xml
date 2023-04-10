@@ -18,11 +18,14 @@
 			<!-- automatically drop and create required database tables -->
 			<property name="jakarta.persistence.schema-generation.create-database-schemas" value="true" />
 			<property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create" />
+			<property name="jakarta.persistence.schema-generation.scripts.action" value="drop-and-create" />
 			<property name="jakarta.persistence.schema-generation.create-script-source" value="META-INF/database/create-db.sql" />
+			<property name="jakarta.persistence.schema-generation.scripts.create-target" value="./src/main/resources/META-INF/database/create-db-export.sql" />
 			<property name="jakarta.persistence.schema-generation.drop-script-source" value="META-INF/database/drop-db.sql" />
+			<property name="jakarta.persistence.schema-generation.scripts.drop-target" value="./src/main/resources/META-INF/database/drop-db-export.sql" />
 			<property name="jakarta.persistence.sql-load-script-source" value="META-INF/database/initial_data.sql" />
 			
-			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect" />
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.format_sql" value="true" />
 			<property name="hibernate.use_sql_comments" value="true" />
