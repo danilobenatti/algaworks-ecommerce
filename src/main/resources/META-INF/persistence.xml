@@ -7,23 +7,22 @@
 	<persistence-unit
 		name="algaworks-ecommerce" transaction-type="RESOURCE_LOCAL">
 		<properties>
-			<property
-				name="jakarta.persistence.jdbc.url" 
+			<property name="jakarta.persistence.jdbc.url" 
 				value="jdbc:mysql://localhost:3306/algaworks_ecommerce?createDatabaseIfNotExist=true&amp;useTimezone=true" />
-			<property name="jakarta.persistence.jdbc.user" value="DB_USERNAME" />
-			<property name="jakarta.persistence.jdbc.password" value="DB_PASSWORD" />
+			<property name="jakarta.persistence.jdbc.user" value="root" />
+			<property name="jakarta.persistence.jdbc.password" value="123456" />
 			<property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
 			
 			<!-- DON'T USE THIS IN PRODUCTION -->
 			<!-- automatically drop and create required database tables -->
-			<property name="jakarta.persistence.schema-generation.create-database-schemas" value="true" />
-			<property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create" />
-			<property name="jakarta.persistence.schema-generation.scripts.action" value="drop-and-create" />
-			<property name="jakarta.persistence.schema-generation.create-script-source" value="META-INF/database/create-db.sql" />
-			<property name="jakarta.persistence.schema-generation.scripts.create-target" value="./src/main/resources/META-INF/database/create-db-export.sql" />
-			<property name="jakarta.persistence.schema-generation.drop-script-source" value="META-INF/database/drop-db.sql" />
-			<property name="jakarta.persistence.schema-generation.scripts.drop-target" value="./src/main/resources/META-INF/database/drop-db-export.sql" />
-			<property name="jakarta.persistence.sql-load-script-source" value="META-INF/database/initial_data.sql" />
+<!-- 			<property name="jakarta.persistence.schema-generation.create-database-schemas" value="true" /> -->
+<!-- 			<property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create" /> -->
+<!-- 			<property name="jakarta.persistence.schema-generation.scripts.action" value="none" /> -->
+<!-- 			<property name="jakarta.persistence.schema-generation.create-script-source" value="META-INF/database/create-db.sql" /> -->
+<!-- 			<property name="jakarta.persistence.schema-generation.scripts.create-target" value="./src/main/resources/META-INF/database/create-db-export.sql" /> -->
+<!-- 			<property name="jakarta.persistence.schema-generation.drop-script-source" value="META-INF/database/drop-db.sql" /> -->
+<!-- 			<property name="jakarta.persistence.schema-generation.scripts.drop-target" value="./src/main/resources/META-INF/database/drop-db-export.sql" /> -->
+<!-- 			<property name="jakarta.persistence.sql-load-script-source" value="META-INF/database/initial_data.sql" /> -->
 			
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect" />
 			<property name="hibernate.show_sql" value="true" />
