@@ -21,6 +21,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -51,16 +53,18 @@ public class Order extends BaseEntityLong implements Serializable {
 	@Column(name = "col_status", nullable = false)
 	private Byte status;
 	
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = false,
+		cascade = { CascadeType.REMOVE, CascadeType.PERSIST })
 	@JoinColumn(name = "person_id", nullable = false,
 		foreignKey = @ForeignKey(name = "fk_order__person_id"))
 	private Person person;
 	
 	@OneToMany(mappedBy = "order", fetch = FetchType.EAGER,
-		cascade = CascadeType.REMOVE)
+		cascade = { CascadeType.REMOVE, CascadeType.PERSIST })
 	private List<OrderItem> orderitems = new ArrayList<>();
 	
-	@OneToOne(mappedBy = "order", cascade = CascadeType.REMOVE)
+	@OneToOne(mappedBy = "order",
+		cascade = { CascadeType.REMOVE, CascadeType.PERSIST })
 	private Payment payment;
 	
 	@Embedded
@@ -98,4 +102,13 @@ public class Order extends BaseEntityLong implements Serializable {
 		return BigDecimal.ZERO;
 	}
 	
+	@PrePersist
+	private void orderPersist() {
+		setTotal();
+	}
+	
+	@PreUpdate
+	private void orderUpdate() {
+		setTotal();
+	}
 }

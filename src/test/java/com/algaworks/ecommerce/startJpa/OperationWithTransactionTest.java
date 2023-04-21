@@ -16,7 +16,7 @@ class OperationWithTransactionTest extends EntityManagerTest {
 	
 	@Test
 	void preventOperationWithDatabase() {
-		Product p = entityManager.find(Product.class, 1);
+		Product p = entityManager.find(Product.class, 1L);
 		entityManager.detach(p);
 		
 		entityManager.getTransaction().begin();
@@ -32,7 +32,6 @@ class OperationWithTransactionTest extends EntityManagerTest {
 	@Test
 	void showDiferenceBetweenPersistAndMerge() {
 		Product pp = new Product();
-//		p.setId(5);
 		pp.setName("Smartphone One Plus");
 		pp.setDescription("Tela e processador de última geração.");
 		pp.setUnit(ProductUnit.UNITY);
@@ -49,7 +48,6 @@ class OperationWithTransactionTest extends EntityManagerTest {
 		assertNotNull(persistProduct);
 		
 		Product pm = new Product();
-//		p.setId(6);
 		pm.setName("Notebook Dell");
 		pm.setDescription("Inspiron 5000 Series");
 		pm.setUnit(ProductUnit.UNITY);
@@ -86,7 +84,7 @@ class OperationWithTransactionTest extends EntityManagerTest {
 	
 	@Test
 	void updateObjectManaged() {
-		Product p = entityManager.find(Product.class, 1);
+		Product p = entityManager.find(Product.class, 1L);
 		p.setName("Kindle Paperwhite 2ª Geração");
 		
 		entityManager.getTransaction().begin();
@@ -123,13 +121,13 @@ class OperationWithTransactionTest extends EntityManagerTest {
 	
 	@Test
 	void removeObject() {
-		Product product = entityManager.find(Product.class, 3);
+		Product product = entityManager.find(Product.class, 3L);
 		
 		entityManager.getTransaction().begin();
 		entityManager.remove(product);
 		entityManager.getTransaction().commit();
 		
-		Product productRemoved = entityManager.find(Product.class, 3);
+		Product productRemoved = entityManager.find(Product.class, 3L);
 		assertNull(productRemoved);
 	}
 	

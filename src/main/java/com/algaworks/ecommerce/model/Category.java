@@ -43,7 +43,8 @@ public class Category extends BaseEntityLong implements Serializable {
 	@OneToMany(mappedBy = "parentCategory", fetch = FetchType.LAZY)
 	private List<Category> categories;
 	
-	@ManyToMany(mappedBy = "categories", cascade = CascadeType.REMOVE)
+	@ManyToMany(mappedBy = "categories",
+		cascade = { CascadeType.REMOVE, CascadeType.PERSIST })
 	private List<Product> products;
 	
 }

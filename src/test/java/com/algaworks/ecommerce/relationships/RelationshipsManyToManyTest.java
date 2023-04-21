@@ -3,7 +3,7 @@ package com.algaworks.ecommerce.relationships;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import java.util.Arrays;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +20,7 @@ class RelationshipsManyToManyTest extends EntityManagerTest {
 		
 		entityManager.getTransaction().begin();
 //		c1.setProducts(Arrays.asList(p1));
-		p1.setCategories(Arrays.asList(c1));
+		p1.setCategories(Set.of(c1));
 		entityManager.getTransaction().commit();
 		
 		entityManager.clear();

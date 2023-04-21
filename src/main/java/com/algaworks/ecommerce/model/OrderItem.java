@@ -3,6 +3,7 @@ package com.algaworks.ecommerce.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -33,15 +34,19 @@ public class OrderItem implements Serializable {
 	private OrderItemPk id;
 	
 	@MapsId(value = "orderId")
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = false, cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "order_id", nullable = false,
 		foreignKey = @ForeignKey(name = "fk_orderitem__order_id"))
+//			foreignKeyDefinition = "foreign key (order_id)"
+//				+ " references tbl_orders(id) on delete cascade"))
 	private Order order;
 	
 	@MapsId(value = "productId")
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = false, cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "product_id", nullable = false,
 		foreignKey = @ForeignKey(name = "fk_orderitem__product_id"))
+//			foreignKeyDefinition = "foreign key (product_id)"
+//				+ " references tbl_products(id) on delete cascade"))
 	private Product product;
 	
 	@Column(name = "col_quantity", columnDefinition = "double default 0",
@@ -73,12 +78,12 @@ public class OrderItem implements Serializable {
 	}
 	
 	@PrePersist
-	public void onPersist() {
+	public void itemPersist() {
 		setSubtotal();
 	}
 	
 	@PreUpdate
-	public void onUpdate() {
+	public void itemUpdate() {
 		setSubtotal();
 	}
 }

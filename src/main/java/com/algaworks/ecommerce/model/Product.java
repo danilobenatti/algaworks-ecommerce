@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 import com.algaworks.ecommerce.exception.FileNotFoundException;
 import com.algaworks.ecommerce.listener.GenericListener;
@@ -63,18 +64,21 @@ public class Product extends BaseEntityLong implements Serializable {
 		columnDefinition = "decimal(12,2) unsigned not null default 0")
 	private BigDecimal unitPrice = BigDecimal.valueOf(0.00);
 	
-	@OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "product",
+		cascade = { CascadeType.REMOVE, CascadeType.PERSIST })
 	private List<OrderItem> orderItems;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinTable(name = "tbl_product_category",
-		uniqueConstraints = @UniqueConstraint(name = "uk_productid_categoryid",
-			columnNames = { "product_id", "category_id" }),
 		joinColumns = @JoinColumn(name = "product_id",
-			foreignKey = @ForeignKey(name = "fk_productcategory__product_id")),
+			foreignKey = @ForeignKey(name = "fk_productcategory__product_id",
+				foreignKeyDefinition = "foreign key (product_id)"
+					+ " references tbl_products(id) on delete cascade")),
 		inverseJoinColumns = @JoinColumn(name = "category_id",
-			foreignKey = @ForeignKey(name = "fk_productcategory__category_id")))
-	private List<Category> categories;
+			foreignKey = @ForeignKey(name = "fk_productcategory__category_id",
+				foreignKeyDefinition = "foreign key (category_id)"
+					+ " references tbl_categories(id) on delete cascade")))
+	private Set<Category> categories;
 	
 	@OneToOne(mappedBy = "product")
 	private ProductStock stock;
