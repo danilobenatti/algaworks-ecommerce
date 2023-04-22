@@ -1,6 +1,7 @@
 INSERT INTO tbl_categories (id, col_name, parent_category_id) VALUES (1, 'Eletrônicos', null);
 INSERT INTO tbl_categories (id, col_name, parent_category_id) VALUES (2, 'Informática', 1);
 INSERT INTO tbl_categories (id, col_name, parent_category_id) VALUES (3, 'Escritório', null);
+INSERT INTO tbl_categories (id, col_name, parent_category_id) VALUES (4, 'Literatura', null);
 INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create) VALUES (1, 'Conheça o novo Kindle, agora com mais memória', 'Kindle', 1, 499.5, date_sub(now(), interval 1 day));
 INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create) VALUES (3, 'Câmera de ação e alto desempenho', 'Câmera GoPro Hero', 1, 1506.72, date_sub(now(), interval 2 day));
 INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create) VALUES (4, 'Fita Adesiva Alta Aderência','Fital ColaTudo', 1, 5.50, date_sub(now(), interval 3 day));

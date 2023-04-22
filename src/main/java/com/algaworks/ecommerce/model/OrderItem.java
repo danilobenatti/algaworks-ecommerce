@@ -34,7 +34,8 @@ public class OrderItem implements Serializable {
 	private OrderItemPk id;
 	
 	@MapsId(value = "orderId")
-	@ManyToOne(optional = false, cascade = CascadeType.REMOVE)
+	@ManyToOne(optional = false,
+		cascade = { CascadeType.REMOVE, CascadeType.MERGE })
 	@JoinColumn(name = "order_id", nullable = false,
 		foreignKey = @ForeignKey(name = "fk_orderitem__order_id"))
 //			foreignKeyDefinition = "foreign key (order_id)"

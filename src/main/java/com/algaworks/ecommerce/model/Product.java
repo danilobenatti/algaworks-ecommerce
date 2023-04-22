@@ -68,7 +68,8 @@ public class Product extends BaseEntityLong implements Serializable {
 		cascade = { CascadeType.REMOVE, CascadeType.PERSIST })
 	private List<OrderItem> orderItems;
 	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@ManyToMany(fetch = FetchType.LAZY,
+		cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinTable(name = "tbl_product_category",
 		joinColumns = @JoinColumn(name = "product_id",
 			foreignKey = @ForeignKey(name = "fk_productcategory__product_id",

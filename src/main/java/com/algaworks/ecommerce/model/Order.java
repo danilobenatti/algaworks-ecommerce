@@ -59,8 +59,8 @@ public class Order extends BaseEntityLong implements Serializable {
 		foreignKey = @ForeignKey(name = "fk_order__person_id"))
 	private Person person;
 	
-	@OneToMany(mappedBy = "order", fetch = FetchType.EAGER,
-		cascade = { CascadeType.REMOVE, CascadeType.PERSIST })
+	@OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = {
+		CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.MERGE })
 	private List<OrderItem> orderitems = new ArrayList<>();
 	
 	@OneToOne(mappedBy = "order",
@@ -100,6 +100,16 @@ public class Order extends BaseEntityLong implements Serializable {
 				.reduce(BigDecimal.ZERO, BigDecimal::add);
 		}
 		return BigDecimal.ZERO;
+	}
+	
+	public void calculeTotal() {
+		if (this.orderitems != null) {
+			this.total = (BigDecimal) this.orderitems.stream()
+				.map(i -> BigDecimal.valueOf(i.getQuantity())
+					.multiply(i.getProduct().getUnitPrice()));
+		} else {
+			this.total = BigDecimal.ZERO;
+		}
 	}
 	
 	@PrePersist
