@@ -1,6 +1,8 @@
 package com.algaworks.ecommerce.cascadeoperations;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -8,6 +10,7 @@ import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.Order;
 import com.algaworks.ecommerce.model.OrderItem;
 import com.algaworks.ecommerce.model.OrderItemPk;
+import com.algaworks.ecommerce.model.Product;
 
 class CascadeTypeRemoveTest extends EntityManagerTest {
 	
@@ -41,6 +44,23 @@ class CascadeTypeRemoveTest extends EntityManagerTest {
 		Order findOrder = entityManager.find(Order.class,
 			item.getOrder().getId());
 		assertNull(findOrder);
+		
+	}
+	
+	@Test
+	void removeProduct() {
+		Product product = entityManager.find(Product.class, 1L);
+		assertFalse(product.getCategories().isEmpty());
+		
+		entityManager.getTransaction().begin();
+		product.getCategories().clear();
+		entityManager.getTransaction().commit();
+		
+		entityManager.clear();
+		
+		Product findProduct = entityManager.find(Product.class,
+			product.getId());
+		assertTrue(findProduct.getCategories().isEmpty());
 		
 	}
 	

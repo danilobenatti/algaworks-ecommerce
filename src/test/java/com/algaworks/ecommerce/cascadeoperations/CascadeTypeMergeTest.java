@@ -100,8 +100,8 @@ class CascadeTypeMergeTest extends EntityManagerTest {
 		product.setName("Kindle Special Edition");
 		product.setDescription("The best ever!!");
 		
-		Category category = new Category();
-		category.setId(4L);
+		Category category = entityManager.find(Category.class, 4L);
+//		category.setId(4L);
 		category.setName("Tablets");
 		
 		product.setCategories(Set.of(category));
