@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import com.algaworks.ecommerce.model.enums.PaymentStatus;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
@@ -31,7 +32,7 @@ public abstract class Payment extends BaseEntityLong implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@MapsId
-	@OneToOne(optional = false)
+	@OneToOne(optional = false, cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "order_id", nullable = false,
 		foreignKey = @ForeignKey(name = "fk_payments__order_id"))
 	private Order order;

@@ -54,7 +54,7 @@ public class Order extends BaseEntityLong implements Serializable {
 	private Byte status;
 	
 	@ManyToOne(optional = false,
-		cascade = { CascadeType.REMOVE, CascadeType.PERSIST })
+		cascade = { CascadeType.PERSIST })
 	@JoinColumn(name = "person_id", nullable = false,
 		foreignKey = @ForeignKey(name = "fk_order__person_id"))
 	private Person person;
