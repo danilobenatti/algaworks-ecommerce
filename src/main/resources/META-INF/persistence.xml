@@ -17,7 +17,7 @@
 			<!-- automatically drop and create required database tables -->
 			<property name="jakarta.persistence.schema-generation.create-database-schemas" value="true" />
 			
-			<property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create" />
+			<property name="jakarta.persistence.schema-generation.database.action" value="none" />
 			
 			<property name="javax.persistence.schema-generation.create-source" value="metadata-then-script"/>
 			<property name="javax.persistence.schema-generation.drop-source" value="metadata-then-script"/>

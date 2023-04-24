@@ -1,13 +1,17 @@
 package com.algaworks.ecommerce.jpql;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
+import com.algaworks.ecommerce.dto.ProductDTO;
 import com.algaworks.ecommerce.model.Order;
 import com.algaworks.ecommerce.model.Person;
 
@@ -16,11 +20,14 @@ import jakarta.persistence.TypedQuery;
 
 class BasicJPQLTest extends EntityManagerTest {
 	
+	static Logger logger = Logger.getLogger(BasicJPQLTest.class.getName());
+	
 	@Test
 	void searchById() {
 		/*
-		 * JPQL - select o from Order o join o.orderitems i where i.product.unitPrice > 10 
-		 * SQL - select o.* from tbl_orders o where  o.id = 1
+		 * JPQL - select o from Order o join o.orderitems i where
+		 * i.product.unitPrice > 10 SQL - select o.* from tbl_orders o where
+		 * o.id = 1
 		 */
 		String qlString = "select o from Order o where o.id = 1";
 		TypedQuery<Order> typedQuery = entityManager.createQuery(qlString,
@@ -65,4 +72,34 @@ class BasicJPQLTest extends EntityManagerTest {
 		assertEquals(Person.class, list2.get(0).getClass());
 		
 	}
+	
+	@Test
+	void resultProjection() {
+		String jpql = "select id, name from Product";
+		
+		TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql,
+			Object[].class);
+		List<Object[]> list = typedQuery.getResultList();
+		
+		assertEquals(2, list.get(0).length);
+		
+		list.forEach(i -> logger.log(Level.INFO, i[0] + ", " + i[1]));
+		
+	}
+	
+	@Test
+	void resultProjectionFromDTO() {
+		String jpql = "select new com.algaworks.ecommerce.dto.ProductDTO(id, name) from Product";
+		
+		TypedQuery<ProductDTO> typedQuery = entityManager.createQuery(jpql,
+			ProductDTO.class);
+		List<ProductDTO> list = typedQuery.getResultList();
+		
+		assertFalse(list.isEmpty());
+		
+		list.forEach(
+			i -> logger.log(Level.INFO, i.getId() + ", " + i.getName()));
+		
+	}
+	
 }
