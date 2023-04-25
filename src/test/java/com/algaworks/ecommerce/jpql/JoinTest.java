@@ -7,6 +7,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
+import com.algaworks.ecommerce.model.Order;
 
 import jakarta.persistence.TypedQuery;
 
@@ -31,6 +32,18 @@ class JoinTest extends EntityManagerTest {
 		TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql,
 			Object[].class);
 		List<Object[]> list = typedQuery.getResultList();
+		
+		assertFalse(list.isEmpty());
+		
+	}
+	
+	@Test
+	void useJoinFetch() {
+		String jpql = "select o from Order o left join fetch o.payment join fetch o.person left join fetch o.invoice";
+		
+		TypedQuery<Order> typedQuery = entityManager.createQuery(jpql,
+			Order.class);
+		List<Order> list = typedQuery.getResultList();
 		
 		assertFalse(list.isEmpty());
 		
