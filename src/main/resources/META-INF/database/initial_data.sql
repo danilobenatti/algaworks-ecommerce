@@ -6,8 +6,10 @@ INSERT INTO tbl_categories (id, col_name, parent_category_id) VALUES (4, 'Litera
 INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create) VALUES (1, 'Conheça o novo Kindle, agora com mais memória', 'Kindle', 1, 499.5, date_sub(now(), interval 1 day));
 INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create) VALUES (3, 'Câmera de ação e alto desempenho', 'Câmera GoPro Hero', 1, 1506.72, date_sub(now(), interval 2 day));
 INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create) VALUES (4, 'Fita Adesiva Alta Aderência','Fital ColaTudo', 1, 5.5, date_sub(now(), interval 3 day));
+INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create) VALUES (5, 'Corda de Tecido Poliester Trançada Reforçada','Corda de Nylon para Varal', 3, 2.32, date_sub(now(), interval 4 day));
 INSERT INTO tbl_product_attribute (product_id, col_description, col_value) VALUES (3, 'First attribute', 'Powerfull');
 INSERT INTO tbl_product_attribute (product_id, col_description, col_value) VALUES (4, 'Manufacturer', '6M');
+INSERT INTO tbl_product_attribute (product_id, col_description, col_value) VALUES (5, 'Max load', '432Kg');
 --
 INSERT INTO tbl_product_category (product_id, category_id) VALUES (1, 1);
 INSERT INTO tbl_product_category (product_id, category_id) VALUES (1, 4);
