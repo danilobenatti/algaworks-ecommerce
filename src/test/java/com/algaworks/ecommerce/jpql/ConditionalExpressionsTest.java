@@ -3,15 +3,19 @@ package com.algaworks.ecommerce.jpql;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
+import com.algaworks.ecommerce.model.Order;
+import com.algaworks.ecommerce.model.Product;
 
 import jakarta.persistence.TypedQuery;
 
-class CondicionalExpressionsTest extends EntityManagerTest {
+class ConditionalExpressionsTest extends EntityManagerTest {
 	
 	@Test
 	void usingCondicionalExpressionLike() {
@@ -71,6 +75,61 @@ class CondicionalExpressionsTest extends EntityManagerTest {
 		 */
 		exec(
 			"select p from Product p where p.categories is not empty order by p.id");
+	}
+	
+	@Test
+	void usingGreaterMinor() {
+		String jpql = "select p from Product p where p.unitPrice >= :start and p.unitPrice <= :end";
+		
+		TypedQuery<Product> typedQuery = entityManager.createQuery(jpql,
+			Product.class);
+		typedQuery.setParameter("start", BigDecimal.valueOf(499.50));
+		typedQuery.setParameter("end", BigDecimal.valueOf(1600.00));
+		
+		List<Product> resultList = typedQuery.getResultList();
+		assertFalse(resultList.isEmpty());
+		
+	}
+	
+	@Test
+	void usingGreaterMinorWithDate() {
+		String jpql = "select o from Order o where o.dateCreate >= :date";
+		
+		TypedQuery<Order> typedQuery = entityManager.createQuery(jpql,
+			Order.class);
+		typedQuery.setParameter("date", LocalDateTime.now().minusDays(7));
+		
+		List<Order> resultList = typedQuery.getResultList();
+		assertFalse(resultList.isEmpty());
+		
+	}
+	
+	@Test
+	void usingBetweenProduct() {
+		String jpql = "select p from Product p where p.unitPrice between :start and :end";
+		
+		TypedQuery<Product> typedQuery = entityManager.createQuery(jpql,
+			Product.class);
+		typedQuery.setParameter("start", BigDecimal.valueOf(499.50));
+		typedQuery.setParameter("end", BigDecimal.valueOf(1506.72));
+		
+		List<Product> resultList = typedQuery.getResultList();
+		assertFalse(resultList.isEmpty());
+		
+	}
+	
+	@Test
+	void usingBetweenOrders() {
+		String jpql = "select o from Order o where o.dateCreate between :start and :end";
+		
+		TypedQuery<Order> typedQuery = entityManager.createQuery(jpql,
+			Order.class);
+		typedQuery.setParameter("start", LocalDateTime.now().minusDays(7));
+		typedQuery.setParameter("end", LocalDateTime.now());
+		
+		List<Order> resultList = typedQuery.getResultList();
+		assertFalse(resultList.isEmpty());
+		
 	}
 	
 }
