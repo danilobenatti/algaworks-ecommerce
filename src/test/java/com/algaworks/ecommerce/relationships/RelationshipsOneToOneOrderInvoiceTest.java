@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.sql.Date;
+
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
@@ -14,11 +16,12 @@ class RelationshipsOneToOneOrderInvoiceTest extends EntityManagerTest {
 	
 	@Test
 	void verifyOneToOneRelationshipTest() {
-		Order order = entityManager.find(Order.class, 1L);
+		Order order = entityManager.find(Order.class, 2L);
 		
 		Invoice invoice = new Invoice();
 		invoice.setXml(Invoice.uploadInvoice());
 		invoice.setOrder(order);
+		invoice.setIssuedatetime(Date.valueOf("2002-05-15"));
 		
 		entityManager.getTransaction().begin();
 		entityManager.persist(invoice);

@@ -27,7 +27,7 @@ class PathExpressionTest extends EntityManagerTest {
 	
 	@Test
 	void usePathExpressionsReview() {
-		String jpql = "select o from Order o inner join o.person p where p.firstname = 'Luiz Fernando'";
+		String jpql = "select o from Order o join o.person p where p.firstname = 'Luiz Fernando'";
 		
 		TypedQuery<Order> typedQuery = entityManager.createQuery(jpql,
 			Order.class);

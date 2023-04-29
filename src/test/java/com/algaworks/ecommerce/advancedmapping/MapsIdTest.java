@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.sql.Date;
 import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
@@ -21,10 +22,11 @@ class MapsIdTest extends EntityManagerTest {
 	
 	@Test
 	void insertInvoice() {
-		Order order = entityManager.find(Order.class, 1L);
+		Order order = entityManager.find(Order.class, 2L);
 		
 		Invoice invoice = new Invoice();
 		invoice.setOrder(order);
+		invoice.setIssuedatetime(Date.valueOf("2002-03-10"));
 		invoice.setXml(Invoice.uploadInvoice());
 		
 		entityManager.getTransaction().begin();

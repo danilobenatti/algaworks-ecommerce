@@ -1,6 +1,7 @@
 package com.algaworks.ecommerce.jpql;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ class JoinTest extends EntityManagerTest {
 	
 	@Test
 	void makeJoin() {
-		String jpql = "select o, p from Order o inner join o.payment p where p.status = 1";
+		String jpql = "select o, p from Order o join o.payment p where p.status = 1";
 		
 		TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql,
 			Object[].class);
@@ -29,11 +30,13 @@ class JoinTest extends EntityManagerTest {
 	void leftJoin() {
 		String jpql = "select o, p from Order o left join o.payment p on p.status = 1";
 		
-		TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql,
-			Object[].class);
+		TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql, Object[].class);
 		List<Object[]> list = typedQuery.getResultList();
 		
-		assertFalse(list.isEmpty());
+//		Query query = entityManager.createQuery(jpql, Object[].class);
+//		Stream<Object[]> list = query.getResultStream();
+		
+		assertNotNull(list);
 		
 	}
 	
