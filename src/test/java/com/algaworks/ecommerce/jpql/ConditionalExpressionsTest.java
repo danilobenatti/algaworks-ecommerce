@@ -132,4 +132,15 @@ class ConditionalExpressionsTest extends EntityManagerTest {
 		
 	}
 	
+	@Test
+	void usingDifferentExpression() {
+		String jpql = "select p from Product p where p.unit <> 1";
+		
+		TypedQuery<Product> typedQuery = entityManager.createQuery(jpql,
+			Product.class);
+		List<Product> list = typedQuery.getResultList();
+		
+		assertFalse(list.isEmpty());
+		
+	}
 }
