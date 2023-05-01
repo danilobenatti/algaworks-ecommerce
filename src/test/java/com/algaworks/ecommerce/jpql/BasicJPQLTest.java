@@ -102,4 +102,19 @@ class BasicJPQLTest extends EntityManagerTest {
 		
 	}
 	
+	@Test
+	void sortResults() {
+		String jpql = "select p from Person p order by p.birthday desc";
+		
+		TypedQuery<Person> typedQuery = entityManager.createQuery(jpql,
+			Person.class);
+		List<Person> list = typedQuery.getResultList();
+		
+		assertFalse(list.isEmpty());
+		
+		list.forEach(
+			p -> logger.log(Level.INFO, p.getId() + "; " + p.getFirstname()));
+		
+	}
+	
 }
