@@ -2,6 +2,7 @@ INSERT INTO tbl_categories (id, col_name, parent_category_id) VALUES (1, 'Eletr�
 INSERT INTO tbl_categories (id, col_name, parent_category_id) VALUES (2, 'Informática', 1);
 INSERT INTO tbl_categories (id, col_name, parent_category_id) VALUES (3, 'Escritório', null);
 INSERT INTO tbl_categories (id, col_name, parent_category_id) VALUES (4, 'Literatura', null);
+INSERT INTO tbl_categories (id, col_name, parent_category_id) VALUES (5, 'Eletrodomésticos', null);
 --
 INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create) VALUES (1, 'Conheça o novo Kindle, agora com mais memória', 'Kindle', 1, 499.5, date_sub(now(), interval 1 day));
 INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create) VALUES (3, 'Câmera de ação e alto desempenho', 'Câmera GoPro Hero', 1, 1506.72, date_sub(now(), interval 2 day));
@@ -18,10 +19,13 @@ INSERT INTO tbl_product_category (product_id, category_id) VALUES (4, 3);
 --
 INSERT INTO tbl_persons (id, col_firstname, col_taxidnumber, col_date_create) VALUES (1, 'Luiz Fernando', '21470959828', date_sub(now(), interval 3 day));
 INSERT INTO tbl_person_detail (person_id, col_birthday, col_gender) VALUES (1, '1958-10-05', 'MALE');
+INSERT INTO tbl_person_phones (person_id, col_number, col_type) VALUES (1, '+55(11)97777-6666', 'M');
 INSERT INTO tbl_persons (id, col_firstname, col_taxidnumber, col_date_create) VALUES(2, 'João Marcos', '54254667817', date_sub(now(), interval 4 day));
 INSERT INTO tbl_person_detail (person_id, col_birthday, col_gender) VALUES (2, '1974-05-17', 'MALE');
+INSERT INTO tbl_person_phones (person_id, col_number, col_type) VALUES (2, '(049)9 4444-3333', 'H');
 INSERT INTO tbl_persons (id, col_firstname, col_taxidnumber, col_date_create) VALUES(3, 'Maria Paula', '53558795008', date_sub(now(), interval 8 day));
 INSERT INTO tbl_person_detail (person_id, col_birthday, col_gender) VALUES (3, '1963-08-21', 'FEMALE');
+INSERT INTO tbl_person_phones (person_id, col_number, col_type) VALUES (3, '+55(011)3232-4545', 'W');
 --
 INSERT INTO tbl_orders (id, col_date_create, col_date_update, col_execution_date, col_status, col_total, person_id) VALUES(1, date_sub(now(), interval 5 day), null, null, 1, 2006.22, 1);
 INSERT INTO tbl_order_items (col_quantity, col_subtotal, order_id, product_id) VALUES (1, 499.5, 1, 1);

@@ -7,6 +7,7 @@ import com.algaworks.ecommerce.model.enums.PaymentStatus;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
@@ -24,7 +25,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = "order")
 @Entity
 @Table(name = "tbl_payments")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -32,7 +33,8 @@ public abstract class Payment extends BaseEntityLong implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@MapsId
-	@OneToOne(optional = false, cascade = CascadeType.REMOVE)
+	@OneToOne(optional = false, fetch = FetchType.LAZY,
+		cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "order_id", nullable = false,
 		foreignKey = @ForeignKey(name = "fk_payments__order_id"))
 	private Order order;

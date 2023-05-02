@@ -57,15 +57,15 @@ class ElementCollectionsTest extends EntityManagerTest {
 		entityManager.getTransaction().begin();
 		
 		Person person = entityManager.find(Person.class, 1L);
-		person.setPhones(Collections.singletonMap("mobile", "123456789"));
+		person.setPhones(Collections.singletonMap('H', "(085)5665-7899"));
 		
 		entityManager.getTransaction().commit();
 		
 		entityManager.clear();
 		
 		Person findPerson = entityManager.find(Person.class, person.getId());
-		assertEquals(person.getPhones().get("mobile"),
-			findPerson.getPhones().get("mobile"));
+		assertEquals(person.getPhones().get('H'),
+			findPerson.getPhones().get('H'));
 		
 	}
 	

@@ -57,7 +57,7 @@ public class Person extends BaseEntityLong implements Serializable {
 	@Column(name = "col_birthday", table = "tbl_person_detail")
 	private LocalDate birthday;
 	
-	@Column(name = "col_gender", table = "tbl_person_detail")
+	@Column(name = "col_gender", table = "tbl_person_detail", length = 6)
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
 	
@@ -71,8 +71,9 @@ public class Person extends BaseEntityLong implements Serializable {
 	@CollectionTable(name = "tbl_person_phones",
 		joinColumns = @JoinColumn(name = "person_id",
 			foreignKey = @ForeignKey(name = "fk_personphone__person_id")))
-	@MapKeyColumn(name = "col_type")
-	@Column(name = "col_number")
-	private Map<String, String> phones;
+	@MapKeyColumn(name = "col_type", columnDefinition = "char(1)",
+		nullable = false)
+	@Column(name = "col_number", length = 20, nullable = false)
+	private Map<Character, String> phones;
 	
 }
