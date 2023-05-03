@@ -1,0 +1,1 @@
+CREATE function calc_average_invoicing(value double) returns BOOLEAN reads sql data return value > (select avg(col_total) from tbl_orders);

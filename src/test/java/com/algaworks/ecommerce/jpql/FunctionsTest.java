@@ -11,7 +11,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import com.algaworks.ecommerce.EntityManagerTest;
-import com.algaworks.ecommerce.model.Order;
 
 import jakarta.persistence.TypedQuery;
 
@@ -29,6 +28,22 @@ class FunctionsTest extends EntityManagerTest {
 		
 		resultList.forEach(
 			i -> logger.log(Level.INFO, i[0] + " - " + i[1] + " - " + i[2]));
+	}
+	
+	@ParameterizedTest
+	@ValueSource(strings = { "select avg(o.total) from Order o",
+		"select count(o) from Order o", "select min(o.total) from Order o",
+		"select max(o.total) from Order o",
+		"select sum(o.total) from Order o" })
+	void applyFunctionAggregation(String jpql) {
+		// avg, count, min, max, sum
+		TypedQuery<?> tpq = entityManager.createQuery(jpql, Object.class);
+		List<?> list = tpq.getResultList();
+		
+		assertFalse(list.isEmpty());
+		
+		list.forEach(i -> logger.log(Level.INFO, "{0}", i.toString()));
+		
 	}
 	
 	@ParameterizedTest
@@ -73,11 +88,11 @@ class FunctionsTest extends EntityManagerTest {
 	
 	@Test
 	void applyFunctionCollection() {
-		String jpql = "select size(o.orderitems) from Order o where size(o.orderitems) > 1";
+		String jpql = "select size(o.orderitems) from Order o where size(o.orderitems) >= 1";
 		
-		TypedQuery<Integer> typedQuery = entityManager.createQuery(jpql,
-			Integer.class);
-		List<Integer> resultList = typedQuery.getResultList();
+		TypedQuery<Number> typedQuery = entityManager.createQuery(jpql,
+			Number.class);
+		List<Number> resultList = typedQuery.getResultList();
 		
 		assertFalse(resultList.isEmpty());
 		
@@ -85,17 +100,27 @@ class FunctionsTest extends EntityManagerTest {
 		
 	}
 	
-	@Test
-	void applyFunctionNative() {
-		String jpql = "select o from Order o where function('calc_average_invoicing', o.total) = 1";
+	@ParameterizedTest
+	@ValueSource(strings = {
+		"select o from Order o where function('calc_average_invoicing', o.total) = 1",
+		"select function('dayname', o.dateCreate) from Order o where function('calc_average_invoicing', o.total) = 1" })
+	void applyFunctionNative(String jpql) {
+		/**
+		 * CREATE FUNCTION calc_average_invoicing(value double) RETURNS BOOLEAN
+		 * READS SQL DATA RETURN value > (select avg(col_total) from
+		 * tbl_orders);
+		 * 
+		 * select dayname(o.col_date_create) as result from tbl_orders as o
+		 * where calc_average_invoicing(o.col_total) = 1;
+		 */
 		
-		TypedQuery<Order> typedQuery = entityManager.createQuery(jpql,
-			Order.class);
-		List<Order> resultList = typedQuery.getResultList();
+		TypedQuery<?> typedQuery = entityManager.createQuery(jpql,
+			Object.class);
+		List<?> resultList = typedQuery.getResultList();
 		
 		assertFalse(resultList.isEmpty());
 		
-		resultList.forEach(i -> logger.log(Level.INFO, "{0}", i.getClass()));
+		resultList.forEach(i -> logger.log(Level.INFO, "{0}", i.toString()));
 	}
 	
 }
