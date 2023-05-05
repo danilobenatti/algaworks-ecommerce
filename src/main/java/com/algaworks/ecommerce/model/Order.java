@@ -44,7 +44,8 @@ public class Order extends BaseEntityLong implements Serializable {
 	@Column(name = "col_execution_date", columnDefinition = "timestamp")
 	private LocalDateTime executionDate;
 	
-	@OneToOne(mappedBy = "order", cascade = CascadeType.REMOVE)
+	@OneToOne(mappedBy = "order", fetch = FetchType.LAZY,
+		cascade = CascadeType.REMOVE)
 	private Invoice invoice;
 	
 	@Column(name = "col_total", nullable = false)

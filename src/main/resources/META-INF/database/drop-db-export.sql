@@ -88,3 +88,5 @@
     drop table if exists tbl_product_tag;
 
     drop table if exists tbl_products;
+
+    DROP function if EXISTS calc_average_invoicing;

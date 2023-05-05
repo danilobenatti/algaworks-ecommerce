@@ -8,8 +8,8 @@ import com.algaworks.ecommerce.exception.FileNotFoundException;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.MapsId;
@@ -27,15 +27,18 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "tbl_invoices")
-public class Invoice extends BaseEntityLong implements Serializable {
+public class Invoice implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	@Id
 	@EqualsAndHashCode.Include
+	private Long id;
+	
+	@OneToOne
 	@MapsId
-	@OneToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name = "order_id", nullable = false,
 		foreignKey = @ForeignKey(name = "fk_invoice__order_id"))
 	private Order order;

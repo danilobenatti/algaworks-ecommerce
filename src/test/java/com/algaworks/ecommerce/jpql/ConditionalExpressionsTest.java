@@ -97,7 +97,7 @@ class ConditionalExpressionsTest extends EntityManagerTest {
 		
 		TypedQuery<Order> typedQuery = entityManager.createQuery(jpql,
 			Order.class);
-		typedQuery.setParameter("date", LocalDateTime.now().minusDays(7));
+		typedQuery.setParameter("date", LocalDateTime.now().minusYears(1));
 		
 		List<Order> resultList = typedQuery.getResultList();
 		assertFalse(resultList.isEmpty());
@@ -124,7 +124,7 @@ class ConditionalExpressionsTest extends EntityManagerTest {
 		
 		TypedQuery<Order> typedQuery = entityManager.createQuery(jpql,
 			Order.class);
-		typedQuery.setParameter("start", LocalDateTime.now().minusDays(7));
+		typedQuery.setParameter("start", LocalDateTime.now().minusYears(1));
 		typedQuery.setParameter("end", LocalDateTime.now());
 		
 		List<Order> resultList = typedQuery.getResultList();
