@@ -37,7 +37,9 @@ public class Category extends BaseEntityLong implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "parent_category_id",
-		foreignKey = @ForeignKey(name = "fk_category__category_id"))
+		foreignKey = @ForeignKey(name = "fk_category__category_id",
+			foreignKeyDefinition = "foreign key (parent_category_id) "
+				+ "references tbl_categories(id) on delete cascade"))
 	private Category parentCategory;
 	
 	@OneToMany(mappedBy = "parentCategory", fetch = FetchType.LAZY)

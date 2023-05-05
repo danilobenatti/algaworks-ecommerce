@@ -15,7 +15,7 @@ class LogicalOperatorsTest extends EntityManagerTest {
 	
 	@Test
 	void usingOperatorsAnd() {
-		String jpql = "select o from Order o where o.total > 100 and o.status = 1 and o.person = 1";
+		String jpql = "select o from Order o where o.total > 100 and o.status = 1 and o.person.id = 1";
 		
 		TypedQuery<Order> typedQuery = entityManager.createQuery(jpql,
 			Order.class);

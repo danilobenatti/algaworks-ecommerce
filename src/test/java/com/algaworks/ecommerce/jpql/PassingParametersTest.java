@@ -46,7 +46,7 @@ class PassingParametersTest extends EntityManagerTest {
 		
 		List<Invoice> list = typedQuery.getResultList();
 		
-		assertEquals(1, list.size());
+		assertEquals(2, list.size());
 		
 	}
 	

@@ -8,6 +8,7 @@ import com.algaworks.ecommerce.exception.FileNotFoundException;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
@@ -34,7 +35,7 @@ public class Invoice extends BaseEntityLong implements Serializable {
 	
 	@EqualsAndHashCode.Include
 	@MapsId
-	@OneToOne(optional = false)
+	@OneToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name = "order_id", nullable = false,
 		foreignKey = @ForeignKey(name = "fk_invoice__order_id"))
 	private Order order;
