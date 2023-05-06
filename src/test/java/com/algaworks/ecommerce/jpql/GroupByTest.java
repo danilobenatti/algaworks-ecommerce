@@ -57,8 +57,8 @@ class GroupByTest extends EntityManagerTest {
 			+ "where year(o.dateCreate) = year(current_date) and month(o.dateCreate) = month(current_date) "
 			+ "group by c.id",
 		"select p.firstname, sum(o.total) from Order o join o.person p "
-			+ "where year(o.dateCreate) = year(current_date) and month(o.dateCreate) >= (month(current_date) - 3)"
-			+ "group by p.id " })
+			+ "where year(o.dateCreate) = year(current_date) and month(o.dateCreate) >= (month(current_date) - 3) "
+			+ "group by p.id" })
 	void groupAndFilterResult(String jpql) {
 		// total of sales by month into last year and status 1 (Waiting)
 		// total of sales by category into last year and last month
@@ -73,6 +73,23 @@ class GroupByTest extends EntityManagerTest {
 		resultList.forEach(i -> logger.log(Level.INFO, "{0}",
 			String.format("%s, %s", i[0], i[1].toString())));
 		
+	}
+	
+	@ParameterizedTest
+	@ValueSource(strings = {
+		"select c.name, sum(i.subtotal) from OrderItem i join i.product p join p.categories c "
+			+ "group by c.id having sum(i.subtotal) > 1000" })
+	void conditionGroupingWithHaving(String jpql) {
+		// total sales in top selling categories
+		TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql,
+			Object[].class);
+		
+		List<Object[]> resultList = typedQuery.getResultList();
+		
+		assertFalse(resultList.isEmpty());
+		
+		resultList.forEach(i -> logger.log(Level.INFO, "{0}",
+			String.format("%s, %s", i[0], i[1].toString())));
 	}
 	
 }
