@@ -1,21 +1,26 @@
 package com.algaworks.ecommerce.jpql;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import com.algaworks.ecommerce.EntityManagerTest;
-import com.algaworks.ecommerce.model.Order;
 import com.algaworks.ecommerce.model.Product;
 
 import jakarta.persistence.TypedQuery;
 
 class ConditionalExpressionsTest extends EntityManagerTest {
+	
+	static Logger logger = Logger
+		.getLogger(ConditionalExpressionsTest.class.getName());
 	
 	@Test
 	void usingCondicionalExpressionLike() {
@@ -30,21 +35,7 @@ class ConditionalExpressionsTest extends EntityManagerTest {
 		
 	}
 	
-	@Test
-	void usingIsNotNull() {
-		String jpql = "select p from Product p where p.image is not null";
-		
-		TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql,
-			Object[].class);
-		
-		List<Object[]> resultList = typedQuery.getResultList();
-		assertTrue(resultList.isEmpty());
-		
-	}
-	
-	void exec(String str) {
-		String jpql = str;
-		
+	void test(String jpql) {
 		TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql,
 			Object[].class);
 		
@@ -52,29 +43,18 @@ class ConditionalExpressionsTest extends EntityManagerTest {
 		assertFalse(resultList.isEmpty());
 	}
 	
-	@Test
-	void usingIsNull() {
-		exec("select p from Product p where p.image is null");
-	}
-	
-	@Test
-	void usingIsEmpty() {
-		/**
-		 * select * from tbl_products as p left join tbl_product_category as pc
-		 * on p.id = pc.product_id where category_id is null;
-		 */
-		exec("select p from Product p where p.categories is empty");
-	}
-	
-	@Test
-	void usingIsNotEmpty() {
-		/**
-		 * select * from tbl_products as p join tbl_product_category as pc on
-		 * p.id = pc.product_id where category_id is not null or category_id =
-		 * '' order by id;
-		 */
-		exec(
-			"select p from Product p where p.categories is not empty order by p.id");
+	@ParameterizedTest
+	@ValueSource(strings = {
+		"select p from Product p where p.image is not null",
+		"select p from Product p where p.image is null",
+		"select p from Product p where p.categories is empty",
+		"select p from Product p where p.categories is not empty order by p.id" })
+	void using(String jpql) {
+		// using IsNotNull
+		// using IsNull
+		// using IsEmpty
+		// using IsNotEmpty
+		test(jpql);
 	}
 	
 	@Test
@@ -95,11 +75,11 @@ class ConditionalExpressionsTest extends EntityManagerTest {
 	void usingGreaterMinorWithDate() {
 		String jpql = "select o from Order o where o.dateCreate >= :date";
 		
-		TypedQuery<Order> typedQuery = entityManager.createQuery(jpql,
-			Order.class);
+		TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql,
+			Object[].class);
 		typedQuery.setParameter("date", LocalDateTime.now().minusYears(1));
 		
-		List<Order> resultList = typedQuery.getResultList();
+		List<Object[]> resultList = typedQuery.getResultList();
 		assertFalse(resultList.isEmpty());
 		
 	}
@@ -122,12 +102,12 @@ class ConditionalExpressionsTest extends EntityManagerTest {
 	void usingBetweenOrders() {
 		String jpql = "select o from Order o where o.dateCreate between :start and :end";
 		
-		TypedQuery<Order> typedQuery = entityManager.createQuery(jpql,
-			Order.class);
+		TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql,
+			Object[].class);
 		typedQuery.setParameter("start", LocalDateTime.now().minusYears(1));
 		typedQuery.setParameter("end", LocalDateTime.now());
 		
-		List<Order> resultList = typedQuery.getResultList();
+		List<Object[]> resultList = typedQuery.getResultList();
 		assertFalse(resultList.isEmpty());
 		
 	}
@@ -142,5 +122,37 @@ class ConditionalExpressionsTest extends EntityManagerTest {
 		
 		assertFalse(list.isEmpty());
 		
+	}
+	
+	@ParameterizedTest
+	@ValueSource(strings = { "select o.id, case o.status "
+		+ "when 1 then 'Processing' when 2 then 'Canceled' when 3 then 'Received' "
+		+ "else 'Order Status undefined' end from Order o",
+		"select o.id, case type(o.payment) when PaymentCreditCard then 'Credit Card payment' "
+			+ "when PaymentBankSlip then 'Bank Slip payment' "
+			+ "else 'Payment undefined' end from Order o" })
+	void usingCaseExpression(String jpql) {
+		/*
+		 * first case: select o.id, case o.col_status when 1 then 'Processing'
+		 * when 2 then 'Canceled' when 3 then 'Received' else 'Order Status
+		 * undefined' end as 'status' from tbl_orders o;
+		 * 
+		 * select o.id as order_id, case o.id when pb.order_id then 'Bank Slip
+		 * payment' when pc.order_id then 'Credit Card payment' else 'Payment
+		 * undefined' end as 'payment' from tbl_orders o left join tbl_payments
+		 * p on p.order_id = o.id left join tbl_payments_bankslip pb on
+		 * pb.order_id = p.order_id left join tbl_payments_creditcard pc on
+		 * pc.order_id = p.order_id;
+		 * 
+		 */
+		
+		TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql,
+			Object[].class);
+		
+		List<Object[]> resultList = typedQuery.getResultList();
+		assertFalse(resultList.isEmpty());
+		
+		resultList.forEach(i -> logger.log(Level.INFO, "{0}",
+			String.format("%s, %s", i[0], i[1])));
 	}
 }

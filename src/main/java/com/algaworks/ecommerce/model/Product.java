@@ -7,6 +7,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
+
 import com.algaworks.ecommerce.exception.FileNotFoundException;
 import com.algaworks.ecommerce.listener.GenericListener;
 import com.algaworks.ecommerce.model.enums.ProductUnit;
@@ -72,11 +74,11 @@ public class Product extends BaseEntityLong implements Serializable {
 		cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinTable(name = "tbl_product_category",
 		joinColumns = @JoinColumn(name = "product_id",
-			foreignKey = @ForeignKey(name = "fk_productcategory__product_id",
+			foreignKey = @ForeignKey(name = "fk_product_category__product_id",
 				foreignKeyDefinition = "foreign key (product_id)"
 					+ " references tbl_products(id) on delete cascade")),
 		inverseJoinColumns = @JoinColumn(name = "category_id",
-			foreignKey = @ForeignKey(name = "fk_productcategory__category_id",
+			foreignKey = @ForeignKey(name = "fk_product_category__category_id",
 				foreignKeyDefinition = "foreign key (category_id)"
 					+ " references tbl_categories(id) on delete cascade")))
 	private Set<Category> categories;
@@ -87,23 +89,30 @@ public class Product extends BaseEntityLong implements Serializable {
 	@ElementCollection
 	@CollectionTable(name = "tbl_product_tag",
 		joinColumns = @JoinColumn(name = "product_id",
-			foreignKey = @ForeignKey(name = "fk_producttag__product_id")))
+			foreignKey = @ForeignKey(name = "fk_product_tag__product_id")))
 	@Column(name = "col_tag", length = 50, nullable = false)
 	private List<String> tags;
 	
 	@ElementCollection
-	@CollectionTable(name = "tbl_product_attribute",
-		joinColumns = @JoinColumn(name = "product_id",
-			foreignKey = @ForeignKey(name = "fk_productattribute__product_id")))
+	@CollectionTable(name = "tbl_product_attribute", joinColumns = @JoinColumn(
+		name = "product_id",
+		foreignKey = @ForeignKey(name = "fk_product_attribute__product_id")))
 	private List<Attribute> attributes;
+	
+	@ElementCollection
+	@CollectionTable(name = "tbl_product_image",
+		joinColumns = @JoinColumn(name = "product_id",
+			foreignKey = @ForeignKey(name = "fk_product_image__product_id")))
+//				foreignKeyDefinition = "foreign key (product_id) "
+//					+ "references tbl_products(id) on delete cascade")))
+	private List<Image> images;
 	
 	@Column(name = "col_image", length = 5242880) // 5242880 Bytes = 5MB
 	private byte[] image;
 	
-	public static byte[] uploadImage(File file) {
+	public static byte[] getByteArrayFromFile(File file) {
 		try {
-			return Product.class.getResourceAsStream(file.getName())
-				.readAllBytes();
+			return FileUtils.readFileToByteArray(file);
 		} catch (IOException ex) {
 			throw new FileNotFoundException("File not found.", ex);
 		}

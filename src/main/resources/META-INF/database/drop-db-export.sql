@@ -41,15 +41,19 @@
 
     alter table tbl_product_attribute 
        drop 
-       foreign key fk_productattribute__product_id;
+       foreign key fk_product_attribute__product_id;
 
     alter table tbl_product_category 
        drop 
-       foreign key fk_productcategory__category_id;
+       foreign key fk_product_category__category_id;
 
     alter table tbl_product_category 
        drop 
-       foreign key fk_productcategory__product_id;
+       foreign key fk_product_category__product_id;
+
+    alter table tbl_product_image 
+       drop 
+       foreign key fk_product_image__product_id;
 
     alter table tbl_product_stocks 
        drop 
@@ -57,7 +61,7 @@
 
     alter table tbl_product_tag 
        drop 
-       foreign key fk_producttag__product_id;
+       foreign key fk_product_tag__product_id;
 
     drop table if exists tbl_categories;
 
@@ -82,6 +86,8 @@
     drop table if exists tbl_product_attribute;
 
     drop table if exists tbl_product_category;
+
+    drop table if exists tbl_product_image;
 
     drop table if exists tbl_product_stocks;
 

@@ -17,6 +17,17 @@ class GroupByTest extends EntityManagerTest {
 	
 	static Logger logger = Logger.getLogger(GroupByTest.class.getName());
 	
+	private void test(String jpql) {
+		TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql,
+			Object[].class);
+		
+		List<Object[]> resultList = typedQuery.getResultList();
+		assertFalse(resultList.isEmpty());
+		
+		resultList.forEach(i -> logger.log(Level.INFO, "{0}",
+			String.format("%s, %s", i[0], i[1].toString())));
+	}
+	
 	// concat(year(o.dateCreate), ', ',monthname(o.dateCreate))
 	
 	@ParameterizedTest
@@ -32,19 +43,7 @@ class GroupByTest extends EntityManagerTest {
 			+ "group by year(o.dateCreate), month(o.dateCreate), day(o.dateCreate), c.id "
 			+ "order by o.dateCreate, c.name" })
 	void groupResult(String jpql) {
-		// quantity of products by category
-		// total of sales by month
-		// total of sales by category
-		// total of sales by person
-		// total of sales by day and category -> chalenge code
-		TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql,
-			Object[].class);
-		List<Object[]> resultList = typedQuery.getResultList();
-		
-		assertFalse(resultList.isEmpty());
-		
-		resultList.forEach(i -> logger.log(Level.INFO, "{0}",
-			String.format("%s, %s", i[0], i[1].toString())));
+		test(jpql);
 		
 	}
 	
@@ -60,18 +59,7 @@ class GroupByTest extends EntityManagerTest {
 			+ "where year(o.dateCreate) = year(current_date) and month(o.dateCreate) >= (month(current_date) - 3) "
 			+ "group by p.id" })
 	void groupAndFilterResult(String jpql) {
-		// total of sales by month into last year and status 1 (Waiting)
-		// total of sales by category into last year and last month
-		// total of sales by person in the last 3 months
-		TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql,
-			Object[].class);
-		
-		List<Object[]> resultList = typedQuery.getResultList();
-		
-		assertFalse(resultList.isEmpty());
-		
-		resultList.forEach(i -> logger.log(Level.INFO, "{0}",
-			String.format("%s, %s", i[0], i[1].toString())));
+		test(jpql);
 		
 	}
 	
@@ -81,15 +69,7 @@ class GroupByTest extends EntityManagerTest {
 			+ "group by c.id having sum(i.subtotal) > 1000" })
 	void conditionGroupingWithHaving(String jpql) {
 		// total sales in top selling categories
-		TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql,
-			Object[].class);
-		
-		List<Object[]> resultList = typedQuery.getResultList();
-		
-		assertFalse(resultList.isEmpty());
-		
-		resultList.forEach(i -> logger.log(Level.INFO, "{0}",
-			String.format("%s, %s", i[0], i[1].toString())));
+		test(jpql);
 	}
 	
 }
