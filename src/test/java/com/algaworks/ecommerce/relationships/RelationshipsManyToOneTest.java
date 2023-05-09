@@ -1,7 +1,7 @@
 package com.algaworks.ecommerce.relationships;
 
-import static com.algaworks.ecommerce.model.Image.validFileExtension;
-import static com.algaworks.ecommerce.model.Product.getByteArrayFromFile;
+import static com.algaworks.ecommerce.util.UpLoadFiles.getByteArrayFromFile;
+import static com.algaworks.ecommerce.util.UpLoadFiles.validFileExtension;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;

@@ -4,7 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,6 +17,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import com.algaworks.ecommerce.EntityManagerTest;
+import com.algaworks.ecommerce.model.Order;
+import com.algaworks.ecommerce.model.Person;
 import com.algaworks.ecommerce.model.Product;
 
 import jakarta.persistence.TypedQuery;
@@ -155,4 +161,45 @@ class ConditionalExpressionsTest extends EntityManagerTest {
 		resultList.forEach(i -> logger.log(Level.INFO, "{0}",
 			String.format("%s, %s", i[0], i[1])));
 	}
+	
+	@ParameterizedTest
+	@ValueSource(strings = {
+		"select o.id, o.status from Order o where o.id in (:list)" })
+	void usingInExpression(String jpql) {
+		TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql,
+			Object[].class);
+//		List<Long> list = Arrays.asList(1L, 2L, 3L, 4L);
+		Set<Long> list = new HashSet<>();
+		Collections.addAll(list, 1L, 2L, 3L, 4L);
+		typedQuery.setParameter("list", list);
+		
+		List<Object[]> resultList = typedQuery.getResultList();
+		assertFalse(resultList.isEmpty());
+		
+		resultList.forEach(i -> logger.log(Level.INFO, "{0}",
+			String.format("%s, %s", i[0], i[1])));
+	}
+	
+	@ParameterizedTest
+	@ValueSource(strings = {
+		"select o from Order o where o.person in (:list) order by o.person.id" })
+	void usingInExpression2(String jpql) {
+		Person p1 = entityManager.find(Person.class, 1L);
+		Person p2 = entityManager.find(Person.class, 2L);
+		Person p3 = entityManager.find(Person.class, 3L);
+		List<Person> persons = Arrays.asList(p1, p2, p3);
+//		Set<Person> persons = new HashSet<>();
+//		Collections.addAll(persons, p1, p2, p3);
+		
+		TypedQuery<Order> typedQuery = entityManager.createQuery(jpql,
+			Order.class);
+		typedQuery.setParameter("list", persons);
+		
+		List<Order> resultList = typedQuery.getResultList();
+		assertFalse(resultList.isEmpty());
+		
+		resultList.forEach(o -> logger.log(Level.INFO, "{0}",
+			String.format("%s, %s", o.getId(), o.getPerson().getFirstname())));
+	}
+	
 }

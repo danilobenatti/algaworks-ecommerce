@@ -1,8 +1,6 @@
 package com.algaworks.ecommerce.model;
 
-import java.io.File;
 import java.io.Serializable;
-import java.util.Optional;
 
 import com.algaworks.ecommerce.model.enums.ImageExtension;
 
@@ -29,19 +27,5 @@ public class Image implements Serializable {
 	
 	@Column(name = "col_extension")
 	private ImageExtension extension;
-	
-	public static ImageExtension validFileExtension(File file) {
-		Optional<String> extension = Optional.ofNullable(file.getName())
-			.filter(f -> f.contains("."))
-			.map(f -> f.substring(file.getName().lastIndexOf(".") + 1));
-		if (extension.isPresent()) {
-			for (ImageExtension ext : ImageExtension.values()) {
-				if (ext.getValue().equalsIgnoreCase(extension.get())) {
-					return ext;
-				}
-			}
-		}
-		return null;
-	}
 	
 }

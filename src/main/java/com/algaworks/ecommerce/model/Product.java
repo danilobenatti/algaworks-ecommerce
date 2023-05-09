@@ -1,15 +1,10 @@
 package com.algaworks.ecommerce.model;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.io.FileUtils;
-
-import com.algaworks.ecommerce.exception.FileNotFoundException;
 import com.algaworks.ecommerce.listener.GenericListener;
 import com.algaworks.ecommerce.model.enums.ProductUnit;
 
@@ -109,14 +104,6 @@ public class Product extends BaseEntityLong implements Serializable {
 	
 	@Column(name = "col_image", length = 5242880) // 5242880 Bytes = 5MB
 	private byte[] image;
-	
-	public static byte[] getByteArrayFromFile(File file) {
-		try {
-			return FileUtils.readFileToByteArray(file);
-		} catch (IOException ex) {
-			throw new FileNotFoundException("File not found.", ex);
-		}
-	}
 	
 	public ProductUnit getUnit() {
 		return ProductUnit.toEnum(this.unit);

@@ -1,5 +1,6 @@
 package com.algaworks.ecommerce.relationships;
 
+import static com.algaworks.ecommerce.util.UpLoadFiles.getByteArrayFromFile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -55,7 +56,7 @@ class RelationshipsOneToOneTest extends EntityManagerTest {
 	@Test
 	void verifyOneToOneRelationshipProductStockTest() {
 		Product product = entityManager.find(Product.class, 3L);
-		product.setImage(Product.getByteArrayFromFile(
+		product.setImage(getByteArrayFromFile(
 			new File("./src/main/resources/img/gopro_hero.jpg")));
 		ProductStock stock = new ProductStock();
 		stock.setProduct(product);
