@@ -117,4 +117,22 @@ class BasicJPQLTest extends EntityManagerTest {
 		
 	}
 	
+	@Test
+	void usingDistinct() {
+		String jpql = "select distinct o from Order o join o.orderitems i "
+			+ "join i.product p where p.id in (1, 3, 4, 5, 6)";
+		
+		TypedQuery<Order> typedQuery = entityManager.createQuery(jpql,
+			Order.class);
+		List<Order> list = typedQuery.getResultList();
+		
+		assertFalse(list.isEmpty());
+		
+		logger.log(Level.INFO, "{0}", list.size());
+		
+		list.forEach(o -> logger.log(Level.INFO, "{0}", String.format(
+			"Order: %d, Total: %.2f", o.getId(), o.getTotal().floatValue())));
+		
+	}
+	
 }
