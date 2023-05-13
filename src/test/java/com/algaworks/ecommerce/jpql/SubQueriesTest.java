@@ -101,11 +101,26 @@ class SubQueriesTest extends EntityManagerTest {
 			+ "(select count(o) from Order o where person = p) >= 2",
 		"select p1 from Product p1 where exists "
 			+ "(select i2.product from OrderItem i2 "
-			+ "where i2.product = p1 and i2.subtotal/i2.quantity <> p1.unitPrice)" })
+			+ "where i2.product = p1 and i2.subtotal/i2.quantity <> p1.unitPrice)",
+		"select p1 from Product p1 where p1.unitPrice = all "
+			+ "(select i2.subtotal/i2.quantity from OrderItem i2 where i2.product = p1)",
+		"select p1 from Product p1 where p1.unitPrice > all "
+			+ "(select i2.subtotal/i2.quantity from OrderItem i2 where i2.product = p1)",
+		"select p1 from Product p1 where p1.unitPrice = any "
+			+ "(select i2.subtotal/i2.quantity from OrderItem i2 where i2.product = p1)",
+		"select p1 from Product p1 where p1.unitPrice <> any " // some
+			+ "(select i2.subtotal/i2.quantity from OrderItem i2 where i2.product = p1)",
+		"select distinct p1 from OrderItem i1 join i1.product p1 where i1.product.unitPrice = all"
+			+ "(select i2.product.unitPrice from OrderItem i2 where i2.product = p1 and i2.id <> i1.id)" })
 	void exercises(String jpql) {
-		// Find all orders that have a specific product.
-		// Find all persons who placed two or more orders.
-		// Find all products not sold for the current unit price.
+		// Find orders that have a specific product.
+		// Find persons who placed two or more orders.
+		// Find products not sold for the current unit price.
+		// Find products that have always sold at the current price. [ALL]
+		// Find products that have not sold after the price increased. [ALL]
+		// Find products sold at least once at the current price. [ANY]
+		// Find products sold at a price different from the current price. [ANY]
+		// Find products that are always sold at the same price.
 		
 		TypedQuery<Object> typedQuery = entityManager.createQuery(jpql,
 			Object.class);
@@ -131,4 +146,5 @@ class SubQueriesTest extends EntityManagerTest {
 			default -> object.toString();
 		};
 	}
+	
 }
