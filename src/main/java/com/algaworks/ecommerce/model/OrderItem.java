@@ -85,6 +85,8 @@ public class OrderItem implements Serializable {
 	
 	@PreUpdate
 	public void itemUpdate() {
-		setSubtotal();
+		if (!this.quantity.equals(getQuantity())) {
+			setSubtotal();
+		}
 	}
 }
