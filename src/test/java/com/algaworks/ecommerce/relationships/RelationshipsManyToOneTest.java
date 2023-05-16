@@ -1,7 +1,7 @@
 package com.algaworks.ecommerce.relationships;
 
 import static com.algaworks.ecommerce.util.UpLoadFiles.getByteArrayFromFile;
-import static com.algaworks.ecommerce.util.UpLoadFiles.validFileExtension;
+import static com.algaworks.ecommerce.util.UpLoadFiles.getImageExtension;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
@@ -26,19 +26,21 @@ class RelationshipsManyToOneTest extends EntityManagerTest {
 		Product product1 = entityManager.find(Product.class, 1L);
 		Product product3 = entityManager.find(Product.class, 3L);
 		
-		File imgP1 = new File("./src/main/resources/img/kindle_paperwhite.jpg");
-		File imgP3 = new File("./src/main/resources/img/gopro_hero.jpg");
+		File imgP1 = new File(getClass().getClassLoader()
+			.getResource("img/kindle_paperwhite.jpg").getFile());
+		File imgP3 = new File(getClass().getClassLoader()
+			.getResource("img/gopro_hero.jpg").getFile());
 		
 		product1.setImage(getByteArrayFromFile(imgP1));
 		
 		Image img1 = new Image(imgP1.getName(), getByteArrayFromFile(imgP1),
-			validFileExtension(imgP1));
+			getImageExtension(imgP1));
 		product1.setImages(Arrays.asList(img1));
 		
 		product3.setImage(getByteArrayFromFile(imgP3));
 		
 		Image img3 = new Image(imgP3.getName(), getByteArrayFromFile(imgP3),
-			validFileExtension(imgP3));
+			getImageExtension(imgP3));
 		product3.setImages(Arrays.asList(img3));
 		
 		Order order = new Order();

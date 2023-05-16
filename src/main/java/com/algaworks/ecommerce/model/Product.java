@@ -21,6 +21,8 @@ import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -36,6 +38,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@NamedQueries({
+	@NamedQuery(name = "Product.listAll", query = "select p from Product p"),
+	@NamedQuery(name = "Product.listByCategory",
+		query = "select p1 from Product p1 where exists (select 1 from Category c2 "
+			+ "join c2.products p2 where p2 = p1 and c2.id = :category)") })
 @EntityListeners({ GenericListener.class })
 @Entity
 @Table(name = "tbl_products",

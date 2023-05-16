@@ -31,7 +31,7 @@ public class UpLoadFiles {
 		}
 	}
 	
-	public static ImageExtension validFileExtension(File file) {
+	public static ImageExtension getImageExtension(File file) {
 		Optional<String> extension = Optional.ofNullable(file.getName())
 			.filter(f -> f.contains("."))
 			.map(f -> f.substring(file.getName().lastIndexOf(".") + 1));
@@ -45,7 +45,7 @@ public class UpLoadFiles {
 		return null;
 	}
 	
-	public static List<String> getStreamFromTxt(File file) {
+	public static List<String> getStreamFromFile(File file) {
 		try (BufferedReader reader = Files.newBufferedReader(file.toPath(),
 			StandardCharsets.UTF_8)) {
 			return reader.lines().toList();
@@ -55,7 +55,7 @@ public class UpLoadFiles {
 	}
 	
 	public static List<Product> getProductsFromFile(File file) {
-		List<String> stream = getStreamFromTxt(file);
+		List<String> stream = getStreamFromFile(file);
 		List<Product> list = new ArrayList<>();
 		if (stream != null) {
 			for (String line : stream) {

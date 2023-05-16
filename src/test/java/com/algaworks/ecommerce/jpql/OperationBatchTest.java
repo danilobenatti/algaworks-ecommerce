@@ -1,6 +1,5 @@
 package com.algaworks.ecommerce.jpql;
 
-import static com.algaworks.ecommerce.util.UpLoadFiles.getProductsFromFile;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -19,6 +18,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.Product;
+import com.algaworks.ecommerce.util.UpLoadFiles;
 
 import jakarta.persistence.Query;
 
@@ -31,9 +31,9 @@ class OperationBatchTest extends EntityManagerTest {
 	
 	@Test
 	void batchInsert() {
-		File file = new File(
-			"./src/main/resources/META-INF/database/import_products.txt");
-		List<Product> listNewProducts = getProductsFromFile(file);
+		File file = new File(getClass().getClassLoader()
+			.getResource("files/import_products.txt").getFile());
+		List<Product> listNewProducts = UpLoadFiles.getProductsFromFile(file);
 		
 		entityManager.getTransaction().begin();
 		if (!listNewProducts.isEmpty()) {
@@ -51,14 +51,19 @@ class OperationBatchTest extends EntityManagerTest {
 		entityManager.getTransaction().commit();
 		
 		List<Long> ids = listNewProducts.stream().map(p -> p.getId()).toList();
-		Product product = entityManager.find(Product.class, ids.get(0));
+		Product p1 = entityManager.find(Product.class, ids.get(0));
+		Product p2 = entityManager.find(Product.class, ids.get(9));
 		
 		NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(
 			new Locale.Builder().setLanguage("pt").setRegion("BR").build());
-		logger.log(Level.INFO, "{0}",
-			String.format("%d - %s, %s", product.getId(), product.getName(),
-				currencyFormat.format(product.getUnitPrice())));
-		assertNotNull(product);
+		
+		logger.log(Level.INFO, "{0}", String.format("%d - %s, %s", p1.getId(),
+			p1.getName(), currencyFormat.format(p1.getUnitPrice())));
+		logger.log(Level.INFO, "{0}", String.format("%d - %s, %s", p2.getId(),
+			p2.getName(), currencyFormat.format(p2.getUnitPrice())));
+		
+		assertNotNull(p1);
+		assertNotNull(p2);
 	}
 	
 	@ParameterizedTest
@@ -92,16 +97,9 @@ class OperationBatchTest extends EntityManagerTest {
 		
 		entityManager.getTransaction().commit();
 		
-		assertNull(entityManager.find(Product.class, 7L));
-		assertNull(entityManager.find(Product.class, 8L));
-		assertNull(entityManager.find(Product.class, 9L));
-		assertNull(entityManager.find(Product.class, 10L));
-		assertNull(entityManager.find(Product.class, 11L));
-		assertNull(entityManager.find(Product.class, 12L));
-		assertNull(entityManager.find(Product.class, 13L));
-		assertNull(entityManager.find(Product.class, 14L));
-		assertNull(entityManager.find(Product.class, 15L));
-		assertNull(entityManager.find(Product.class, 16L));
+		for (int i = 7; i <= 16; i++) {
+			assertNull(entityManager.find(Product.class, i));
+		}
 	}
 	
 }
