@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.Product;
+import com.algaworks.ecommerce.model.Order;
 
 import jakarta.persistence.TypedQuery;
 
@@ -30,6 +31,36 @@ class NamedQueryTest extends EntityManagerTest {
 		typedQuery.setParameter("category", 2L);
 		
 		List<Product> resultList = typedQuery.getResultList();
+		
+		assertFalse(resultList.isEmpty());
+	}
+	
+	@Test
+	void executeQueryXML() {
+		TypedQuery<Order> typedQuery = entityManager
+			.createNamedQuery("Order.list", Order.class);
+		
+		List<Order> resultList = typedQuery.getResultList();
+		
+		assertFalse(resultList.isEmpty());
+	}
+	
+	@Test
+	void executeQueryPaidOrder() {
+		TypedQuery<Order> typedQuery = entityManager
+			.createNamedQuery("Order.listPaid", Order.class);
+		
+		List<Order> resultList = typedQuery.getResultList();
+		
+		assertFalse(resultList.isEmpty());
+	}
+	
+	@Test
+	void executeQueryExpensiveProducts() {
+		TypedQuery<Order> typedQuery = entityManager
+			.createNamedQuery("Product.listValue", Order.class);
+		
+		List<Order> resultList = typedQuery.getResultList();
 		
 		assertFalse(resultList.isEmpty());
 	}

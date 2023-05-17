@@ -41,8 +41,7 @@ import lombok.Setter;
 @NamedQueries({
 	@NamedQuery(name = "Product.listAll", query = "select p from Product p"),
 	@NamedQuery(name = "Product.listByCategory",
-		query = "select p1 from Product p1 where exists (select 1 from Category c2 "
-			+ "join c2.products p2 where p2 = p1 and c2.id = :category)") })
+		query = "select p1 from Product p1 where exists (select 1 from Category c2 join c2.products p2 where p2 = p1 and c2.id = :category)") })
 @EntityListeners({ GenericListener.class })
 @Entity
 @Table(name = "tbl_products",
