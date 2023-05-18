@@ -16,6 +16,7 @@ import com.algaworks.ecommerce.model.Order;
 import com.algaworks.ecommerce.model.Person;
 import com.algaworks.ecommerce.model.Product;
 
+import jakarta.persistence.Tuple;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -110,4 +111,25 @@ class BasicCriteriaTest extends EntityManagerTest {
 		
 		assertFalse(resultList.isEmpty());
 	}
+	
+	@Test
+	void resultProjectionTuple() {
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Tuple> query = builder.createTupleQuery();
+		Root<Product> root = query.from(Product.class);
+		
+		query.select(builder.tuple(root.get("id").alias("id"),
+			root.get("name").alias("name")));
+		
+		// String jpql = "select p.id, p.name from Product p"
+		
+		TypedQuery<Tuple> typedQuery = entityManager.createQuery(query);
+		List<Tuple> resultList = typedQuery.getResultList();
+		
+		resultList.forEach(t -> logger.log(Level.INFO, "{0}",
+			String.format("%s - %s", t.get("id"), t.get("name"))));
+		
+		assertFalse(resultList.isEmpty());
+	}
+	
 }
