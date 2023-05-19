@@ -30,7 +30,8 @@ class JoinTest extends EntityManagerTest {
 	void leftJoin() {
 		String jpql = "select o, p from Order o left join o.payment p on p.status = 1";
 		
-		TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql, Object[].class);
+		TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql,
+			Object[].class);
 		List<Object[]> list = typedQuery.getResultList();
 		
 //		Query query = entityManager.createQuery(jpql, Object[].class);
@@ -42,7 +43,8 @@ class JoinTest extends EntityManagerTest {
 	
 	@Test
 	void useJoinFetch() {
-		String jpql = "select o from Order o left join fetch o.payment join fetch o.person left join fetch o.invoice";
+		String jpql = "select o from Order o left join fetch o.payment "
+			+ "join fetch o.person left join fetch o.invoice";
 		
 		TypedQuery<Order> typedQuery = entityManager.createQuery(jpql,
 			Order.class);
