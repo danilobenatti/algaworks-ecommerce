@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
+import com.algaworks.ecommerce.dto.ProductDTO;
 import com.algaworks.ecommerce.model.Order;
 import com.algaworks.ecommerce.model.Person;
 import com.algaworks.ecommerce.model.Product;
@@ -34,12 +35,11 @@ class BasicCriteriaTest extends EntityManagerTest {
 		
 		query.select(root); // it is implied
 		query.where(builder.equal(root.get("id"), 1L));
-		
-		// String jpql = "select o from Order o where o.id = 1";
-		
+		/*
+		 * String jpql = "select o from Order o where o.id = 1";
+		 */
 		TypedQuery<Order> typedQuery = entityManager.createQuery(query);
 		Order order = typedQuery.getSingleResult();
-		
 		assertNotNull(order);
 	}
 	
@@ -51,12 +51,11 @@ class BasicCriteriaTest extends EntityManagerTest {
 		
 		query.select(root.get("person"));
 		query.where(builder.equal(root.get("id"), 1L));
-		
-		// String jpql = "select o.person from Order o where o.id = 1";
-		
+		/*
+		 * String jpql = "select o.person from Order o where o.id = 1";
+		 */
 		TypedQuery<Person> typedQuery = entityManager.createQuery(query);
 		Person person = typedQuery.getSingleResult();
-		
 		assertEquals("Luiz Fernando", person.getFirstname());
 	}
 	
@@ -68,12 +67,11 @@ class BasicCriteriaTest extends EntityManagerTest {
 		
 		query.select(root.get("total"));
 		query.where(builder.equal(root.get("id"), 1L));
-		
-		// String jpql = "select o.total from Order o where o.id = 1";
-		
+		/*
+		 * String jpql = "select o.total from Order o where o.id = 1"
+		 */
 		TypedQuery<BigDecimal> typedQuery = entityManager.createQuery(query);
 		BigDecimal total = typedQuery.getSingleResult();
-		
 		assertEquals(new BigDecimal("505.00"), total);
 	}
 	
@@ -84,12 +82,11 @@ class BasicCriteriaTest extends EntityManagerTest {
 		Root<Product> root = query.from(Product.class);
 		
 		query.select(root);
-		
-		// String jpql = "select p from Product p"
-		
+		/*
+		 * String jpql = "select p from Product p"
+		 */
 		TypedQuery<Product> typedQuery = entityManager.createQuery(query);
 		List<Product> resultList = typedQuery.getResultList();
-		
 		assertFalse(resultList.isEmpty());
 	}
 	
@@ -100,15 +97,14 @@ class BasicCriteriaTest extends EntityManagerTest {
 		Root<Product> root = query.from(Product.class);
 		
 		query.multiselect(root.get("id"), root.get("name"));
-		
-		// String jpql = "select p.id, p.name from Product p"
-		
+		/*
+		 * String jpql = "select p.id, p.name from Product p"
+		 */
 		TypedQuery<Object[]> typedQuery = entityManager.createQuery(query);
 		List<Object[]> resultList = typedQuery.getResultList();
 		
 		resultList.forEach(o -> logger.log(Level.INFO, "{0}",
 			String.format("%s - %s", o[0], o[1])));
-		
 		assertFalse(resultList.isEmpty());
 	}
 	
@@ -120,15 +116,34 @@ class BasicCriteriaTest extends EntityManagerTest {
 		
 		query.select(builder.tuple(root.get("id").alias("id"),
 			root.get("name").alias("name")));
-		
-		// String jpql = "select p.id, p.name from Product p"
-		
+		/*
+		 * String jpql = "select p.id, p.name from Product p"
+		 */
 		TypedQuery<Tuple> typedQuery = entityManager.createQuery(query);
 		List<Tuple> resultList = typedQuery.getResultList();
 		
 		resultList.forEach(t -> logger.log(Level.INFO, "{0}",
 			String.format("%s - %s", t.get("id"), t.get("name"))));
+		assertFalse(resultList.isEmpty());
+	}
+	
+	@Test
+	void resultProjectionFromDTO() {
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<ProductDTO> query = builder.createQuery(ProductDTO.class);
+		Root<Product> root = query.from(Product.class);
 		
+		query.select(builder.construct(ProductDTO.class, root.get("id"),
+			root.get("name")));
+		/*
+		 * String jpql = "select new com.algaworks.ecommerce.dto.ProductDTO(id,
+		 * name) from Product"
+		 */
+		TypedQuery<ProductDTO> typedQuery = entityManager.createQuery(query);
+		List<ProductDTO> resultList = typedQuery.getResultList();
+		
+		resultList.forEach(dto -> logger.log(Level.INFO, "{0}",
+			String.format("%s - %s", dto.getId(), dto.getName())));
 		assertFalse(resultList.isEmpty());
 	}
 	
