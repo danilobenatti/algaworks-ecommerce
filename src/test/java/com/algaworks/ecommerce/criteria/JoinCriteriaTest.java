@@ -18,6 +18,7 @@ import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Root;
 
 class JoinCriteriaTest extends EntityManagerTest {
@@ -106,8 +107,8 @@ class JoinCriteriaTest extends EntityManagerTest {
 		
 		query.select(root);
 		/*
-		 * String jpql =
-		 * "select o from Order o join Payment p "
+		 * SQL = "select o.id, o.col_status as 'status' from tbl_orders o join
+		 * tbl_payments p on p.order_id = o.id and p.col_status = 1"
 		 */
 		TypedQuery<Order> typedQuery = entityManager.createQuery(query);
 		List<Order> resultList = typedQuery.getResultList();
@@ -117,4 +118,29 @@ class JoinCriteriaTest extends EntityManagerTest {
 		
 		assertFalse(resultList.isEmpty());
 	}
+	
+	@Test
+	void makeLeftOuterJoinWithCriteria() {
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Order> query = builder.createQuery(Order.class);
+		Root<Order> root = query.from(Order.class);
+//		Join<Order, Payment> join = root.join("payment", JoinType.LEFT);
+		root.join("payment", JoinType.LEFT);
+		
+		query.select(root);
+		/*
+		 * SQL = "select o.id, o.col_status, p.col_status from tbl_orders o left
+		 * outer join tbl_payments p on p.order_id = o.id"
+		 */
+		TypedQuery<Order> typedQuery = entityManager.createQuery(query);
+		List<Order> resultList = typedQuery.getResultList();
+		
+		resultList.forEach(o -> logger.log(Level.INFO, "{0}",
+			String.format("%d - %s - %s", o.getId(), o.getStatus(),
+				o.getPayment() != null ? o.getPayment().getStatus() : "N/A")));
+		
+		assertFalse(resultList.isEmpty());
+		
+	}
+	
 }
