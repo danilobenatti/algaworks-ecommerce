@@ -1,6 +1,7 @@
 package com.algaworks.ecommerce.criteria;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -141,6 +142,24 @@ class JoinCriteriaTest extends EntityManagerTest {
 		
 		assertFalse(resultList.isEmpty());
 		
+	}
+	
+	@Test
+	void makeJoinFetchWithCriteria() {
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Order> query = builder.createQuery(Order.class);
+		Root<Order> root = query.from(Order.class);
+		root.fetch("person");
+		root.fetch("invoice", JoinType.LEFT);
+		root.fetch("payment", JoinType.LEFT);
+		
+		query.select(root);
+		query.where(builder.equal(root.get("id"), 1));
+		
+		TypedQuery<Order> typedQuery = entityManager.createQuery(query);
+		Order order = typedQuery.getSingleResult();
+		
+		assertNotNull(order);
 	}
 	
 }
