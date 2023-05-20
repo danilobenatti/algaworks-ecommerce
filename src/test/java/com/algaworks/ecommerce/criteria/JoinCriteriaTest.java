@@ -95,4 +95,26 @@ class JoinCriteriaTest extends EntityManagerTest {
 		assertFalse(resultList.isEmpty());
 	}
 	
+	@Test
+	void makeJoinOnWithCriteria() {
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Order> query = builder.createQuery(Order.class);
+		Root<Order> root = query.from(Order.class);
+		Join<Order, Payment> joinPayment = root.join("payment");
+		joinPayment.on(builder.equal(joinPayment.get("status"),
+			PaymentStatus.PROCESSING.getCode()));
+		
+		query.select(root);
+		/*
+		 * String jpql =
+		 * "select o from Order o join Payment p "
+		 */
+		TypedQuery<Order> typedQuery = entityManager.createQuery(query);
+		List<Order> resultList = typedQuery.getResultList();
+		
+		resultList.forEach(o -> logger.log(Level.INFO, "{0}",
+			String.format("%d - %s", o.getId(), o.getStatus())));
+		
+		assertFalse(resultList.isEmpty());
+	}
 }
