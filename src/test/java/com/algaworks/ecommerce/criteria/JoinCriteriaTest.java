@@ -11,7 +11,9 @@ import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.Order;
+import com.algaworks.ecommerce.model.OrderItem;
 import com.algaworks.ecommerce.model.Payment;
+import com.algaworks.ecommerce.model.Product;
 import com.algaworks.ecommerce.model.enums.OrderStatus;
 import com.algaworks.ecommerce.model.enums.PaymentStatus;
 
@@ -154,7 +156,7 @@ class JoinCriteriaTest extends EntityManagerTest {
 		root.fetch("payment", JoinType.LEFT);
 		
 		query.select(root);
-		query.where(builder.equal(root.get("id"), 1));
+		query.where(builder.equal(root.get("id"), 1L));
 		
 		TypedQuery<Order> typedQuery = entityManager.createQuery(query);
 		Order order = typedQuery.getSingleResult();
@@ -162,4 +164,20 @@ class JoinCriteriaTest extends EntityManagerTest {
 		assertNotNull(order);
 	}
 	
+	@Test
+	void searchOrdersWithProduct() {
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Order> query = builder.createQuery(Order.class);
+		Root<Order> root = query.from(Order.class);
+		Join<OrderItem, Product> join = root.join("orderitems")
+			.join("product");
+		
+		query.select(root);
+		query.where(builder.equal(join.get("id"), 1L));
+		
+		TypedQuery<Order> typedQuery = entityManager.createQuery(query);
+		List<Order> resultList = typedQuery.getResultList();
+		
+		assertFalse(resultList.isEmpty());
+	}
 }
