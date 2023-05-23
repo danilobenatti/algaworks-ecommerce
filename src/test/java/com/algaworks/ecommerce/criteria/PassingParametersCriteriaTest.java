@@ -32,13 +32,13 @@ class PassingParametersCriteriaTest extends EntityManagerTest {
 		
 		query.select(root);
 		ParameterExpression<Long> parameter = builder.parameter(Long.class,
-			"id");
+			"parameterId");
 		query.where(builder.equal(root.get("id"), parameter));
 		/*
 		 * String jpql = "select o from Order o where o.id = 1";
 		 */
 		TypedQuery<Order> typedQuery = entityManager.createQuery(query);
-		typedQuery.setParameter("id", 1L);
+		typedQuery.setParameter("parameterId", 1L);
 		
 		Order order = typedQuery.getSingleResult();
 		

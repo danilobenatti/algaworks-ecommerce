@@ -1,7 +1,7 @@
 package com.algaworks.ecommerce.criteria;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -169,8 +169,7 @@ class JoinCriteriaTest extends EntityManagerTest {
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Order> query = builder.createQuery(Order.class);
 		Root<Order> root = query.from(Order.class);
-		Join<OrderItem, Product> join = root.join("orderitems")
-			.join("product");
+		Join<OrderItem, Product> join = root.join("orderitems").join("product");
 		
 		query.select(root);
 		query.where(builder.equal(join.get("id"), 1L));
