@@ -35,11 +35,15 @@ class MetaModelTest extends EntityManagerTest {
 		
 		query.select(root);
 		
-		query.where(builder.or(builder.like(root.get(Product_.name), "%C%"),
-			builder.like(root.get(Product_.description), "%C%")));
+		query.where(builder.or(builder.like(root.get(Product_.name), "%c%"),
+			builder.like(root.get(Product_.description), "%c%")));
 		
 		TypedQuery<Product> typedQuery = entityManager.createQuery(query);
 		List<Product> resultList = typedQuery.getResultList();
+		
+		resultList.forEach(
+			p -> logger.log(Level.INFO, "{0}", String.format("%d - %s - %s",
+				p.getId(), p.getName(), p.getDescription())));
 		
 		assertFalse(resultList.isEmpty());
 	}
@@ -53,10 +57,14 @@ class MetaModelTest extends EntityManagerTest {
 			.join(OrderItem_.product);
 		
 		query.select(root);
-		query.where(builder.equal(join.get("id"), 1L));
+		query.where(builder.equal(join.get(Product_.id), 1L));
 		
 		TypedQuery<Order> typedQuery = entityManager.createQuery(query);
 		List<Order> resultList = typedQuery.getResultList();
+		
+		resultList.forEach(o -> logger.log(Level.INFO, "{0}",
+			String.format("%d - %s - %s", o.getId(),
+				o.getPerson().getFirstname(), o.getStatus().getValue())));
 		
 		assertFalse(resultList.isEmpty());
 	}

@@ -5,27 +5,18 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.Product;
-import com.algaworks.ecommerce.model.Order;
 
 import jakarta.persistence.TypedQuery;
 
 class NamedQueryTest extends EntityManagerTest {
 	
 	@Test
-	void executeQuery1() {
-		TypedQuery<Product> typedQuery = entityManager
-			.createNamedQuery("Product.listAll", Product.class);
-		
-		List<Product> resultList = typedQuery.getResultList();
-		
-		assertFalse(resultList.isEmpty());
-	}
-	
-	@Test
-	void executeQuery2() {
+	void executeQuery() {
 		TypedQuery<Product> typedQuery = entityManager
 			.createNamedQuery("Product.listByCategory", Product.class);
 		typedQuery.setParameter("category", 2L);
@@ -35,32 +26,17 @@ class NamedQueryTest extends EntityManagerTest {
 		assertFalse(resultList.isEmpty());
 	}
 	
-	@Test
-	void executeQueryXML() {
-		TypedQuery<Order> typedQuery = entityManager
-			.createNamedQuery("Order.list", Order.class);
+	@ParameterizedTest
+	@ValueSource(strings = { "Order.list", "Order.listPaid", "Product.listAll",
+		"Product.listValue" })
+	void executeQueries(String namedQuery) {
+		// Order.list -> executeQueryXML
+		// Order.listPaid -> executeQueryPaidOrder
+		// Product.listValue -> executeQueryExpensiveProducts
+		TypedQuery<Object> typedQuery = entityManager
+			.createNamedQuery(namedQuery, Object.class);
 		
-		List<Order> resultList = typedQuery.getResultList();
-		
-		assertFalse(resultList.isEmpty());
-	}
-	
-	@Test
-	void executeQueryPaidOrder() {
-		TypedQuery<Order> typedQuery = entityManager
-			.createNamedQuery("Order.listPaid", Order.class);
-		
-		List<Order> resultList = typedQuery.getResultList();
-		
-		assertFalse(resultList.isEmpty());
-	}
-	
-	@Test
-	void executeQueryExpensiveProducts() {
-		TypedQuery<Order> typedQuery = entityManager
-			.createNamedQuery("Product.listValue", Order.class);
-		
-		List<Order> resultList = typedQuery.getResultList();
+		List<Object> resultList = typedQuery.getResultList();
 		
 		assertFalse(resultList.isEmpty());
 	}

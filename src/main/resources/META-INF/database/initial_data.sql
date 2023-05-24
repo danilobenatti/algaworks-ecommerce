@@ -9,7 +9,7 @@ INSERT INTO tbl_categories (id, col_name, parent_category_id) VALUES (8, 'Câmer
 --
 INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image) VALUES (1, 'Conheça o novo Kindle, agora com mais memória', 'Kindle', 1, 799.5, date_sub(now(), interval(1) year), null);
 INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image) VALUES (3, 'Câmera de ação e alto desempenho', 'Câmera GoPro Hero', 1, 1506.72, date_sub(now(), interval(2) month), null);
-INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image) VALUES (4, 'Fita Adesiva Alta Aderência','Fital ColaTudo', 1, 5.5, date_sub(now(), interval(3) day), null);
+INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image) VALUES (4, 'Fita Adesiva Alta Aderência','Fita ColaTudo', 1, 5.5, date_sub(now(), interval(3) day), null);
 INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image) VALUES (5, 'Corda de Tecido Poliester Trançada Reforçada','Corda de Nylon para Varal', 3, 2.32, date_sub(now(), interval(4) week), null);
 INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image) VALUES (6, 'O melhor ajuste de foco','Câmera Canon 80D', 1, 3500.0, sysdate(), LOAD_FILE('C:/tmp/canon80d.jpg'));
 INSERT INTO tbl_product_attribute (product_id, col_description, col_value) VALUES (3, 'First attribute', 'Powerfull');
@@ -49,14 +49,14 @@ INSERT INTO tbl_payments (order_id, col_status) VALUES (3, 1);
 INSERT INTO tbl_payments_creditcard (col_number_installments, order_id) VALUES (2, 3);
 INSERT INTO tbl_invoices (order_id, col_issuedatetime, col_xml) VALUES (3, date_sub(now(), interval 7 month), '<xml />');
 -- Person: Maria Paula
-INSERT INTO tbl_orders (id, col_date_create, col_date_update, col_execution_date, col_status, col_total, person_id) VALUES(4, date_sub(now(), interval 1 year), null, null, 3, 3500.0, 3);
+INSERT INTO tbl_orders (id, col_date_create, col_date_update, col_execution_date, col_status, col_total, person_id) VALUES(4, date_sub(now(), interval 1 year), null, date_sub(now(), interval 11 month), 3, 3500.0, 3);
 INSERT INTO tbl_order_items (col_quantity, col_subtotal, order_id, product_id) VALUES (1, 3500.0, 4, 6);
-INSERT INTO tbl_payments (order_id, col_date_create, col_status) VALUES (4, sysdate(), 3);
-INSERT INTO tbl_payments_bankslip (col_expirationdate, col_payday, order_id) VALUES (date_add(now(), interval 5 day), null, 4);
+INSERT INTO tbl_payments (order_id, col_date_create, col_status) VALUES (4, date_sub(now(), interval 11 month), 3);
+INSERT INTO tbl_payments_bankslip (col_expirationdate, col_payday, order_id) VALUES (date_add(now(), interval 5 day), date_sub(now(), interval 11 month), 4);
 INSERT INTO tbl_invoices (order_id, col_issuedatetime, col_xml) VALUES (4, date_sub(now(), interval 1 year), '<xml />');
 -- Person: Maria Paula
-INSERT INTO tbl_orders (id, col_date_create, col_date_update, col_execution_date, col_status, col_total, person_id) VALUES(5, date_sub(now(), interval 3 day), null, null, 3, 499.5, 3);
+INSERT INTO tbl_orders (id, col_date_create, col_date_update, col_execution_date, col_status, col_total, person_id) VALUES(5, date_sub(now(), interval 3 day), null, date_sub(now(), interval 2 day), 3, 499.5, 3);
 INSERT INTO tbl_order_items (col_quantity, col_subtotal, order_id, product_id) VALUES (1, 499.5, 5, 1);
-INSERT INTO tbl_payments (order_id, col_date_create, col_status) VALUES (5, sysdate(), 3);
-INSERT INTO tbl_payments_bankslip (col_expirationdate, col_payday, order_id) VALUES (date_add(now(), interval 3 day), null, 5);
+INSERT INTO tbl_payments (order_id, col_date_create, col_status) VALUES (5, date_sub(now(), interval 2 day), 3);
+INSERT INTO tbl_payments_bankslip (col_expirationdate, col_payday, order_id) VALUES (date_add(now(), interval 3 day), date_sub(now(), interval 2 day), 5);
 -- INSERT INTO tbl_invoices (order_id, col_issuedatetime, col_xml) VALUES (5, sysdate(), '<xml />');

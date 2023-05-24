@@ -22,8 +22,8 @@
 			
 			<property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create" />
 			
-			<property name="javax.persistence.schema-generation.create-source" value="metadata-then-script"/>
-			<property name="javax.persistence.schema-generation.drop-source" value="metadata-then-script"/>
+			<property name="jakarta.persistence.schema-generation.create-source" value="metadata-then-script"/>
+			<property name="jakarta.persistence.schema-generation.drop-source" value="metadata-then-script"/>
 			
 			<property name="jakarta.persistence.schema-generation.create-script-source" value="META-INF/database/create-db.sql" />
 			<property name="jakarta.persistence.schema-generation.drop-script-source" value="META-INF/database/drop-db.sql" />
