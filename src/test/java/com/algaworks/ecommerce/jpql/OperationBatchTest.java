@@ -9,8 +9,6 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -23,9 +21,6 @@ import com.algaworks.ecommerce.util.UpLoadFiles;
 import jakarta.persistence.Query;
 
 class OperationBatchTest extends EntityManagerTest {
-	
-	private static Logger logger = Logger
-		.getLogger(OperationBatchTest.class.toString());
 	
 	private static int LIMIT_OF_INSERTIONS = 10;
 	
@@ -57,10 +52,10 @@ class OperationBatchTest extends EntityManagerTest {
 		NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(
 			new Locale.Builder().setLanguage("pt").setRegion("BR").build());
 		
-		logger.log(Level.INFO, "{0}", String.format("%d - %s, %s", p1.getId(),
-			p1.getName(), currencyFormat.format(p1.getUnitPrice())));
-		logger.log(Level.INFO, "{0}", String.format("%d - %s, %s", p2.getId(),
-			p2.getName(), currencyFormat.format(p2.getUnitPrice())));
+		logger.info(String.format("%d - %s, %s", p1.getId(), p1.getName(),
+			currencyFormat.format(p1.getUnitPrice())));
+		logger.info(String.format("%d - %s, %s", p2.getId(), p2.getName(),
+			currencyFormat.format(p2.getUnitPrice())));
 		
 		assertNotNull(p1);
 		assertNotNull(p2);

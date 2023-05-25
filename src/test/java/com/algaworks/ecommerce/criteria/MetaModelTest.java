@@ -3,8 +3,6 @@ package com.algaworks.ecommerce.criteria;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.junit.jupiter.api.Test;
 
@@ -25,8 +23,6 @@ import jakarta.persistence.criteria.Root;
 
 class MetaModelTest extends EntityManagerTest {
 	
-	static Logger logger = Logger.getLogger(MetaModelTest.class.getName());
-	
 	@Test
 	void usingMetaModel() {
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
@@ -41,9 +37,8 @@ class MetaModelTest extends EntityManagerTest {
 		TypedQuery<Product> typedQuery = entityManager.createQuery(query);
 		List<Product> resultList = typedQuery.getResultList();
 		
-		resultList.forEach(
-			p -> logger.log(Level.INFO, "{0}", String.format("%d - %s - %s",
-				p.getId(), p.getName(), p.getDescription())));
+		resultList.forEach(p -> logger.info(String.format("%d - %s - %s",
+			p.getId(), p.getName(), p.getDescription())));
 		
 		assertFalse(resultList.isEmpty());
 	}
@@ -62,8 +57,8 @@ class MetaModelTest extends EntityManagerTest {
 		TypedQuery<Order> typedQuery = entityManager.createQuery(query);
 		List<Order> resultList = typedQuery.getResultList();
 		
-		resultList.forEach(o -> logger.log(Level.INFO, "{0}",
-			String.format("%d - %s - %s", o.getId(),
+		resultList
+			.forEach(o -> logger.info(String.format("%d - %s - %s", o.getId(),
 				o.getPerson().getFirstname(), o.getStatus().getValue())));
 		
 		assertFalse(resultList.isEmpty());
@@ -81,8 +76,8 @@ class MetaModelTest extends EntityManagerTest {
 		TypedQuery<Order> typedQuery = entityManager.createQuery(query);
 		List<Order> resultList = typedQuery.getResultList();
 		
-		resultList.forEach(o -> logger.log(Level.INFO, "{0}",
-			String.format("%d - %s - %s", o.getId(), o.getStatus(),
+		resultList.forEach(o -> logger
+			.info(String.format("%d - %s - %s", o.getId(), o.getStatus(),
 				o.getPayment() != null ? o.getPayment().getStatus() : "N/A")));
 		
 		assertFalse(resultList.isEmpty());

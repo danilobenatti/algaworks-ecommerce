@@ -6,8 +6,6 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -28,11 +26,9 @@ import jakarta.persistence.criteria.Root;
 
 class ConditionalExpressionsCriteriaTest extends EntityManagerTest {
 	
-	static Logger logger = Logger
-		.getLogger(ConditionalExpressionsCriteriaTest.class.getName());
-	
 	@Test
 	void usingCondicionalExpressionLike() {
+		
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Person> query = builder.createQuery(Person.class);
 		Root<Person> root = query.from(Person.class);
@@ -43,8 +39,8 @@ class ConditionalExpressionsCriteriaTest extends EntityManagerTest {
 		TypedQuery<Person> typedQuery = entityManager.createQuery(query);
 		List<Person> resultList = typedQuery.getResultList();
 		
-		resultList.forEach(p -> logger.log(Level.INFO, "{0}",
-			String.format("%d - %s", p.getId(), p.getFirstname())));
+		resultList.forEach(p -> logger
+			.info(String.format("%d - %s", p.getId(), p.getFirstname())));
 		assertFalse(resultList.isEmpty());
 	}
 	
@@ -102,9 +98,8 @@ class ConditionalExpressionsCriteriaTest extends EntityManagerTest {
 		List<Product> resultList = typedQuery.getResultList();
 		
 		NumberFormat currency = NumberFormat.getCurrencyInstance();
-		resultList.forEach(
-			p -> logger.log(Level.INFO, "{0}", String.format("%d - %s - %s",
-				p.getId(), p.getName(), currency.format(p.getUnitPrice()))));
+		resultList.forEach(p -> logger.info(String.format("%d - %s - %s",
+			p.getId(), p.getName(), currency.format(p.getUnitPrice()))));
 		assertFalse(resultList.isEmpty());
 	}
 	
@@ -121,6 +116,9 @@ class ConditionalExpressionsCriteriaTest extends EntityManagerTest {
 		
 		TypedQuery<Order> typedQuery = entityManager.createQuery(query);
 		List<Order> resultList = typedQuery.getResultList();
+		
+		resultList.forEach(o -> logger
+			.info(String.format("%d - %s", o.getId(), o.getExecutionDate())));
 		
 		assertFalse(resultList.isEmpty());
 	}

@@ -6,8 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.junit.jupiter.api.Test;
 
@@ -24,8 +22,6 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 
 class BasicCriteriaTest extends EntityManagerTest {
-	
-	static Logger logger = Logger.getLogger(BasicCriteriaTest.class.getName());
 	
 	@Test
 	void searchById() {
@@ -103,8 +99,8 @@ class BasicCriteriaTest extends EntityManagerTest {
 		TypedQuery<Object[]> typedQuery = entityManager.createQuery(query);
 		List<Object[]> resultList = typedQuery.getResultList();
 		
-		resultList.forEach(o -> logger.log(Level.INFO, "{0}",
-			String.format("%s - %s", o[0], o[1])));
+		resultList
+			.forEach(o -> logger.info(String.format("%s - %s", o[0], o[1])));
 		assertFalse(resultList.isEmpty());
 	}
 	
@@ -122,8 +118,8 @@ class BasicCriteriaTest extends EntityManagerTest {
 		TypedQuery<Tuple> typedQuery = entityManager.createQuery(query);
 		List<Tuple> resultList = typedQuery.getResultList();
 		
-		resultList.forEach(t -> logger.log(Level.INFO, "{0}",
-			String.format("%s - %s", t.get("id"), t.get("name"))));
+		resultList.forEach(t -> logger
+			.info(String.format("%s - %s", t.get("id"), t.get("name"))));
 		assertFalse(resultList.isEmpty());
 	}
 	
@@ -142,8 +138,8 @@ class BasicCriteriaTest extends EntityManagerTest {
 		TypedQuery<ProductDTO> typedQuery = entityManager.createQuery(query);
 		List<ProductDTO> resultList = typedQuery.getResultList();
 		
-		resultList.forEach(dto -> logger.log(Level.INFO, "{0}",
-			String.format("%s - %s", dto.getId(), dto.getName())));
+		resultList.forEach(dto -> logger
+			.info(String.format("%s - %s", dto.getId(), dto.getName())));
 		assertFalse(resultList.isEmpty());
 	}
 	

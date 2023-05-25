@@ -3,6 +3,9 @@ package com.algaworks.ecommerce;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -17,6 +20,8 @@ public class EntityManagerTest {
 	protected static EntityManagerFactory entityManagerFactory;
 	
 	protected static EntityManager entityManager;
+	
+	protected static Logger logger = LogManager.getLogger();
 	
 	@BeforeAll
 	public static void setUpBeforeClass() {
@@ -44,6 +49,10 @@ public class EntityManagerTest {
 	
 	@BeforeEach
 	public void setUp() {
+		
+		Configurator.initialize(EntityManagerTest.class.getName(),
+			"./src/main/resources/log4j2.properties");
+		
 		entityManager = entityManagerFactory.createEntityManager();
 	}
 	

@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.junit.jupiter.api.Test;
 
@@ -26,8 +24,6 @@ import jakarta.persistence.criteria.Root;
 
 class JoinCriteriaTest extends EntityManagerTest {
 	
-	static Logger logger = Logger.getLogger(JoinCriteriaTest.class.getName());
-	
 	@Test
 	void makeJoinWithCriteria() {
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
@@ -46,8 +42,8 @@ class JoinCriteriaTest extends EntityManagerTest {
 		TypedQuery<Order> typedQuery = entityManager.createQuery(query);
 		List<Order> resultList = typedQuery.getResultList();
 		
-		resultList.forEach(o -> logger.log(Level.INFO, "{0}",
-			String.format("%d - %s", o.getId(), o.getStatus())));
+		resultList.forEach(o -> logger
+			.info(String.format("%d - %s", o.getId(), o.getStatus())));
 		
 		assertFalse(resultList.isEmpty());
 	}
@@ -69,8 +65,8 @@ class JoinCriteriaTest extends EntityManagerTest {
 		TypedQuery<Order> typedQuery = entityManager.createQuery(query);
 		List<Order> resultList = typedQuery.getResultList();
 		
-		resultList.forEach(o -> logger.log(Level.INFO, "{0}",
-			String.format("%d - %s", o.getId(), o.getStatus())));
+		resultList.forEach(o -> logger
+			.info(String.format("%d - %s", o.getId(), o.getStatus())));
 		
 		assertFalse(resultList.isEmpty());
 	}
@@ -93,8 +89,8 @@ class JoinCriteriaTest extends EntityManagerTest {
 		TypedQuery<Payment> typedQuery = entityManager.createQuery(query);
 		List<Payment> resultList = typedQuery.getResultList();
 		
-		resultList.forEach(o -> logger.log(Level.INFO, "{0}",
-			String.format("%d - %s", o.getId(), o.getStatus())));
+		resultList.forEach(o -> logger
+			.info(String.format("%d - %s", o.getId(), o.getStatus())));
 		
 		assertFalse(resultList.isEmpty());
 	}
@@ -116,8 +112,8 @@ class JoinCriteriaTest extends EntityManagerTest {
 		TypedQuery<Order> typedQuery = entityManager.createQuery(query);
 		List<Order> resultList = typedQuery.getResultList();
 		
-		resultList.forEach(o -> logger.log(Level.INFO, "{0}",
-			String.format("%d - %s", o.getId(), o.getStatus())));
+		resultList.forEach(o -> logger
+			.info(String.format("%d - %s", o.getId(), o.getStatus())));
 		
 		assertFalse(resultList.isEmpty());
 	}
@@ -138,9 +134,10 @@ class JoinCriteriaTest extends EntityManagerTest {
 		TypedQuery<Order> typedQuery = entityManager.createQuery(query);
 		List<Order> resultList = typedQuery.getResultList();
 		
-		resultList.forEach(o -> logger.log(Level.INFO, "{0}",
-			String.format("%d - %s - %s", o.getId(), o.getStatus(),
-				o.getPayment() != null ? o.getPayment().getStatus() : "N/A")));
+		resultList.forEach(o -> logger.info(
+			String.format("%d - %s - %s", o.getId(), o.getStatus().getValue(),
+				o.getPayment() != null ? o.getPayment().getStatus().getValue()
+					: "N/A")));
 		
 		assertFalse(resultList.isEmpty());
 		

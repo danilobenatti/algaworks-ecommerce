@@ -3,8 +3,6 @@ package com.algaworks.ecommerce.jpql;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.junit.jupiter.api.Test;
 
@@ -14,9 +12,6 @@ import com.algaworks.ecommerce.model.Category;
 import jakarta.persistence.TypedQuery;
 
 class ResultsPaginationTest extends EntityManagerTest {
-	
-	static Logger logger = Logger
-		.getLogger(ResultsPaginationTest.class.getName());
 	
 	@Test
 	void pageResults() {
@@ -34,8 +29,7 @@ class ResultsPaginationTest extends EntityManagerTest {
 		
 		assertFalse(list.isEmpty());
 		
-		list.forEach(
-			i -> logger.log(Level.INFO, i.getId() + ", " + i.getName()));
+		list.forEach(i -> logger.info(i.getId() + ", " + i.getName()));
 	}
 	
 }

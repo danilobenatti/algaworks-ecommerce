@@ -3,8 +3,6 @@ package com.algaworks.ecommerce.jpql;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -15,8 +13,6 @@ import jakarta.persistence.TypedQuery;
 
 class GroupByTest extends EntityManagerTest {
 	
-	static Logger logger = Logger.getLogger(GroupByTest.class.getName());
-	
 	private void test(String jpql) {
 		TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql,
 			Object[].class);
@@ -24,8 +20,8 @@ class GroupByTest extends EntityManagerTest {
 		List<Object[]> resultList = typedQuery.getResultList();
 		assertFalse(resultList.isEmpty());
 		
-		resultList.forEach(i -> logger.log(Level.INFO, "{0}",
-			String.format("%s, %s", i[0], i[1].toString())));
+		resultList.forEach(
+			i -> logger.info(String.format("%s, %s", i[0], i[1].toString())));
 	}
 	
 	// concat(year(o.dateCreate), ', ',monthname(o.dateCreate))

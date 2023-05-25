@@ -9,8 +9,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -24,9 +22,6 @@ import com.algaworks.ecommerce.model.Product;
 import jakarta.persistence.TypedQuery;
 
 class ConditionalExpressionsTest extends EntityManagerTest {
-	
-	static Logger logger = Logger
-		.getLogger(ConditionalExpressionsTest.class.getName());
 	
 	@Test
 	void usingCondicionalExpressionLike() {
@@ -158,8 +153,8 @@ class ConditionalExpressionsTest extends EntityManagerTest {
 		List<Object[]> resultList = typedQuery.getResultList();
 		assertFalse(resultList.isEmpty());
 		
-		resultList.forEach(i -> logger.log(Level.INFO, "{0}",
-			String.format("%s, %s", i[0], i[1])));
+		resultList
+			.forEach(i -> logger.info(String.format("%s, %s", i[0], i[1])));
 	}
 	
 	@ParameterizedTest
@@ -176,8 +171,8 @@ class ConditionalExpressionsTest extends EntityManagerTest {
 		List<Object[]> resultList = typedQuery.getResultList();
 		assertFalse(resultList.isEmpty());
 		
-		resultList.forEach(i -> logger.log(Level.INFO, "{0}",
-			String.format("%s, %s", i[0], i[1])));
+		resultList
+			.forEach(i -> logger.info(String.format("%s, %s", i[0], i[1])));
 	}
 	
 	@ParameterizedTest
@@ -198,7 +193,7 @@ class ConditionalExpressionsTest extends EntityManagerTest {
 		List<Order> resultList = typedQuery.getResultList();
 		assertFalse(resultList.isEmpty());
 		
-		resultList.forEach(o -> logger.log(Level.INFO, "{0}",
+		resultList.forEach(o -> logger.info(
 			String.format("%s, %s", o.getId(), o.getPerson().getFirstname())));
 	}
 	

@@ -5,8 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -19,8 +17,6 @@ import com.algaworks.ecommerce.model.Product;
 import jakarta.persistence.TypedQuery;
 
 class SubQueriesTest extends EntityManagerTest {
-	
-	static Logger logger = Logger.getLogger(SubQueriesTest.class.getName());
 	
 	@ParameterizedTest
 	@ValueSource(strings = {
@@ -39,8 +35,7 @@ class SubQueriesTest extends EntityManagerTest {
 		List<Object> resultList = typedQuery.getResultList();
 		assertFalse(resultList.isEmpty());
 		
-		resultList.stream()
-			.forEach(i -> logger.log(Level.INFO, "{0}", message(i)));
+		resultList.stream().forEach(i -> logger.info(message(i)));
 		
 	}
 	
@@ -74,7 +69,7 @@ class SubQueriesTest extends EntityManagerTest {
 		List<Order> resultList = typedQuery.getResultList();
 		assertFalse(resultList.isEmpty());
 		
-		resultList.forEach(i -> logger.log(Level.INFO, "ID: {0}", i.getId()));
+		resultList.forEach(i -> logger.info(i.getId()));
 	}
 	
 	@ParameterizedTest
@@ -88,8 +83,8 @@ class SubQueriesTest extends EntityManagerTest {
 		List<Product> resultList = typedQuery.getResultList();
 		assertFalse(resultList.isEmpty());
 		
-		resultList.forEach(p -> logger.log(Level.INFO, "{0}",
-			String.format("%d - %s", p.getId(), p.getName())));
+		resultList.forEach(
+			p -> logger.info(String.format("%d - %s", p.getId(), p.getName())));
 	}
 	
 	@ParameterizedTest
@@ -128,7 +123,7 @@ class SubQueriesTest extends EntityManagerTest {
 		List<Object> resultList = typedQuery.getResultList();
 		assertFalse(resultList.isEmpty());
 		
-		resultList.stream().forEach(i -> logger.log(Level.INFO, "{0}", msg(i)));
+		resultList.stream().forEach(i -> logger.info(msg(i)));
 	}
 	
 	@SuppressWarnings("preview")

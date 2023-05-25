@@ -3,8 +3,6 @@ package com.algaworks.ecommerce.jpql;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,8 +14,6 @@ import jakarta.persistence.TypedQuery;
 
 class FunctionsTest extends EntityManagerTest {
 	
-	static Logger logger = Logger.getLogger(FunctionsTest.class.getName());
-	
 	private void extracted(String jpql) {
 		
 		TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql,
@@ -26,8 +22,8 @@ class FunctionsTest extends EntityManagerTest {
 		
 		assertFalse(resultList.isEmpty());
 		
-		resultList.forEach(
-			i -> logger.log(Level.INFO, i[0] + " - " + i[1] + " - " + i[2]));
+		resultList
+			.forEach(i -> logger.info(i[0] + " - " + i[1] + " - " + i[2]));
 	}
 	
 	@ParameterizedTest
@@ -42,7 +38,7 @@ class FunctionsTest extends EntityManagerTest {
 		
 		assertFalse(list.isEmpty());
 		
-		list.forEach(i -> logger.log(Level.INFO, "{0}", i.toString()));
+		list.forEach(i -> logger.info(i.toString()));
 		
 	}
 	
@@ -96,7 +92,7 @@ class FunctionsTest extends EntityManagerTest {
 		
 		assertFalse(resultList.isEmpty());
 		
-		resultList.forEach(i -> logger.log(Level.INFO, "{0}", i.intValue()));
+		resultList.forEach(i -> logger.info(i.intValue()));
 		
 	}
 	
@@ -120,7 +116,7 @@ class FunctionsTest extends EntityManagerTest {
 		
 		assertFalse(resultList.isEmpty());
 		
-		resultList.forEach(i -> logger.log(Level.INFO, "{0}", i.toString()));
+		resultList.forEach(i -> logger.info(i.toString()));
 	}
 	
 }

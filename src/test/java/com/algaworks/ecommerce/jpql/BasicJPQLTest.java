@@ -5,8 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.junit.jupiter.api.Test;
 
@@ -19,8 +17,6 @@ import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 
 class BasicJPQLTest extends EntityManagerTest {
-	
-	static Logger logger = Logger.getLogger(BasicJPQLTest.class.getName());
 	
 	@Test
 	void searchById() {
@@ -83,7 +79,7 @@ class BasicJPQLTest extends EntityManagerTest {
 		
 		assertEquals(2, list.get(0).length);
 		
-		list.forEach(i -> logger.log(Level.INFO, i[0] + ", " + i[1]));
+		list.forEach(i -> logger.info(i[0] + ", " + i[1]));
 		
 	}
 	
@@ -97,8 +93,7 @@ class BasicJPQLTest extends EntityManagerTest {
 		
 		assertFalse(list.isEmpty());
 		
-		list.forEach(
-			i -> logger.log(Level.INFO, i.getId() + ", " + i.getName()));
+		list.forEach(i -> logger.info(i.getId() + ", " + i.getName()));
 		
 	}
 	
@@ -112,8 +107,7 @@ class BasicJPQLTest extends EntityManagerTest {
 		
 		assertFalse(list.isEmpty());
 		
-		list.forEach(
-			p -> logger.log(Level.INFO, p.getId() + "; " + p.getFirstname()));
+		list.forEach(p -> logger.info(p.getId() + "; " + p.getFirstname()));
 		
 	}
 	
@@ -128,10 +122,10 @@ class BasicJPQLTest extends EntityManagerTest {
 		
 		assertFalse(list.isEmpty());
 		
-		logger.log(Level.INFO, "{0}", list.size());
+		logger.info(list.size());
 		
-		list.forEach(o -> logger.log(Level.INFO, "{0}", String.format(
-			"Order: %d, Total: %.2f", o.getId(), o.getTotal().floatValue())));
+		list.forEach(o -> logger.info(String.format("Order: %d, Total: %.2f",
+			o.getId(), o.getTotal().floatValue())));
 		
 	}
 	
