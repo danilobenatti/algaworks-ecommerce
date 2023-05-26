@@ -18,6 +18,7 @@ import com.algaworks.ecommerce.model.Person;
 import com.algaworks.ecommerce.model.Person_;
 import com.algaworks.ecommerce.model.Product;
 import com.algaworks.ecommerce.model.Product_;
+import com.algaworks.ecommerce.model.enums.OrderStatus;
 
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -122,4 +123,53 @@ class ConditionalExpressionsCriteriaTest extends EntityManagerTest {
 		
 		assertFalse(resultList.isEmpty());
 	}
+	
+	@Test
+	void usingBetween() {
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Order> query = builder.createQuery(Order.class);
+		Root<Order> root = query.from(Order.class);
+		
+		query.select(root);
+		
+		query.where(
+			builder.between(root.get(Order_.total).as(Double.class), 499.5,
+				3500.0), // and
+			builder.between(root.get(Order_.executionDate),
+				LocalDateTime.now().minusYears(1), LocalDateTime.now()));
+		
+		TypedQuery<Order> typedQuery = entityManager.createQuery(query);
+		List<Order> resultList = typedQuery.getResultList();
+		
+		resultList.forEach(
+			o -> logger.info(String.format("Order: %d - Total: %s", o.getId(),
+				NumberFormat.getCurrencyInstance().format(o.getTotal()))));
+		
+		assertFalse(resultList.isEmpty());
+	}
+	
+	@Test
+	void usingDifferent() {
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Order> query = builder.createQuery(Order.class);
+		Root<Order> root = query.from(Order.class);
+		
+		query.select(root);
+		
+		query.where(
+			builder.notEqual(root.get(Order_.status),
+				OrderStatus.PAID.getCode()), // and
+			builder.notEqual(root.get(Order_.status),
+				OrderStatus.CANCELED.getCode()));
+		
+		TypedQuery<Order> typedQuery = entityManager.createQuery(query);
+		List<Order> resultList = typedQuery.getResultList();
+		
+		resultList.forEach(
+			o -> logger.info(String.format("Order: %d - Order Status: %s",
+				o.getId(), o.getStatus().getValue())));
+		
+		assertFalse(resultList.isEmpty());
+	}
+	
 }
