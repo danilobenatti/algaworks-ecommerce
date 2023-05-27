@@ -1,5 +1,6 @@
 package com.algaworks.ecommerce.criteria;
 
+import static com.algaworks.ecommerce.util.DatesFunctions.getAge;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -13,6 +14,7 @@ import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.dto.ProductDTO;
 import com.algaworks.ecommerce.model.Order;
 import com.algaworks.ecommerce.model.Person;
+import com.algaworks.ecommerce.model.Person_;
 import com.algaworks.ecommerce.model.Product;
 
 import jakarta.persistence.Tuple;
@@ -140,6 +142,24 @@ class BasicCriteriaTest extends EntityManagerTest {
 		
 		resultList.forEach(dto -> logger
 			.info(String.format("%s - %s", dto.getId(), dto.getName())));
+		assertFalse(resultList.isEmpty());
+	}
+	
+	@Test
+	void sortResults() {
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Person> query = builder.createQuery(Person.class);
+		Root<Person> root = query.from(Person.class);
+		
+		query.select(root);
+		query.orderBy(builder.asc(root.get(Person_.firstname)),
+			builder.desc(root.get(Person_.birthday)));
+		
+		TypedQuery<Person> typedQuery = entityManager.createQuery(query);
+		List<Person> resultList = typedQuery.getResultList();
+		
+		resultList.forEach(p -> logger.info(String.format("%d - %s - %d",
+			p.getId(), p.getFirstname(), getAge(p.getBirthday()))));
 		assertFalse(resultList.isEmpty());
 	}
 	
