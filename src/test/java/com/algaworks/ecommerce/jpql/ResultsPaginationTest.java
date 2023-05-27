@@ -21,15 +21,15 @@ class ResultsPaginationTest extends EntityManagerTest {
 		
 		TypedQuery<Category> typedQuery = entityManager.createQuery(jpql,
 			Category.class);
-		// FIRST_RESULT = MAX_RESULTS * (page -1)
+		// FIRST_RESULT = MAX_RESULTS * (page - 1)
 		typedQuery.setFirstResult(0);
-		typedQuery.setMaxResults(2);
+		typedQuery.setMaxResults(4);
 		
-		List<Category> list = typedQuery.getResultList();
+		List<Category> resultList = typedQuery.getResultList();
 		
-		assertFalse(list.isEmpty());
-		
-		list.forEach(i -> logger.info(i.getId() + ", " + i.getName()));
+		resultList.forEach(
+			c -> logger.info(String.format("%d - %s", c.getId(), c.getName())));
+		assertFalse(resultList.isEmpty());
 	}
 	
 }
