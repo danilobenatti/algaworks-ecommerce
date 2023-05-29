@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.text.NumberFormat;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -28,25 +29,28 @@ import jakarta.persistence.criteria.Root;
 class FunctionsCriteriaTest extends EntityManagerTest {
 	
 	@Test
+	
 	void applyingStringFunction() {
-		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<Object[]> query = builder.createQuery(Object[].class);
-		Root<Person> root = query.from(Person.class);
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder
+			.createQuery(Object[].class);
+		Root<Person> root = criteriaQuery.from(Person.class);
 		ListJoin<Person, Order> joinOrder = root.join(Person_.orders);
 		
-		query.multiselect(root.get(Person_.firstname),
-			builder.concat("Person: ", root.get(Person_.firstname)),
-			builder.length(root.get(Person_.firstname)),
-			builder.locate(root.get(Person_.firstname), "a"),
-			builder.substring(root.get(Person_.firstname), 1, 2),
-			builder.lower(root.get(Person_.firstname)),
-			builder.upper(root.get(Person_.firstname)),
-			builder.trim(root.get(Person_.firstname)));
+		criteriaQuery.multiselect(root.get(Person_.firstname),
+			criteriaBuilder.concat("Person: ", root.get(Person_.firstname)),
+			criteriaBuilder.length(root.get(Person_.firstname)),
+			criteriaBuilder.locate(root.get(Person_.firstname), "a"),
+			criteriaBuilder.substring(root.get(Person_.firstname), 1, 2),
+			criteriaBuilder.lower(root.get(Person_.firstname)),
+			criteriaBuilder.upper(root.get(Person_.firstname)),
+			criteriaBuilder.trim(root.get(Person_.firstname)));
 		
-		query.where(builder.greaterThanOrEqualTo(joinOrder.get(Order_.total),
-			BigDecimal.valueOf(500)));
+		criteriaQuery.where(criteriaBuilder.greaterThanOrEqualTo(
+			joinOrder.get(Order_.total), BigDecimal.valueOf(500)));
 		
-		TypedQuery<Object[]> typedQuery = entityManager.createQuery(query);
+		TypedQuery<Object[]> typedQuery = entityManager
+			.createQuery(criteriaQuery);
 		List<Object[]> list = typedQuery.getResultList();
 		
 		list.forEach(p -> logger.info(new StringBuilder().append("Firstname: ")
@@ -115,6 +119,84 @@ class FunctionsCriteriaTest extends EntityManagerTest {
 		list.forEach(o -> logger.info(new StringBuilder().append("Order: ")
 			.append(o[0]).append(", abs: ").append(o[1]).append(", mod: ")
 			.append(o[2]).append(", sqrt: ").append(o[3])));
+		
+		assertFalse(list.isEmpty());
+	}
+	
+	@Test
+	void applyingCollectionFunction() {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder
+			.createQuery(Object[].class);
+		Root<Order> root = criteriaQuery.from(Order.class);
+		
+		criteriaQuery.multiselect(root.get(Order_.id),
+			criteriaBuilder.size(root.get(Order_.orderitems)),
+			root.get(Order_.total));
+		criteriaQuery.where(criteriaBuilder.greaterThanOrEqualTo(
+			criteriaBuilder.size(root.get(Order_.orderitems)), 2));
+		
+		TypedQuery<Object[]> typedQuery = entityManager
+			.createQuery(criteriaQuery);
+		List<Object[]> list = typedQuery.getResultList();
+		
+		NumberFormat currency = NumberFormat.getCurrencyInstance();
+		list.forEach(o -> logger.info(new StringBuilder().append("Order ID: ")
+			.append(o[0]).append("; Qtd Items: ").append(o[1])
+			.append("; Total: ").append(currency.format(o[2]))));
+		
+		assertFalse(list.isEmpty());
+	}
+	
+	@Test
+	void applyingNativeFunction() {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder
+			.createQuery(Object[].class);
+		Root<Order> root = criteriaQuery.from(Order.class);
+		
+		criteriaQuery.multiselect(
+			root.get(Order_.id), criteriaBuilder.function("dayname",
+				String.class, root.get(Order_.dateCreate)),
+			root.get(Order_.total));
+		criteriaQuery.where(criteriaBuilder.isTrue(criteriaBuilder.function(
+			"calc_average_invoicing", Boolean.class, root.get(Order_.total))));
+		
+		TypedQuery<Object[]> typedQuery = entityManager
+			.createQuery(criteriaQuery);
+		List<Object[]> list = typedQuery.getResultList();
+		
+		NumberFormat currency = NumberFormat.getCurrencyInstance();
+		list.forEach(o -> logger.info(new StringBuilder().append("Order ID: ")
+			.append(o[0]).append("; Weekday: ").append(o[1]).append("; Total: ")
+			.append(currency.format(o[2]))));
+		
+		assertFalse(list.isEmpty());
+	}
+	
+	@Test
+	void applyingAggregationFunction() {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder
+			.createQuery(Object[].class);
+		Root<Order> root = criteriaQuery.from(Order.class);
+		
+		criteriaQuery.multiselect(criteriaBuilder.sum(root.get(Order_.total)),
+			criteriaBuilder.min(root.get(Order_.total)),
+			criteriaBuilder.max(root.get(Order_.total)),
+			criteriaBuilder.avg(root.get(Order_.total)),
+			criteriaBuilder.count(root.get(Order_.id)));
+		
+		TypedQuery<Object[]> typedQuery = entityManager
+			.createQuery(criteriaQuery);
+		List<Object[]> list = typedQuery.getResultList();
+		
+		NumberFormat currency = NumberFormat.getCurrencyInstance();
+		list.forEach(o -> logger.info(new StringBuilder().append("total: ")
+			.append(currency.format(o[0])).append("; min: ")
+			.append(currency.format(o[1])).append("; max: ")
+			.append(currency.format(o[2])).append("; average: ")
+			.append(currency.format(o[3])).append("; count: ").append(o[4])));
 		
 		assertFalse(list.isEmpty());
 	}
