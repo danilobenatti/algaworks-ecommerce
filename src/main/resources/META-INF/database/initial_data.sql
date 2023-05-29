@@ -63,4 +63,9 @@ INSERT INTO tbl_orders (id, col_date_create, col_date_update, col_execution_date
 INSERT INTO tbl_order_items (col_quantity, col_subtotal, order_id, product_id) VALUES (1, 499.5, 5, 1);
 INSERT INTO tbl_payments (order_id, col_date_create, col_status) VALUES (5, date_sub(now(), interval 2 day), 3);
 INSERT INTO tbl_payments_bankslip (col_expirationdate, col_payday, order_id) VALUES (date_add(now(), interval 3 day), date_sub(now(), interval 2 day), 5);
--- INSERT INTO tbl_invoices (order_id, col_issuedatetime, col_xml) VALUES (5, sysdate(), '<xml />');
+-- Person: João Marcos
+INSERT INTO tbl_orders (id, col_date_create, col_date_update, col_execution_date, col_status, col_total, person_id) VALUES(6, date_sub(now(), interval 3 day), null, date_sub(now(), interval 2 day), 1, 1599.0, 2);
+INSERT INTO tbl_order_items (col_quantity, col_subtotal, order_id, product_id) VALUES (2, 1599.0, 6, 1);
+INSERT INTO tbl_payments (order_id, col_date_create, col_status) VALUES (6, date_sub(now(), interval 2 day), 1);
+INSERT INTO tbl_payments_bankslip (col_expirationdate, col_payday, order_id) VALUES (date_add(now(), interval 3 day), date_sub(now(), interval 2 day), 6);
+INSERT INTO tbl_invoices (order_id, col_issuedatetime, col_xml) VALUES (6, sysdate(), '<xml />');

@@ -1,7 +1,9 @@
 package com.algaworks.ecommerce.jpql;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -14,18 +16,14 @@ import jakarta.persistence.TypedQuery;
 
 class FunctionsTest extends EntityManagerTest {
 	
-	private void extracted(String jpql) {
-		
+	private List<Object[]> ResultList(String jpql) {
 		TypedQuery<Object[]> typedQuery = entityManager.createQuery(jpql,
 			Object[].class);
-		List<Object[]> resultList = typedQuery.getResultList();
-		
-		assertFalse(resultList.isEmpty());
-		
-		resultList
-			.forEach(i -> logger.info(i[0] + " - " + i[1] + " - " + i[2]));
+		List<Object[]> list = typedQuery.getResultList();
+		return list;
 	}
 	
+	@SuppressWarnings("preview")
 	@ParameterizedTest
 	@ValueSource(strings = { "select avg(o.total) from Order o",
 		"select count(o) from Order o", "select min(o.total) from Order o",
@@ -33,34 +31,37 @@ class FunctionsTest extends EntityManagerTest {
 		"select sum(o.total) from Order o" })
 	void applyFunctionAggregation(String jpql) {
 		// avg, count, min, max, sum
-		TypedQuery<?> tpq = entityManager.createQuery(jpql, Object.class);
-		List<?> list = tpq.getResultList();
-		
-		assertFalse(list.isEmpty());
-		
-		list.forEach(i -> logger.info(i.toString()));
-		
+		TypedQuery<Object> typedQuery = entityManager.createQuery(jpql,
+			Object.class);
+		Object object = typedQuery.getSingleResult();
+		String msg = switch (object) {
+			case Double d -> String.format("%.2f", d.doubleValue());
+			case Long l -> String.format("%d", l.longValue());
+			case BigDecimal b -> String.format("%.2f", b.floatValue());
+			default -> object.toString();
+		};
+		logger.info("Result: " + msg);
+		assertNotNull(object);
 	}
 	
 	@ParameterizedTest
 	@ValueSource(strings = {
-		"select c.id, c.name, length(c.name) from Category c where length(c.name) > 10 and substring(lower(c.name), 1, 1) = 'e'" })
+		"select c.name, concat('Category: ', c.name) from Category c",
+		"select c.name, length(c.name) from Category c",
+		"select c.name, locate('a', c.name) from Category c",
+		"select c.name, substring(c.name, 1, 2) from Category c",
+		"select c.name, lower(c.name) from Category c",
+		"select c.name, upper(c.name) from Category c",
+		"select c.name, trim(c.name) from Category c",
+		"select c.name, length(c.name) from Category c",
+		"select c.name, length(c.name) from Category c where length(c.name) > 10",
+		"select c.name, length(c.name) from Category c where substring(lower(c.name), 1, 1) = 'e'",
+		"select c.name, length(c.name) from Category c where length(c.name) > 10 and substring(lower(c.name), 1, 1) = 'e'" })
 	void applyFunctionString(String jpql) {
 		// concat, length, locate, substring, lower, upper, trim
-//		String jpql = "select c.name, concat('Category: ', c.name) from Category c";
-//		String jpql = "select c.name, length(c.name) from Category c";
-//		String jpql = "select c.name, locate('a', c.name) from Category c";
-//		String jpql = "select c.name, substring(c.name, 1, 2) from Category c";
-//		String jpql = "select c.name, lower(c.name) from Category c";
-//		String jpql = "select c.name, upper(c.name) from Category c";
-//		String jpql = "select c.name, trim(c.name) from Category c";
-//		String jpql = "select c.name, length(c.name) from Category c";
-//		String jpql = "select c.name, length(c.name) from Category c where length(c.name) > 10";
-//		String jpql = "select c.name, length(c.name) from Category c where substring(lower(c.name), 1, 1) = 'e'";
-//		String jpql = "select c.id, c.name, length(c.name) from Category c where length(c.name) > 10 and substring(lower(c.name), 1, 1) = 'e'";
-		
-		extracted(jpql);
-		
+		List<Object[]> list = ResultList(jpql);
+		list.forEach(i -> logger.info(String.format("%s - %s", i[0], i[1])));
+		assertFalse(list.isEmpty());
 	}
 	
 	@ParameterizedTest
@@ -71,15 +72,20 @@ class FunctionsTest extends EntityManagerTest {
 		"select hour(o.dateCreate), minute(o.dateCreate), second(o.dateCreate) from Order o" })
 	void applyFunctionDate(String jpql) {
 //		TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
-		extracted(jpql);
-		
+		List<Object[]> list = ResultList(jpql);
+		list.forEach(
+			i -> logger.info(String.format("%s - %s - %s", i[0], i[1], i[2])));
+		assertFalse(list.isEmpty());
 	}
 	
 	@ParameterizedTest
 	@ValueSource(strings = {
 		"select abs(-10), mod(3,2), sqrt(25) from Order o where abs(o.total) > 100" })
 	void applyFunctionNumber(String jpql) {
-		extracted(jpql);
+		List<Object[]> list = ResultList(jpql);
+		list.forEach(
+			i -> logger.info(String.format("%s - %s - %s", i[0], i[1], i[2])));
+		assertFalse(list.isEmpty());
 	}
 	
 	@Test
@@ -90,10 +96,8 @@ class FunctionsTest extends EntityManagerTest {
 			Number.class);
 		List<Number> resultList = typedQuery.getResultList();
 		
-		assertFalse(resultList.isEmpty());
-		
 		resultList.forEach(i -> logger.info(i.intValue()));
-		
+		assertFalse(resultList.isEmpty());
 	}
 	
 	@ParameterizedTest
@@ -114,9 +118,8 @@ class FunctionsTest extends EntityManagerTest {
 			Object.class);
 		List<?> resultList = typedQuery.getResultList();
 		
-		assertFalse(resultList.isEmpty());
-		
 		resultList.forEach(i -> logger.info(i.toString()));
+		assertFalse(resultList.isEmpty());
 	}
 	
 }

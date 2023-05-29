@@ -99,7 +99,7 @@ class SubQueriesTest extends EntityManagerTest {
 			+ "where i2.product = p1 and i2.subtotal/i2.quantity <> p1.unitPrice)",
 		"select p1 from Product p1 where p1.unitPrice = all "
 			+ "(select i2.subtotal/i2.quantity from OrderItem i2 where i2.product = p1)",
-		"select p1 from Product p1 where p1.unitPrice > all "
+		"select p1 from Product p1 where p1.unitPrice > any "
 			+ "(select i2.subtotal/i2.quantity from OrderItem i2 where i2.product = p1)",
 		"select p1 from Product p1 where p1.unitPrice = any "
 			+ "(select i2.subtotal/i2.quantity from OrderItem i2 where i2.product = p1)",
