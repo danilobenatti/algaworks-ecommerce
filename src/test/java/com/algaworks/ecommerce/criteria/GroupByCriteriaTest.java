@@ -2,6 +2,7 @@ package com.algaworks.ecommerce.criteria;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.List;
 
@@ -27,6 +28,7 @@ import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.ListJoin;
 import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.SetJoin;
 
 class GroupByCriteriaTest extends EntityManagerTest {
 	
@@ -176,6 +178,42 @@ class GroupByCriteriaTest extends EntityManagerTest {
 				.append("; Total: ").append(currency.format(i[1]))));
 		
 		assertFalse(resultList.isEmpty());
+	}
+	
+	@Test
+	void conditionGroupingWithHaving() {
+		/*
+		 * JPQL = select c.name, sum(i.subtotal) from OrderItem i join i.product
+		 * p join p.categories c group by c.id having sum(i.subtotal) > 1000
+		 */
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder
+			.createQuery(Object[].class);
+		Root<OrderItem> root = criteriaQuery.from(OrderItem.class);
+		Join<OrderItem, Product> joinProduct = root.join(OrderItem_.product);
+		SetJoin<Product, Category> joinCategory = joinProduct
+			.join(Product_.categories);
+		
+		criteriaQuery.multiselect(joinCategory.get(Category_.name),
+			criteriaBuilder.sum(root.get(OrderItem_.subtotal)),
+			criteriaBuilder.avg(root.get(OrderItem_.subtotal)));
+		
+		criteriaQuery.groupBy(joinCategory.get(Category_.id));
+		
+		criteriaQuery.having(criteriaBuilder.greaterThan(criteriaBuilder
+			.avg(root.get(OrderItem_.subtotal)).as(BigDecimal.class),
+			BigDecimal.valueOf(1000.0)));
+		
+		TypedQuery<Object[]> typedQuery = entityManager
+			.createQuery(criteriaQuery);
+		List<Object[]> list = typedQuery.getResultList();
+		
+		NumberFormat currency = NumberFormat.getCurrencyInstance();
+		list.forEach(c -> logger.info(new StringBuilder().append("Category: ")
+			.append(c[0]).append("; sum: ").append(currency.format(c[1]))
+			.append("; avg: ").append(currency.format(c[2]))));
+		
+		assertFalse(list.isEmpty());
 	}
 	
 }
