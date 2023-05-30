@@ -22,6 +22,7 @@ import com.algaworks.ecommerce.model.Product_;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.ListJoin;
@@ -134,6 +135,47 @@ class GroupByCriteriaTest extends EntityManagerTest {
 				.append("; Total of sales: ").append(currency.format(c[1]))));
 		
 		assertFalse(list.isEmpty());
+	}
+	
+	@Test
+	void groupResultWithFunctions() {
+		// Total of sales by month
+		/*
+		 * JPQL = select concat(year(o.dateCreate), '/', function('monthname',
+		 * o.dateCreate)), sum(o.total) from Order o group by
+		 * year(o.dateCreate), month(o.dateCreate)
+		 */
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder
+			.createQuery(Object[].class);
+		Root<Order> root = criteriaQuery.from(Order.class);
+		
+		Expression<Integer> yearOrder = criteriaBuilder.function("year",
+			Integer.class, root.get(Order_.dateCreate));
+		Expression<Integer> monthOrder = criteriaBuilder.function("month",
+			Integer.class, root.get(Order_.dateCreate));
+		Expression<String> monthNameOrder = criteriaBuilder
+			.function("monthname", String.class, root.get(Order_.dateCreate));
+		
+		Expression<String> yearMonthOrder = criteriaBuilder.concat(
+			criteriaBuilder.concat(yearOrder.as(String.class), "/"),
+			monthNameOrder);
+		
+		criteriaQuery.multiselect(yearMonthOrder,
+			criteriaBuilder.sum(root.get(Order_.total)));
+		
+		criteriaQuery.groupBy(yearOrder, monthOrder);
+		
+		TypedQuery<Object[]> typedQuery = entityManager
+			.createQuery(criteriaQuery);
+		List<Object[]> resultList = typedQuery.getResultList();
+		
+		NumberFormat currency = NumberFormat.getCurrencyInstance();
+		resultList.forEach(i -> logger
+			.info(new StringBuilder().append("Year/Month: ").append(i[0])
+				.append("; Total: ").append(currency.format(i[1]))));
+		
+		assertFalse(resultList.isEmpty());
 	}
 	
 }
