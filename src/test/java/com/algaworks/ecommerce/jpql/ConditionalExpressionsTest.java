@@ -126,9 +126,11 @@ class ConditionalExpressionsTest extends EntityManagerTest {
 	}
 	
 	@ParameterizedTest
-	@ValueSource(strings = { "select o.id, case o.status "
-		+ "when 1 then 'Processing' when 2 then 'Canceled' when 3 then 'Received' "
-		+ "else 'Order Status undefined' end from Order o",
+	@ValueSource(strings = {
+		"select o.id, case o.status when 1 then 'Waiting' when 2 then 'Canceled' when 3 then 'Paid' "
+			+ "else 'Status undefined' end from Order o",
+		"select p.order.id, case p.status when 1 then 'Processing' when 2 then 'Canceled' when 3 then 'Received' "
+			+ "else 'Status undefined' end from Payment p",
 		"select o.id, case type(o.payment) when PaymentCreditCard then 'Credit Card payment' "
 			+ "when PaymentBankSlip then 'Bank Slip payment' "
 			+ "else 'Payment undefined' end from Order o" })

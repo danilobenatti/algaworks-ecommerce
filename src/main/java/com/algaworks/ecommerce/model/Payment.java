@@ -6,6 +6,8 @@ import com.algaworks.ecommerce.model.enums.PaymentStatus;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
@@ -29,6 +31,9 @@ import lombok.Setter;
 @Entity
 @Table(name = "tbl_payments")
 @Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "col_payment_type",
+	discriminatorType = DiscriminatorType.INTEGER,
+	columnDefinition = "TINYINT(1)")
 public abstract class Payment extends BaseEntityLong implements Serializable {
 	private static final long serialVersionUID = 1L;
 	

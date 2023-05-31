@@ -39,7 +39,7 @@ INSERT INTO tbl_person_phones (person_id, col_number, col_type) VALUES (4, '+55(
 INSERT INTO tbl_orders (id, col_date_create, col_date_update, col_execution_date, col_status, col_total, person_id) VALUES(1, date_sub(now(), interval 2 day), null, null, 1, 505.0, 1);
 INSERT INTO tbl_order_items (col_quantity, col_subtotal, order_id, product_id) VALUES (1, 499.5, 1, 1);
 INSERT INTO tbl_order_items (col_quantity, col_subtotal, order_id, product_id) VALUES (1, 5.5, 1, 4);
-INSERT INTO tbl_payments (order_id, col_status) VALUES (1, 1);
+INSERT INTO tbl_payments (order_id, col_status, col_payment_type) VALUES (1, 1, 1);
 INSERT INTO tbl_payments_creditcard (col_number_installments, order_id) VALUES (6, 1);
 -- Person: João Marcos
 INSERT INTO tbl_orders (id, col_date_create, col_date_update, col_execution_date, col_status, col_total, person_id) VALUES (2, date_sub(now(), interval 2 week), null, null, 2, 1512.22, 2);
@@ -49,23 +49,23 @@ INSERT INTO tbl_order_items (col_quantity, col_subtotal, order_id, product_id) V
 INSERT INTO tbl_orders (id, col_date_create, col_date_update, col_execution_date, col_status, col_total, person_id) VALUES(3, date_sub(now(), interval 7 month), null, null, 1, 11.0, 1);
 INSERT INTO tbl_order_items (col_quantity, col_subtotal, order_id, product_id) VALUES (2, 11.0, 3, 4);
 INSERT INTO tbl_order_items (col_quantity, col_subtotal, order_id, product_id) VALUES (1, 2.32, 3, 5);
-INSERT INTO tbl_payments (order_id, col_status) VALUES (3, 1);
+INSERT INTO tbl_payments (order_id, col_status, col_payment_type) VALUES (3, 1, 1);
 INSERT INTO tbl_payments_creditcard (col_number_installments, order_id) VALUES (2, 3);
 INSERT INTO tbl_invoices (order_id, col_issuedatetime, col_xml) VALUES (3, date_sub(now(), interval 7 month), '<xml />');
 -- Person: Maria Paula
 INSERT INTO tbl_orders (id, col_date_create, col_date_update, col_execution_date, col_status, col_total, person_id) VALUES(4, date_sub(now(), interval 1 year), null, date_sub(now(), interval 11 month), 3, 3500.0, 3);
 INSERT INTO tbl_order_items (col_quantity, col_subtotal, order_id, product_id) VALUES (1, 3500.0, 4, 6);
-INSERT INTO tbl_payments (order_id, col_date_create, col_status) VALUES (4, date_sub(now(), interval 11 month), 3);
+INSERT INTO tbl_payments (order_id, col_date_create, col_status, col_payment_type) VALUES (4, date_sub(now(), interval 11 month), 3, 0);
 INSERT INTO tbl_payments_bankslip (col_expirationdate, col_payday, order_id) VALUES (date_add(now(), interval 5 day), date_sub(now(), interval 11 month), 4);
 INSERT INTO tbl_invoices (order_id, col_issuedatetime, col_xml) VALUES (4, date_sub(now(), interval 1 year), '<xml />');
 -- Person: Maria Paula
 INSERT INTO tbl_orders (id, col_date_create, col_date_update, col_execution_date, col_status, col_total, person_id) VALUES(5, date_sub(now(), interval 3 day), null, date_sub(now(), interval 2 day), 3, 499.5, 3);
 INSERT INTO tbl_order_items (col_quantity, col_subtotal, order_id, product_id) VALUES (1, 499.5, 5, 1);
-INSERT INTO tbl_payments (order_id, col_date_create, col_status) VALUES (5, date_sub(now(), interval 2 day), 3);
+INSERT INTO tbl_payments (order_id, col_date_create, col_status, col_payment_type) VALUES (5, date_sub(now(), interval 2 day), 3, 0);
 INSERT INTO tbl_payments_bankslip (col_expirationdate, col_payday, order_id) VALUES (date_add(now(), interval 3 day), date_sub(now(), interval 2 day), 5);
 -- Person: João Marcos
 INSERT INTO tbl_orders (id, col_date_create, col_date_update, col_execution_date, col_status, col_total, person_id) VALUES(6, date_sub(now(), interval 3 day), null, date_sub(now(), interval 2 day), 1, 1599.0, 2);
 INSERT INTO tbl_order_items (col_quantity, col_subtotal, order_id, product_id) VALUES (2, 1599.0, 6, 1);
-INSERT INTO tbl_payments (order_id, col_date_create, col_status) VALUES (6, date_sub(now(), interval 2 day), 1);
+INSERT INTO tbl_payments (order_id, col_date_create, col_status, col_payment_type) VALUES (6, date_sub(now(), interval 2 day), 1, 0);
 INSERT INTO tbl_payments_bankslip (col_expirationdate, col_payday, order_id) VALUES (date_add(now(), interval 3 day), date_sub(now(), interval 2 day), 6);
 INSERT INTO tbl_invoices (order_id, col_issuedatetime, col_xml) VALUES (6, sysdate(), '<xml />');

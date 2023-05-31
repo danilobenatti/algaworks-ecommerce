@@ -14,15 +14,19 @@ import org.junit.jupiter.params.provider.ValueSource;
 import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.Order;
 import com.algaworks.ecommerce.model.Order_;
+import com.algaworks.ecommerce.model.Payment;
+import com.algaworks.ecommerce.model.Payment_;
 import com.algaworks.ecommerce.model.Person;
 import com.algaworks.ecommerce.model.Person_;
 import com.algaworks.ecommerce.model.Product;
 import com.algaworks.ecommerce.model.Product_;
 import com.algaworks.ecommerce.model.enums.OrderStatus;
+import com.algaworks.ecommerce.model.enums.PaymentStatus;
 
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Root;
 
 class ConditionalExpressionsCriteriaTest extends EntityManagerTest {
@@ -170,6 +174,54 @@ class ConditionalExpressionsCriteriaTest extends EntityManagerTest {
 				o.getId(), o.getStatus().getValue())));
 		
 		assertFalse(resultList.isEmpty());
+	}
+	
+	@Test
+	void usingCaseEspression() {
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Object[]> query = builder.createQuery(Object[].class);
+		Root<Order> root = query.from(Order.class);
+		
+		query.multiselect(root.get(Order_.id),
+			builder.selectCase(root.get(Order_.status))
+				.when(OrderStatus.WAITING.getCode(), "Awaiting")
+				.when(OrderStatus.CANCELED.getCode(), "Canceled")
+				.when(OrderStatus.PAID.getCode(), "Paid")
+				.otherwise("Status undefined"));
+		
+		TypedQuery<Object[]> typedQuery = entityManager.createQuery(query);
+		List<Object[]> list = typedQuery.getResultList();
+		
+		list.forEach(o -> logger.info(new StringBuilder().append("Order Id: ")
+			.append(o[0]).append("; Order Status: ").append(o[1])));
+		
+		assertFalse(list.isEmpty());
+	}
+	
+	@Test
+	void usingCaseEspressionForPaymentType() {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder
+			.createQuery(Object[].class);
+		Root<Order> root = criteriaQuery.from(Order.class);
+		Join<Order, Payment> join = root.join(Order_.payment);
+		
+		criteriaQuery.multiselect(root.get(Order_.id),
+			criteriaBuilder
+				.selectCase(root.get(Order_.PAYMENT).type().as(Integer.class))
+				.when(0, "Bank Slip").when(1, "Credit Card")
+				.otherwise("Payment undefined"));
+		criteriaQuery.where(criteriaBuilder.equal(join.get(Payment_.status),
+			PaymentStatus.PROCESSING.getCode()));
+		
+		TypedQuery<Object[]> typedQuery = entityManager
+			.createQuery(criteriaQuery);
+		List<Object[]> list = typedQuery.getResultList();
+		
+		list.forEach(o -> logger.info(new StringBuilder().append("Order Id: ")
+			.append(o[0]).append("; Paid with: ").append(o[1])));
+		
+		assertFalse(list.isEmpty());
 	}
 	
 }

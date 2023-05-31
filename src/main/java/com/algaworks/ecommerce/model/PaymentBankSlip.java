@@ -3,6 +3,7 @@ package com.algaworks.ecommerce.model;
 import java.time.LocalDate;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.PrimaryKeyJoinColumn;
@@ -20,6 +21,7 @@ import lombok.Setter;
 @Table(name = "tbl_payments_bankslip")
 @PrimaryKeyJoinColumn(name = "order_id",
 	foreignKey = @ForeignKey(name = "fk_paymentsbankslip__order_id"))
+@DiscriminatorValue(value = "0")
 public class PaymentBankSlip extends Payment {
 	private static final long serialVersionUID = 1L;
 	
