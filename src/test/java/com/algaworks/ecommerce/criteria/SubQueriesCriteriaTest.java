@@ -1,5 +1,6 @@
 package com.algaworks.ecommerce.criteria;
 
+import static com.algaworks.ecommerce.util.DatesFunctions.getAge;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.math.BigDecimal;
@@ -11,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.Order;
 import com.algaworks.ecommerce.model.Order_;
+import com.algaworks.ecommerce.model.Person;
+import com.algaworks.ecommerce.model.Person_;
 import com.algaworks.ecommerce.model.Product;
 import com.algaworks.ecommerce.model.Product_;
 
@@ -85,6 +88,46 @@ class SubQueriesCriteriaTest extends EntityManagerTest {
 		NumberFormat currency = NumberFormat.getCurrencyInstance();
 		list.forEach(o -> logger.info(String.format("Order Id: %d; total: %s",
 			o.getId(), currency.format(o.getTotal()))));
+		
+		assertFalse(list.isEmpty());
+	}
+	
+	@Test
+	void searchSubQueries3() {
+		// Good customers(person)
+		/*
+		 * JPQL = select p from Person p where 600 < (select sum(o.total) from
+		 * Order o where o.person = p)
+		 */
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder
+			.createQuery(Object[].class);
+		Root<Person> root = criteriaQuery.from(Person.class);
+		
+		criteriaQuery.multiselect(root, criteriaBuilder.function(
+			"calc_total_by_person", Double.class, root.get(Person_.id)));
+		
+		Subquery<BigDecimal> subquery = criteriaQuery
+			.subquery(BigDecimal.class);
+		Root<Order> subqueryRoot = subquery.from(Order.class);
+		subquery.select(criteriaBuilder.sum(subqueryRoot.get(Order_.total)));
+//		subquery.where(criteriaBuilder.equal(root.get(Person_.id),
+//			subqueryRoot.get(Order_.person).get(Person_.id)));
+		subquery.where(
+			criteriaBuilder.equal(root, subqueryRoot.get(Order_.person)));
+		
+		criteriaQuery.where(
+			criteriaBuilder.greaterThan(subquery, BigDecimal.valueOf(600)));
+		
+		TypedQuery<Object[]> typedQuery = entityManager
+			.createQuery(criteriaQuery);
+		List<Object[]> list = typedQuery.getResultList();
+		
+		NumberFormat currency = NumberFormat.getCurrencyInstance();
+		list.forEach(p -> logger
+			.info(String.format("Person Id: %d; Name: %s; Age: %s; Total: %s",
+				((Person) p[0]).getId(), ((Person) p[0]).getFirstname(),
+				getAge(((Person) p[0]).getBirthday()), currency.format(p[1]))));
 		
 		assertFalse(list.isEmpty());
 	}

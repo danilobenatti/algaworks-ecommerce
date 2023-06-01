@@ -1,1 +1,2 @@
-CREATE function calc_average_invoicing(value double) returns BOOLEAN reads sql data return value > (select avg(col_total) from tbl_orders);
+create function calc_average_invoicing(value double) returns boolean reads sql data return value > (select avg(col_total) from tbl_orders);
+create function calc_total_by_person(id long) returns double reads sql data return (select sum(o.col_total) from tbl_orders o where o.person_id = id);

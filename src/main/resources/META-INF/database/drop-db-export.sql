@@ -25,11 +25,11 @@
 
     alter table tbl_payments_bankslip 
        drop 
-       foreign key fk_paymentsbankslip__order_id;
+       foreign key FKokctom4scoc38u6n0qcbq3ppr;
 
     alter table tbl_payments_creditcard 
        drop 
-       foreign key fk_paymentscreditcard__order_id;
+       foreign key FK1p3rpfkr2ff924ko8ogrojtvu;
 
     alter table tbl_person_detail 
        drop 
@@ -96,3 +96,5 @@
     drop table if exists tbl_products;
 
     DROP function if EXISTS calc_average_invoicing;
+
+    DROP function if EXISTS calc_total_by_person;
