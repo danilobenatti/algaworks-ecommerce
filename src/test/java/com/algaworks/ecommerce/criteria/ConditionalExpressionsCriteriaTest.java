@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -177,7 +178,7 @@ class ConditionalExpressionsCriteriaTest extends EntityManagerTest {
 	}
 	
 	@Test
-	void usingCaseEspression() {
+	void usingCaseExpression() {
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Object[]> query = builder.createQuery(Object[].class);
 		Root<Order> root = query.from(Order.class);
@@ -199,7 +200,7 @@ class ConditionalExpressionsCriteriaTest extends EntityManagerTest {
 	}
 	
 	@Test
-	void usingCaseEspressionForPaymentType() {
+	void usingCaseExpressionForPaymentType() {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder
 			.createQuery(Object[].class);
@@ -222,6 +223,54 @@ class ConditionalExpressionsCriteriaTest extends EntityManagerTest {
 			.append(o[0]).append("; Paid with: ").append(o[1])));
 		
 		assertFalse(list.isEmpty());
+	}
+	
+	@Test
+	void usingExpressionIn() {
+		
+		List<Integer> listIds = Arrays.asList(1, 3, 4, 6, 7);
+		
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Order> criteriaQuery = criteriaBuilder
+			.createQuery(Order.class);
+		Root<Order> root = criteriaQuery.from(Order.class);
+		
+		criteriaQuery.select(root);
+		
+		criteriaQuery.where(root.get(Order_.id).in(listIds));
+		
+		TypedQuery<Order> typedQuery = entityManager.createQuery(criteriaQuery);
+		List<Order> orders = typedQuery.getResultList();
+		
+		orders.forEach(o -> logger
+			.info(String.format("%d - %s", o.getId(), o.getStatus())));
+		
+		assertFalse(orders.isEmpty());
+	}
+	
+	@Test
+	void usingExpressionIn2() {
+		Person person1 = entityManager.find(Person.class, 1L);
+		Person person2 = entityManager.find(Person.class, 2L);
+		
+		List<Person> list = Arrays.asList(person1, person2);
+		
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Order> criteriaQuery = criteriaBuilder
+			.createQuery(Order.class);
+		Root<Order> root = criteriaQuery.from(Order.class);
+		
+		criteriaQuery.select(root);
+		
+		criteriaQuery.where(root.get(Order_.person).in(list));
+		
+		TypedQuery<Order> typedQuery = entityManager.createQuery(criteriaQuery);
+		List<Order> orders = typedQuery.getResultList();
+		
+		orders.forEach(o -> logger.info(
+			String.format("%d - %s", o.getId(), o.getStatus().getValue())));
+		
+		assertFalse(orders.isEmpty());
 	}
 	
 }
