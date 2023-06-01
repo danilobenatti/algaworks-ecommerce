@@ -49,7 +49,7 @@ class GroupByTest extends EntityManagerTest {
 			+ "where year(o.dateCreate) = year(current_date) and o.status = 1 "
 			+ "group by year(o.dateCreate), month(o.dateCreate)",
 		"select c.name, sum(i.subtotal) from OrderItem i join i.product p join p.categories c join i.order o "
-			+ "where year(o.dateCreate) = year(current_date) and month(o.dateCreate) = month(current_date) "
+			+ "where year(o.dateCreate) = year(current_date) - 1 and month(o.dateCreate) = month(current_date)"
 			+ "group by c.id",
 		"select p.firstname, sum(o.total) from Order o join o.person p "
 			+ "where year(o.dateCreate) = year(current_date) and month(o.dateCreate) >= (month(current_date) - 3) "
