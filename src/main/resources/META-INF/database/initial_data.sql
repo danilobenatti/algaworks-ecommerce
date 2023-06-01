@@ -46,7 +46,7 @@ INSERT INTO tbl_orders (id, col_date_create, col_date_update, col_execution_date
 INSERT INTO tbl_order_items (col_quantity, col_subtotal, order_id, product_id) VALUES (1, 1506.72, 2, 3);
 INSERT INTO tbl_order_items (col_quantity, col_subtotal, order_id, product_id) VALUES (1, 5.5, 2, 4);
 -- Person: Luiz Fernando
-INSERT INTO tbl_orders (id, col_date_create, col_date_update, col_execution_date, col_status, col_total, person_id) VALUES(3, date_sub(now(), interval 7 month), null, null, 1, 11.0, 1);
+INSERT INTO tbl_orders (id, col_date_create, col_date_update, col_execution_date, col_status, col_total, person_id) VALUES(3, date_sub(now(), interval 7 month), null, null, 1, 13.32, 1);
 INSERT INTO tbl_order_items (col_quantity, col_subtotal, order_id, product_id) VALUES (2, 11.0, 3, 4);
 INSERT INTO tbl_order_items (col_quantity, col_subtotal, order_id, product_id) VALUES (1, 2.32, 3, 5);
 INSERT INTO tbl_payments (order_id, col_status, col_payment_type) VALUES (3, 1, 1);

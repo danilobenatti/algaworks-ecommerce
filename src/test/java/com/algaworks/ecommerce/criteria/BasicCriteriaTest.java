@@ -6,6 +6,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.dto.ProductDTO;
 import com.algaworks.ecommerce.model.Order;
+import com.algaworks.ecommerce.model.Order_;
 import com.algaworks.ecommerce.model.Person;
 import com.algaworks.ecommerce.model.Person_;
 import com.algaworks.ecommerce.model.Product;
@@ -161,6 +163,25 @@ class BasicCriteriaTest extends EntityManagerTest {
 		resultList.forEach(p -> logger.info(String.format("%d - %s - %d",
 			p.getId(), p.getFirstname(), getAge(p.getBirthday()))));
 		assertFalse(resultList.isEmpty());
+	}
+	
+	@Test
+	void usingDistinct() {
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Order> query = builder.createQuery(Order.class);
+		Root<Order> root = query.from(Order.class);
+		root.join(Order_.orderitems);
+		
+		query.select(root).distinct(true);
+		
+		TypedQuery<Order> typedQuery = entityManager.createQuery(query);
+		List<Order> list = typedQuery.getResultList();
+		
+		NumberFormat currency = NumberFormat.getCurrencyInstance();
+		list.forEach(o -> logger
+			.info(new StringBuilder().append("Order Id: ").append(o.getId())
+				.append("; Total: ").append(currency.format(o.getTotal()))));
+		assertFalse(list.isEmpty());
 	}
 	
 }
