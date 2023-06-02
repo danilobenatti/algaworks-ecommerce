@@ -18,6 +18,7 @@ import com.algaworks.ecommerce.model.OrderItemPk;
 import com.algaworks.ecommerce.model.Person;
 import com.algaworks.ecommerce.model.Product;
 import com.algaworks.ecommerce.model.enums.OrderStatus;
+import com.algaworks.ecommerce.model.enums.ProductUnit;
 
 class CascadeTypeMergeTest extends EntityManagerTest {
 	
@@ -94,8 +95,10 @@ class CascadeTypeMergeTest extends EntityManagerTest {
 	
 	@Test
 	void updateProductWithCategory() {
+//		Product product = entityManager.find(Product.class, 1);
 		Product product = new Product();
 		product.setId(1L);
+		product.setUnit(ProductUnit.UNITY);
 		product.setUnitPrice(BigDecimal.valueOf(699.5));
 		product.setName("Kindle Special Edition");
 		product.setDescription("The best ever!!");
@@ -108,6 +111,7 @@ class CascadeTypeMergeTest extends EntityManagerTest {
 		
 		entityManager.getTransaction().begin();
 		entityManager.merge(product);
+//		entityManager.persist(product);
 		entityManager.getTransaction().commit();
 		
 		entityManager.clear();

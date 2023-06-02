@@ -12,13 +12,14 @@ INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice
 INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image) VALUES (4, 'Fita Adesiva Alta Aderência','Fita ColaTudo', 1, 5.5, date_sub(now(), interval(3) day), null);
 INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image) VALUES (5, 'Corda de Tecido Poliester Trançada Reforçada','Corda de Nylon para Varal', 3, 2.32, date_sub(now(), interval(4) week), null);
 INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image) VALUES (6, 'O melhor ajuste de foco','Câmera Canon 80D', 1, 3500.0, sysdate(), LOAD_FILE('C:/tmp/canon80d.jpg'));
+INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image) VALUES (7, 'Produto Teste Nunca Vendido','Produto Teste', 1, 10.0, date_sub(now(), interval(12) hour), null);
 INSERT INTO tbl_product_attribute (product_id, col_description, col_value) VALUES (3, 'First attribute', 'Powerfull');
 INSERT INTO tbl_product_attribute (product_id, col_description, col_value) VALUES (4, 'Manufacturer', '6M');
 INSERT INTO tbl_product_attribute (product_id, col_description, col_value) VALUES (5, 'Max load', '432Kg');
 INSERT INTO tbl_product_attribute (product_id, col_description, col_value) VALUES (6, 'Manufacturer', 'Canon');
 INSERT INTO tbl_product_attribute (product_id, col_description, col_value) VALUES (6, 'Type', 'DSLR');
 --
-INSERT INTO tbl_product_category (product_id, category_id) VALUES (1, 1), (1, 4), (3, 2), (3, 8), (4, 3), (6, 2), (6, 8);
+INSERT INTO tbl_product_category (product_id, category_id) VALUES (1, 1), (1, 4), (3, 1), (3, 2), (3, 8), (4, 3), (6, 1), (6, 2), (6, 8);
 --
 INSERT INTO tbl_persons (id, col_firstname, col_taxidnumber, col_date_create) VALUES (1, 'Luiz Fernando', '21470959828', date_sub(now(), interval(3) day));
 INSERT INTO tbl_person_detail (person_id, col_birthday, col_gender) VALUES (1, '1958-10-05', 'MALE');

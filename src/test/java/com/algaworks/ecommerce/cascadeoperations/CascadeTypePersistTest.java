@@ -120,7 +120,7 @@ class CascadeTypePersistTest extends EntityManagerTest {
 		category.setName("Áudio e Vídeo");
 		category.setParentCategory(entityManager.find(Category.class, 1L));
 		
-		product.setCategories(Set.of(category));
+		product.setCategories(Set.of(category, category.getParentCategory()));
 		
 		entityManager.getTransaction().begin();
 		entityManager.persist(product);

@@ -10,8 +10,11 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
+import com.algaworks.ecommerce.model.Category;
+import com.algaworks.ecommerce.model.Category_;
 import com.algaworks.ecommerce.model.Order;
 import com.algaworks.ecommerce.model.OrderItem;
+import com.algaworks.ecommerce.model.OrderItemPk_;
 import com.algaworks.ecommerce.model.OrderItem_;
 import com.algaworks.ecommerce.model.Order_;
 import com.algaworks.ecommerce.model.Person;
@@ -24,6 +27,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.SetJoin;
 import jakarta.persistence.criteria.Subquery;
 
 class SubQueriesCriteriaTest extends EntityManagerTest {
@@ -138,8 +142,9 @@ class SubQueriesCriteriaTest extends EntityManagerTest {
 	@Test
 	void searchWithIn() {
 		/*
-		 * "select o from Order o where o.id in (select o2.id from OrderItem i2
-		 * join i2.order o2 join i2.product p2 where p2.unitPrice > 1000.0)"
+		 * JPQL = select o from Order o where o.id in (select o2.id from
+		 * OrderItem i2 join i2.order o2 join i2.product p2 where p2.unitPrice >
+		 * 1000.0)
 		 */
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Order> criteriaQuery = criteriaBuilder
@@ -169,4 +174,143 @@ class SubQueriesCriteriaTest extends EntityManagerTest {
 		
 		assertFalse(list.isEmpty());
 	}
+	
+	@Test
+	void searchExists() {
+		/*
+		 * JPQL = select p1 from Product p1 where exists (select 1 from
+		 * OrderItem i2 join i2.product p2 where p2 = p1)
+		 */
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Product> criteriaQuery = criteriaBuilder
+			.createQuery(Product.class);
+		Root<Product> root = criteriaQuery.from(Product.class);
+		
+		criteriaQuery.select(root);
+		
+		Subquery<Integer> subquery = criteriaQuery.subquery(Integer.class);
+		Root<OrderItem> subqueryRoot = subquery.from(OrderItem.class);
+		subquery.select(criteriaBuilder.literal(1));
+		subquery.where(
+			criteriaBuilder.equal(subqueryRoot.get(OrderItem_.product), root));
+		
+		criteriaQuery.where(criteriaBuilder.exists(subquery));
+		
+		TypedQuery<Product> typedQuery = entityManager
+			.createQuery(criteriaQuery);
+		List<Product> list = typedQuery.getResultList();
+		
+		list.forEach(p -> logger.info(new StringBuilder().append("Product Id: ")
+			.append(p.getId()).append("; Name: ").append(p.getName())));
+		
+		assertFalse(list.isEmpty());
+	}
+	
+	@Test
+	void searchPersonWithOrdersExercise() {
+		/*
+		 * JPQL = select p from Person p where (select count(o) from Order o
+		 * where person = p) >= 2
+		 */
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Person> criteriaQuery = criteriaBuilder
+			.createQuery(Person.class);
+		Root<Person> root = criteriaQuery.from(Person.class);
+		
+		criteriaQuery.select(root);
+		
+		Subquery<Long> subquery = criteriaQuery.subquery(Long.class);
+		Root<Order> subqueryRoot = subquery.from(Order.class);
+		subquery.select(criteriaBuilder.count(subqueryRoot.get(Order_.id)));
+		subquery.where(
+			criteriaBuilder.equal(subqueryRoot.get(Order_.person), root));
+		
+		criteriaQuery.where(criteriaBuilder.greaterThanOrEqualTo(subquery, 2L));
+		
+		TypedQuery<Person> typedQuery = entityManager
+			.createQuery(criteriaQuery);
+		List<Person> list = typedQuery.getResultList();
+		
+		list.forEach(p -> logger.info(new StringBuilder().append("Person Id: ")
+			.append(p.getId()).append("; Name: ").append(p.getFirstname())));
+		
+		assertFalse(list.isEmpty());
+	}
+	
+	@Test
+	void searchOrderWithCategoryInExercise() {
+		/*
+		 * JPQL = select o1 from Order o1 where o1.id in (select o2.id from
+		 * OrderItem i2 join i2.order o2 join i2.product p2 join p2.categories
+		 * c2 where c2.id = 2)
+		 */
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Order> criteriaQuery = criteriaBuilder
+			.createQuery(Order.class);
+		Root<Order> root = criteriaQuery.from(Order.class);
+		
+		criteriaQuery.select(root);
+		
+		Subquery<Long> subquery = criteriaQuery.subquery(Long.class);
+		Root<OrderItem> subqueryRoot = subquery.from(OrderItem.class);
+		Join<OrderItem, Product> subqueryJoinProduct = subqueryRoot
+			.join(OrderItem_.product);
+		SetJoin<Product, Category> subqueryJoinCategory = subqueryJoinProduct
+			.join(Product_.categories);
+		subquery
+			.select(subqueryRoot.get(OrderItem_.id).get(OrderItemPk_.orderId));
+		subquery.where(
+			criteriaBuilder.equal(subqueryJoinCategory.get(Category_.id), 2L));
+		
+		criteriaQuery.where(root.get(Order_.id).in(subquery));
+		
+		TypedQuery<Order> typedQuery = entityManager.createQuery(criteriaQuery);
+		
+		List<Order> list = typedQuery.getResultList();
+		assertFalse(list.isEmpty());
+		
+		NumberFormat currency = NumberFormat.getCurrencyInstance();
+		list.forEach(o -> logger
+			.info(new StringBuilder().append("Order Id: ").append(o.getId())
+				.append("; Total: ").append(currency.format(o.getTotal()))));
+		
+		assertFalse(list.isEmpty());
+	}
+	
+	@Test
+	void searchOrderWithExistsExercise() {
+		/*
+		 * JPQL = select p from Product p where p.unitPrice <> any (select
+		 * i1.subtotal/i1.quantity from OrderItem i1 where i1.product = p)
+		 */
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Product> criteriaQuery = criteriaBuilder
+			.createQuery(Product.class);
+		Root<Product> root = criteriaQuery.from(Product.class);
+		
+		criteriaQuery.select(root);
+		
+		Subquery<Integer> subquery = criteriaQuery.subquery(Integer.class);
+		Root<OrderItem> subqueryRoot = subquery.from(OrderItem.class);
+		subquery.select(criteriaBuilder.literal(1));
+		subquery.where(
+			criteriaBuilder.equal(subqueryRoot.get(OrderItem_.product), root),
+			criteriaBuilder.notEqual(
+				criteriaBuilder.quot(subqueryRoot.get(OrderItem_.subtotal),
+					subqueryRoot.get(OrderItem_.quantity)),
+				root.get(Product_.unitPrice)));
+		
+		criteriaQuery.where(criteriaBuilder.exists(subquery));
+		
+		TypedQuery<Product> typedQuery = entityManager
+			.createQuery(criteriaQuery);
+		
+		List<Product> list = typedQuery.getResultList();
+		
+		list.forEach(
+			p -> logger.info(String.format("%d - %s", p.getId(), p.getName())));
+		
+		assertFalse(list.isEmpty());
+	}
+	
 }
