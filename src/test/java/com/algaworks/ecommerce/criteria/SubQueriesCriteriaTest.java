@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.Order;
+import com.algaworks.ecommerce.model.OrderItem;
+import com.algaworks.ecommerce.model.OrderItem_;
 import com.algaworks.ecommerce.model.Order_;
 import com.algaworks.ecommerce.model.Person;
 import com.algaworks.ecommerce.model.Person_;
@@ -20,6 +22,7 @@ import com.algaworks.ecommerce.model.Product_;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.criteria.Subquery;
 
@@ -125,11 +128,45 @@ class SubQueriesCriteriaTest extends EntityManagerTest {
 		
 		NumberFormat currency = NumberFormat.getCurrencyInstance();
 		list.forEach(p -> logger
-			.info(String.format("Person Id: %d; Name: %s; Age: %s; Total: %s",
+			.info(String.format("Person Id: %d; Name: %s; Age: %d; Total: %s",
 				((Person) p[0]).getId(), ((Person) p[0]).getFirstname(),
 				getAge(((Person) p[0]).getBirthday()), currency.format(p[1]))));
 		
 		assertFalse(list.isEmpty());
 	}
 	
+	@Test
+	void searchWithIn() {
+		/*
+		 * "select o from Order o where o.id in (select o2.id from OrderItem i2
+		 * join i2.order o2 join i2.product p2 where p2.unitPrice > 1000.0)"
+		 */
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Order> criteriaQuery = criteriaBuilder
+			.createQuery(Order.class);
+		Root<Order> root = criteriaQuery.from(Order.class);
+		
+		criteriaQuery.select(root);
+		
+		Subquery<Long> subquery = criteriaQuery.subquery(long.class);
+		Root<OrderItem> subqueryRoot = subquery.from(OrderItem.class);
+		Join<OrderItem, Order> subqueryJoinOrder = subqueryRoot
+			.join(OrderItem_.order);
+		Join<OrderItem, Product> subqueryJoinProduct = subqueryRoot
+			.join(OrderItem_.product);
+		subquery.select(subqueryJoinOrder.get(Order_.id));
+		subquery.where(criteriaBuilder.greaterThan(
+			subqueryJoinProduct.get(Product_.unitPrice),
+			BigDecimal.valueOf(1000.0)));
+		
+		criteriaQuery.where(root.get(Order_.id).in(subquery));
+		
+		TypedQuery<Order> typedQuery = entityManager.createQuery(criteriaQuery);
+		List<Order> list = typedQuery.getResultList();
+		
+		list.forEach(o -> logger.info(new StringBuilder().append("Order ID: ")
+			.append(o.getId()).append("; Total: ").append(o.getTotal())));
+		
+		assertFalse(list.isEmpty());
+	}
 }
