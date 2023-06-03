@@ -313,4 +313,85 @@ class SubQueriesCriteriaTest extends EntityManagerTest {
 		assertFalse(list.isEmpty());
 	}
 	
+	@Test
+	void searchAll1() {
+		// Find products that have always sold at the current price
+		/*
+		 * JPQL = select p1 from Product p1 where p1.unitPrice = all (select
+		 * i2.subtotal/i2.quantity from OrderItem i2 where i2.product = p1)
+		 */
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Product> criteriaQuery = criteriaBuilder
+			.createQuery(Product.class);
+		Root<Product> root = criteriaQuery.from(Product.class);
+		
+		criteriaQuery.select(root);
+		
+		Subquery<BigDecimal> subquery = criteriaQuery
+			.subquery(BigDecimal.class);
+		Root<OrderItem> subqueryRoot = subquery.from(OrderItem.class);
+		subquery
+			.select(criteriaBuilder
+				.quot(subqueryRoot.get(OrderItem_.subtotal),
+					subqueryRoot.get(OrderItem_.quantity))
+				.as(BigDecimal.class));
+		subquery.from(OrderItem.class);
+		subquery.where(
+			criteriaBuilder.equal(subqueryRoot.get(OrderItem_.product), root));
+		
+		criteriaQuery.where(criteriaBuilder.equal(root.get(Product_.unitPrice),
+			criteriaBuilder.all(subquery)));
+		
+		TypedQuery<Product> typedQuery = entityManager
+			.createQuery(criteriaQuery);
+		List<Product> list = typedQuery.getResultList();
+		
+		list.forEach(p -> logger.info(
+			new StringBuilder().append("Product ID: ").append(p.getId())));
+		
+		assertFalse(list.isEmpty());
+	}
+	
+	@Test
+	void searchAll2() {
+		// Find products that have not sold after the price increased
+		/*
+		 * JPQL = select p1 from Product p1 where p1.unitPrice > all (select
+		 * i2.subtotal/i2.quantity from OrderItem i2 where i2.product = p1) and
+		 * exists (select 1 from OrderItem i2 where i2.product = p1)
+		 */
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Product> criteriaQuery = criteriaBuilder
+			.createQuery(Product.class);
+		Root<Product> root = criteriaQuery.from(Product.class);
+		
+		criteriaQuery.select(root);
+		
+		Subquery<BigDecimal> subquery = criteriaQuery
+			.subquery(BigDecimal.class);
+		Root<OrderItem> subqueryRoot = subquery.from(OrderItem.class);
+		subquery
+			.select(criteriaBuilder
+				.quot(subqueryRoot.get(OrderItem_.subtotal),
+					subqueryRoot.get(OrderItem_.quantity))
+				.as(BigDecimal.class));
+		subquery.from(OrderItem.class);
+		subquery.where(
+			criteriaBuilder.equal(subqueryRoot.get(OrderItem_.product), root));
+		
+		criteriaQuery.where(
+			criteriaBuilder.greaterThan(root.get(Product_.unitPrice),
+				criteriaBuilder.all(subquery)),
+			criteriaBuilder.exists(subquery));
+		
+		TypedQuery<Product> typedQuery = entityManager
+			.createQuery(criteriaQuery);
+		List<Product> list = typedQuery.getResultList();
+		
+		list.forEach(p -> logger.info(new StringBuilder().append("Product ID: ")
+			.append(p.getId()).append("; Name: ").append(p.getName())));
+		
+		assertFalse(list.isEmpty());
+	}
+	
 }
