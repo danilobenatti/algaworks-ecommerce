@@ -32,6 +32,8 @@ import jakarta.persistence.criteria.Subquery;
 
 class SubQueriesCriteriaTest extends EntityManagerTest {
 	
+	NumberFormat currency = NumberFormat.getCurrencyInstance();
+	
 	@Test
 	void searchSubQueries() {
 		// Most expensive products
@@ -59,7 +61,6 @@ class SubQueriesCriteriaTest extends EntityManagerTest {
 			.createQuery(criteriaQuery);
 		List<Product> list = typedQuery.getResultList();
 		
-		NumberFormat currency = NumberFormat.getCurrencyInstance();
 		list.forEach(p -> logger.info(String.format("Product Id: %d; price: %s",
 			p.getId(), currency.format(p.getUnitPrice()))));
 		
@@ -92,7 +93,6 @@ class SubQueriesCriteriaTest extends EntityManagerTest {
 		TypedQuery<Order> typedQuery = entityManager.createQuery(criteriaQuery);
 		List<Order> list = typedQuery.getResultList();
 		
-		NumberFormat currency = NumberFormat.getCurrencyInstance();
 		list.forEach(o -> logger.info(String.format("Order Id: %d; total: %s",
 			o.getId(), currency.format(o.getTotal()))));
 		
@@ -130,7 +130,6 @@ class SubQueriesCriteriaTest extends EntityManagerTest {
 			.createQuery(criteriaQuery);
 		List<Object[]> list = typedQuery.getResultList();
 		
-		NumberFormat currency = NumberFormat.getCurrencyInstance();
 		list.forEach(p -> logger
 			.info(String.format("Person Id: %d; Name: %s; Age: %d; Total: %s",
 				((Person) p[0]).getId(), ((Person) p[0]).getFirstname(),
@@ -169,8 +168,9 @@ class SubQueriesCriteriaTest extends EntityManagerTest {
 		TypedQuery<Order> typedQuery = entityManager.createQuery(criteriaQuery);
 		List<Order> list = typedQuery.getResultList();
 		
-		list.forEach(o -> logger.info(new StringBuilder().append("Order ID: ")
-			.append(o.getId()).append("; Total: ").append(o.getTotal())));
+		list.forEach(o -> logger
+			.info(new StringBuilder().append("Order ID: ").append(o.getId())
+				.append("; Total: ").append(currency.format(o.getTotal()))));
 		
 		assertFalse(list.isEmpty());
 	}
@@ -269,7 +269,6 @@ class SubQueriesCriteriaTest extends EntityManagerTest {
 		List<Order> list = typedQuery.getResultList();
 		assertFalse(list.isEmpty());
 		
-		NumberFormat currency = NumberFormat.getCurrencyInstance();
 		list.forEach(o -> logger
 			.info(new StringBuilder().append("Order Id: ").append(o.getId())
 				.append("; Total: ").append(currency.format(o.getTotal()))));
@@ -390,6 +389,88 @@ class SubQueriesCriteriaTest extends EntityManagerTest {
 		
 		list.forEach(p -> logger.info(new StringBuilder().append("Product ID: ")
 			.append(p.getId()).append("; Name: ").append(p.getName())));
+		
+		assertFalse(list.isEmpty());
+	}
+	
+	@Test
+	void searchWithAny1() {
+		// All products sold at least once at current price.
+		/*
+		 * JPQL = select p from Product p where p.unitPrice = any (select
+		 * i1.subtotal/i1.quantity from OrderItem i1 where i1.product = p)
+		 */
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Product> criteriaQuery = criteriaBuilder
+			.createQuery(Product.class);
+		Root<Product> root = criteriaQuery.from(Product.class);
+		
+		criteriaQuery.select(root);
+		
+		Subquery<BigDecimal> subquery = criteriaQuery
+			.subquery(BigDecimal.class);
+		Root<OrderItem> subqueryRoot = subquery.from(OrderItem.class);
+		subquery
+			.select(criteriaBuilder
+				.quot(subqueryRoot.get(OrderItem_.subtotal),
+					subqueryRoot.get(OrderItem_.quantity))
+				.as(BigDecimal.class));
+		subquery.from(OrderItem.class);
+		subquery.where(
+			criteriaBuilder.equal(subqueryRoot.get(OrderItem_.product), root));
+		
+		criteriaQuery.where(criteriaBuilder.equal(root.get(Product_.unitPrice),
+			criteriaBuilder.any(subquery)));
+		
+		TypedQuery<Product> typedQuery = entityManager
+			.createQuery(criteriaQuery);
+		List<Product> list = typedQuery.getResultList();
+		
+		list.forEach(p -> logger
+			.info(new StringBuilder().append("Product ID: ").append(p.getId())
+				.append("; Name: ").append(p.getName()).append("; Unit Price: ")
+				.append(currency.format(p.getUnitPrice()))));
+		
+		assertFalse(list.isEmpty());
+	}
+	
+	@Test
+	void searchWithAny2() {
+		// All products sold at a different price than the current one.
+		/*
+		 * JPQL = select p from Product p where p.unitPrice <> any (select
+		 * i1.subtotal/i1.quantity from OrderItem i1 where i1.product = p)
+		 */
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Product> criteriaQuery = criteriaBuilder
+			.createQuery(Product.class);
+		Root<Product> root = criteriaQuery.from(Product.class);
+		
+		criteriaQuery.select(root);
+		
+		Subquery<BigDecimal> subquery = criteriaQuery
+			.subquery(BigDecimal.class);
+		Root<OrderItem> subqueryRoot = subquery.from(OrderItem.class);
+		subquery
+			.select(criteriaBuilder
+				.quot(subqueryRoot.get(OrderItem_.subtotal),
+					subqueryRoot.get(OrderItem_.quantity))
+				.as(BigDecimal.class));
+		subquery.from(OrderItem.class);
+		subquery.where(
+			criteriaBuilder.equal(subqueryRoot.get(OrderItem_.product), root));
+		
+		criteriaQuery.where(criteriaBuilder.notEqual(
+			root.get(Product_.unitPrice), criteriaBuilder.any(subquery)));
+		
+		TypedQuery<Product> typedQuery = entityManager
+			.createQuery(criteriaQuery);
+		List<Product> list = typedQuery.getResultList();
+		
+		list.forEach(p -> logger
+			.info(new StringBuilder().append("Product ID: ").append(p.getId())
+				.append("; Name: ").append(p.getName()).append("; Unit Price: ")
+				.append(currency.format(p.getUnitPrice()))));
 		
 		assertFalse(list.isEmpty());
 	}
