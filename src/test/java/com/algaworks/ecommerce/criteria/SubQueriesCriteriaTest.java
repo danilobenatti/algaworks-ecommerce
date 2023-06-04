@@ -475,4 +475,44 @@ class SubQueriesCriteriaTest extends EntityManagerTest {
 		assertFalse(list.isEmpty());
 	}
 	
+	@Test
+	void searchWithAllExercise() {
+		// Todos os produtos que sempre foram vendidos pelo mesmo preço.
+		/*
+		 * JPQL = select distinct p from OrderItem i join i.product p where
+		 * i.subtotal = all (select unitPrice from OrderItem where product = p
+		 * and id <> i.id)
+		 */
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Product> criteriaQuery = criteriaBuilder
+			.createQuery(Product.class);
+		Root<OrderItem> root = criteriaQuery.from(OrderItem.class);
+		
+		criteriaQuery.select(root.get(OrderItem_.product));
+		criteriaQuery.distinct(true);
+		
+		Subquery<BigDecimal> subquery = criteriaQuery
+			.subquery(BigDecimal.class);
+		Root<OrderItem> subqueryRoot = subquery.from(OrderItem.class);
+		subquery.select(subqueryRoot.get(OrderItem_.subtotal));
+		subquery.where(
+			criteriaBuilder.equal(subqueryRoot.get(OrderItem_.product),
+				root.get(OrderItem_.product)),
+			criteriaBuilder.notEqual(subqueryRoot, root));
+		
+		criteriaQuery.where(criteriaBuilder.equal(root.get(OrderItem_.subtotal),
+			criteriaBuilder.all(subquery)));
+		
+		TypedQuery<Product> typedQuery = entityManager
+			.createQuery(criteriaQuery);
+		
+		List<Product> lista = typedQuery.getResultList();
+		
+		NumberFormat currency = NumberFormat.getCurrencyInstance();
+		lista.forEach(p -> logger.info(String.format("%d - %s - %s", p.getId(),
+			p.getName(), currency.format(p.getUnitPrice()))));
+		
+		assertFalse(lista.isEmpty());
+	}
+	
 }
