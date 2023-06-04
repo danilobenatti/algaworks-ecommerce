@@ -1,2 +1,8 @@
 create function calc_average_invoicing(value double) returns boolean reads sql data return value > (select avg(col_total) from tbl_orders);
 create function calc_total_by_person(id long) returns double reads sql data return (select sum(o.col_total) from tbl_orders o where o.person_id = id);
+
+create table tbl_product_shop (id bigint not null auto_increment, col_name varchar(150) not null, col_description mediumtext not null, col_unit tinyint default null, col_unitprice decimal(12,2) not null default '0.00', col_image mediumblob, col_date_create timestamp null default null, col_date_update timestamp null default null, primary key (id), unique key uk_product_shop__name (col_name), key idx_product_shop__name (col_name)) engine=InnoDB auto_increment=0 default charset=utf8mb4 collate=utf8mb4_0900_ai_ci
+
+create table tbl_ecm_products (prd_id bigint not null auto_increment, prd_name varchar(150) not null, prd_description mediumtext not null, prd_unit tinyint default null, prd_unitprice decimal(12,2) not null default '0.00', prd_image mediumblob, prd_date_create timestamp null default null, prd_date_update timestamp null default null, primary key (prd_id), unique key uk_ecm_products__name (prd_name), key idx_ecm_products__name (prd_name)) engine=InnoDB auto_increment=0 default charset=utf8mb4 collate=utf8mb4_0900_ai_ci
+
+create table tbl_erp_products (id bigint not null auto_increment, col_name varchar(150) not null, col_description mediumtext not null, col_unit tinyint default null, col_unitprice decimal(12,2) not null default '0.00', primary key (id), unique key uk_erp_products__name (col_name), key idx_erp_products__name (col_name)) engine=InnoDB auto_increment=0 default charset=utf8mb4 collate=utf8mb4_0900_ai_ci
