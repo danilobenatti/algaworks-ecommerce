@@ -55,4 +55,22 @@ class NativeQueryTest extends EntityManagerTest {
 		assertFalse(list.isEmpty());
 	}
 	
+	@SuppressWarnings("unchecked")
+	@Test
+	void executeSQLReturnEntityById() {
+		String sql = "select prd_id id, prd_name col_name, prd_description col_description, "
+			+ "prd_image col_image, prd_unit col_unit, prd_unitprice col_unitprice, "
+			+ "prd_date_create col_date_create, prd_date_update col_date_update "
+			+ "from tbl_ecm_products where prd_id = :id";
+		Query query = entityManager.createNativeQuery(sql, Product.class);
+		query.setParameter("id", Long.valueOf(201));
+		
+		List<Product> list = query.getResultList();
+		
+		list.forEach(i -> logger.info(new StringBuilder().append("id: ")
+			.append(i.getId()).append("; Product: ").append(i.getName())
+			.append("; Price: ").append(currency.format(i.getUnitPrice()))));
+		
+		assertFalse(list.isEmpty());
+	}
 }
