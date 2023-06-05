@@ -3,18 +3,23 @@
 	xmlns="https://jakarta.ee/xml/ns/persistence/orm"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence/orm https://jakarta.ee/xml/ns/persistence/orm/orm_3_0.xsd">
-	<named-native-query name="ecm_category.listAll"
-		result-set-mapping="tbl_ecm_category.Category">
+	<named-native-query name="ecm_category.listAll" result-set-mapping="tbl_ecm_category.Category">
 		<query>select * from tbl_ecm_category</query>
 	</named-native-query>
-	<sql-result-set-mapping
-		name="tbl_ecm_category.Category">
-		<entity-result
-			entity-class="com.algaworks.ecommerce.model.Category">
+	<named-native-query name="ecm_category.listAll.dto" result-set-mapping="tbl_ecm_category.CategoryDTO">
+		<query>select cat_id, cat_name from tbl_ecm_category</query>
+	</named-native-query>
+	<sql-result-set-mapping name="tbl_ecm_category.Category">
+		<entity-result entity-class="com.algaworks.ecommerce.model.Category">
 			<field-result name="id" column="cat_id" />
 			<field-result name="name" column="cat_name" />
-			<field-result name="parentCategory"
-				column="cat_parent_category_id" />
+			<field-result name="parentCategory" column="cat_parent_category_id" />
 		</entity-result>
+	</sql-result-set-mapping>
+	<sql-result-set-mapping name="tbl_ecm_category.CategoryDTO">
+		<constructor-result target-class="com.algaworks.ecommerce.dto.CategoryDTO">
+			<column name="cat_id" />
+			<column name="cat_name" />
+		</constructor-result>
 	</sql-result-set-mapping>
 </entity-mappings>

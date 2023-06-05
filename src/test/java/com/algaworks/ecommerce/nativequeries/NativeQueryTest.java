@@ -10,6 +10,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import com.algaworks.ecommerce.EntityManagerTest;
+import com.algaworks.ecommerce.dto.CategoryDTO;
 import com.algaworks.ecommerce.dto.ProductDTO;
 import com.algaworks.ecommerce.model.Category;
 import com.algaworks.ecommerce.model.OrderItem;
@@ -179,6 +180,19 @@ class NativeQueryTest extends EntityManagerTest {
 		Query query = entityManager.createNamedQuery("ecm_category.listAll");
 		
 		List<Category> list = query.getResultList();
+		
+		list.forEach(i -> logger.info(new StringBuilder().append("id: ")
+			.append(i.getId()).append("; Category: ").append(i.getName())));
+		
+		assertFalse(list.isEmpty());
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	void usingFileXMLWithCategoryDTO() {
+		Query query = entityManager.createNamedQuery("ecm_category.listAll.dto");
+		
+		List<CategoryDTO> list = query.getResultList();
 		
 		list.forEach(i -> logger.info(new StringBuilder().append("id: ")
 			.append(i.getId()).append("; Category: ").append(i.getName())));
