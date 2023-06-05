@@ -111,4 +111,20 @@ class NativeQueryTest extends EntityManagerTest {
 		
 		assertFalse(list.isEmpty());
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	void usingFieldResult() {
+		String sql = "select * from tbl_ecm_products";
+		
+		Query query = entityManager.createNativeQuery(sql,
+			"ecm_products.Product");
+		List<Product> list = query.getResultList();
+		
+		list.forEach(i -> logger.info(new StringBuilder().append("id: ")
+			.append(i.getId()).append("; Product: ").append(i.getName())
+			.append("; Price: ").append(currency.format(i.getUnitPrice()))));
+		
+		assertFalse(list.isEmpty());
+	}
 }

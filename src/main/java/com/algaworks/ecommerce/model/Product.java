@@ -17,6 +17,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EntityResult;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.FieldResult;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
@@ -43,7 +44,18 @@ import lombok.Setter;
 @EqualsAndHashCode(callSuper = true)
 @SqlResultSetMappings(value = {
 	@SqlResultSetMapping(name = "product_shop.Product",
-		entities = { @EntityResult(entityClass = Product.class) }) })
+		entities = { @EntityResult(entityClass = Product.class) }),
+	@SqlResultSetMapping(name = "ecm_products.Product",
+		entities = { @EntityResult(entityClass = Product.class,
+			fields = { @FieldResult(name = "id", column = "prd_id"),
+				@FieldResult(name = "name", column = "prd_name"),
+				@FieldResult(name = "description", column = "prd_description"),
+				@FieldResult(name = "unit", column = "prd_unit"),
+				@FieldResult(name = "unitPrice", column = "prd_unitprice"),
+				@FieldResult(name = "image", column = "prd_image"),
+				@FieldResult(name = "dateCreate", column = "prd_date_create"),
+				@FieldResult(name = "dateUpdate",
+					column = "prd_date_update") }) }) })
 @NamedQueries({
 	@NamedQuery(name = "Product.listAll", query = "select p from Product p"),
 	@NamedQuery(name = "Product.listByCategory",
