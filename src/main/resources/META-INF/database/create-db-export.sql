@@ -131,7 +131,7 @@
     ) engine=InnoDB;
 
     alter table tbl_categories 
-       add constraint uk_categories_name unique (col_name);
+       add constraint uk_categories__name unique (col_name);
 
     create index idx_person__firstname 
        on tbl_persons (col_firstname);
@@ -270,6 +270,18 @@
         unique key uk_erp_products__name (col_name),
         key idx_erp_products__name (col_name)
     ) engine=InnoDB auto_increment=0 default charset=utf8mb4 collate=utf8mb4_0900_ai_ci;
+
+    create table tbl_ecm_category (
+        cat_id bigint not null auto_increment,
+        cat_name varchar(100) not null,
+        cat_parent_category_id bigint default null,
+        cat_date_create timestamp null default null,
+        cat_date_update timestamp null default null,
+        primary key (cat_id),
+        unique key uk_ecm_category__name (cat_name),
+        key fk_ecm_category__category_id (cat_parent_category_id),
+        constraint fk_ecm_category__category_id foreign key (cat_parent_category_id) references tbl_ecm_category (cat_id) on delete cascade
+    ) engine=InnoDB auto_increment=0 default charset=utf8mb4 collate=utf8mb4_0900_ai_ci;
 INSERT INTO tbl_categories (id, col_name, parent_category_id) VALUES (1, 'Eletrônicos', null);
 INSERT INTO tbl_categories (id, col_name, parent_category_id) VALUES (2, 'Informática', 1);
 INSERT INTO tbl_categories (id, col_name, parent_category_id) VALUES (3, 'Escritório', null);
@@ -352,3 +364,11 @@ INSERT INTO tbl_erp_products (id, col_description, col_name, col_unit, col_unitp
 INSERT INTO tbl_erp_products (id, col_description, col_name, col_unit, col_unitprice) VALUES (306, 'O melhor ajuste de foco','Câmera Canon 80D', 1, 3500.0);
 INSERT INTO tbl_erp_products (id, col_description, col_name, col_unit, col_unitprice) VALUES (307, 'Produto Teste 7 Nunca Vendido','Produto Teste 7', 1, 10.0);
 INSERT INTO tbl_erp_products (id, col_description, col_name, col_unit, col_unitprice) VALUES (308, 'Produto Teste 8 Nunca Vendido','Produto Teste 8', 1, 10.0);
+INSERT INTO tbl_ecm_category (cat_id, cat_name, cat_parent_category_id) VALUES (201, 'Eletrônicos', null);
+INSERT INTO tbl_ecm_category (cat_id, cat_name, cat_parent_category_id) VALUES (202, 'Informática', 201);
+INSERT INTO tbl_ecm_category (cat_id, cat_name, cat_parent_category_id) VALUES (203, 'Escritório', null);
+INSERT INTO tbl_ecm_category (cat_id, cat_name, cat_parent_category_id) VALUES (204, 'Literatura', null);
+INSERT INTO tbl_ecm_category (cat_id, cat_name, cat_parent_category_id) VALUES (205, 'Eletrodomésticos', null);
+INSERT INTO tbl_ecm_category (cat_id, cat_name, cat_parent_category_id) VALUES (206, 'Notebooks', 202);
+INSERT INTO tbl_ecm_category (cat_id, cat_name, cat_parent_category_id) VALUES (207, 'Smartphones', 201);
+INSERT INTO tbl_ecm_category (cat_id, cat_name, cat_parent_category_id) VALUES (208, 'Câmeras', 201);

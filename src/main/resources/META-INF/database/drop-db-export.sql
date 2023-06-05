@@ -104,3 +104,5 @@
     drop table if exists tbl_ecm_products;
 
     drop table if exists tbl_erp_products;
+
+    drop table if exists tbl_ecm_category;

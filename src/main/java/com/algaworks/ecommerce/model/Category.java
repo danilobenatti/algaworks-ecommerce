@@ -27,7 +27,7 @@ import lombok.Setter;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "tbl_categories",
-	uniqueConstraints = @UniqueConstraint(name = "uk_categories_name",
+	uniqueConstraints = @UniqueConstraint(name = "uk_categories__name",
 		columnNames = { "col_name" }))
 public class Category extends BaseEntityLong implements Serializable {
 	private static final long serialVersionUID = 1L;

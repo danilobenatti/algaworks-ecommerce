@@ -11,6 +11,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.dto.ProductDTO;
+import com.algaworks.ecommerce.model.Category;
 import com.algaworks.ecommerce.model.OrderItem;
 import com.algaworks.ecommerce.model.Product;
 
@@ -168,6 +169,19 @@ class NativeQueryTest extends EntityManagerTest {
 		list.forEach(i -> logger.info(new StringBuilder().append("id: ")
 			.append(i.getId()).append("; Product: ").append(i.getName())
 			.append("; Price: ").append(currency.format(i.getUnitPrice()))));
+		
+		assertFalse(list.isEmpty());
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	void usingFileXML() {
+		Query query = entityManager.createNamedQuery("ecm_category.listAll");
+		
+		List<Category> list = query.getResultList();
+		
+		list.forEach(i -> logger.info(new StringBuilder().append("id: ")
+			.append(i.getId()).append("; Category: ").append(i.getName())));
 		
 		assertFalse(list.isEmpty());
 	}

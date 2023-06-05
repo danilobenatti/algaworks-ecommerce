@@ -95,3 +95,12 @@ INSERT INTO tbl_erp_products (id, col_description, col_name, col_unit, col_unitp
 INSERT INTO tbl_erp_products (id, col_description, col_name, col_unit, col_unitprice) VALUES (306, 'O melhor ajuste de foco','Câmera Canon 80D', 1, 3500.0);
 INSERT INTO tbl_erp_products (id, col_description, col_name, col_unit, col_unitprice) VALUES (307, 'Produto Teste 7 Nunca Vendido','Produto Teste 7', 1, 10.0);
 INSERT INTO tbl_erp_products (id, col_description, col_name, col_unit, col_unitprice) VALUES (308, 'Produto Teste 8 Nunca Vendido','Produto Teste 8', 1, 10.0);
+--
+INSERT INTO tbl_ecm_category (cat_id, cat_name, cat_parent_category_id) VALUES (201, 'Eletrônicos', null);
+INSERT INTO tbl_ecm_category (cat_id, cat_name, cat_parent_category_id) VALUES (202, 'Informática', 201);
+INSERT INTO tbl_ecm_category (cat_id, cat_name, cat_parent_category_id) VALUES (203, 'Escritório', null);
+INSERT INTO tbl_ecm_category (cat_id, cat_name, cat_parent_category_id) VALUES (204, 'Literatura', null);
+INSERT INTO tbl_ecm_category (cat_id, cat_name, cat_parent_category_id) VALUES (205, 'Eletrodomésticos', null);
+INSERT INTO tbl_ecm_category (cat_id, cat_name, cat_parent_category_id) VALUES (206, 'Notebooks', 202);
+INSERT INTO tbl_ecm_category (cat_id, cat_name, cat_parent_category_id) VALUES (207, 'Smartphones', 201);
+INSERT INTO tbl_ecm_category (cat_id, cat_name, cat_parent_category_id) VALUES (208, 'Câmeras', 201);
