@@ -26,6 +26,8 @@ import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.NamedNativeQueries;
+import jakarta.persistence.NamedNativeQuery;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
@@ -66,7 +68,15 @@ import lombok.Setter;
 @NamedQueries({
 	@NamedQuery(name = "Product.listAll", query = "select p from Product p"),
 	@NamedQuery(name = "Product.listByCategory",
-		query = "select p1 from Product p1 where exists (select 1 from Category c2 join c2.products p2 where p2 = p1 and c2.id = :category)") })
+		query = "select p1 from Product p1 where exists (select 1 from Category c2 "
+			+ "join c2.products p2 where p2 = p1 and c2.id = :category)") })
+@NamedNativeQueries({ @NamedNativeQuery(name = "product_shop.listAll",
+	query = "select id, col_name, col_description, col_image, col_unit, col_unitprice, "
+		+ "col_date_create, col_date_update from tbl_product_shop",
+	resultClass = Product.class),
+	@NamedNativeQuery(name = "ecm_products.listAll",
+		query = "select * from tbl_ecm_products",
+		resultSetMapping = "ecm_products.Product") })
 @EntityListeners({ GenericListener.class })
 @Entity
 @Table(name = "tbl_products",

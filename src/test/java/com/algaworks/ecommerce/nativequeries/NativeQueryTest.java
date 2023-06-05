@@ -143,4 +143,33 @@ class NativeQueryTest extends EntityManagerTest {
 		
 		assertFalse(list.isEmpty());
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	void usingNamedNativeQuery1() {
+		Query query = entityManager.createNamedQuery("product_shop.listAll");
+		
+		List<Product> list = query.getResultList();
+		
+		list.forEach(i -> logger.info(new StringBuilder().append("id: ")
+			.append(i.getId()).append("; Product: ").append(i.getName())
+			.append("; Price: ").append(currency.format(i.getUnitPrice()))));
+		
+		assertFalse(list.isEmpty());
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	void usingNamedNativeQuery2() {
+		Query query = entityManager.createNamedQuery("ecm_products.listAll");
+		
+		List<Product> list = query.getResultList();
+		
+		list.forEach(i -> logger.info(new StringBuilder().append("id: ")
+			.append(i.getId()).append("; Product: ").append(i.getName())
+			.append("; Price: ").append(currency.format(i.getUnitPrice()))));
+		
+		assertFalse(list.isEmpty());
+	}
+	
 }
