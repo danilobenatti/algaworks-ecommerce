@@ -10,6 +10,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import com.algaworks.ecommerce.EntityManagerTest;
+import com.algaworks.ecommerce.model.OrderItem;
 import com.algaworks.ecommerce.model.Product;
 
 import jakarta.persistence.Query;
@@ -70,6 +71,43 @@ class NativeQueryTest extends EntityManagerTest {
 		list.forEach(i -> logger.info(new StringBuilder().append("id: ")
 			.append(i.getId()).append("; Product: ").append(i.getName())
 			.append("; Price: ").append(currency.format(i.getUnitPrice()))));
+		
+		assertFalse(list.isEmpty());
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	void usingSQLResultSetMapping1() {
+		String sql = "select id, col_name, col_description, col_image, col_unit, "
+			+ "col_unitprice, col_date_create, col_date_update from tbl_product_shop";
+		
+		Query query = entityManager.createNativeQuery(sql,
+			"product_shop.Product");
+		List<Product> list = query.getResultList();
+		
+		list.forEach(i -> logger.info(new StringBuilder().append("id: ")
+			.append(i.getId()).append("; Product: ").append(i.getName())
+			.append("; Price: ").append(currency.format(i.getUnitPrice()))));
+		
+		assertFalse(list.isEmpty());
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	void usingSQLResultSetMapping2() {
+		String sql = "select i.*, p.* from tbl_order_items i "
+			+ "join tbl_products p on p.id = i.product_id";
+		
+		Query query = entityManager.createNativeQuery(sql,
+			"orderitem_product.OrderItem-Product");
+		List<Object[]> list = query.getResultList();
+		
+		list.forEach(i -> logger.info(new StringBuilder().append("Order Id: ")
+			.append(((OrderItem) i[0]).getId().getOrderId())
+			.append("; Product Id: ").append(((Product) i[1]).getId())
+			.append("; Name: ").append(((Product) i[1]).getName())
+			.append("; Price: ")
+			.append(currency.format(((Product) i[1]).getUnitPrice()))));
 		
 		assertFalse(list.isEmpty());
 	}
