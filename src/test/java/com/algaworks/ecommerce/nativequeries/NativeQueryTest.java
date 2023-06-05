@@ -10,6 +10,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import com.algaworks.ecommerce.EntityManagerTest;
+import com.algaworks.ecommerce.dto.ProductDTO;
 import com.algaworks.ecommerce.model.OrderItem;
 import com.algaworks.ecommerce.model.Product;
 
@@ -124,6 +125,21 @@ class NativeQueryTest extends EntityManagerTest {
 		list.forEach(i -> logger.info(new StringBuilder().append("id: ")
 			.append(i.getId()).append("; Product: ").append(i.getName())
 			.append("; Price: ").append(currency.format(i.getUnitPrice()))));
+		
+		assertFalse(list.isEmpty());
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	void usingColumnResultFromDto() {
+		String sql = "select * from tbl_ecm_products";
+		
+		Query query = entityManager.createNativeQuery(sql,
+			"ecm_products.ProductDTO");
+		List<ProductDTO> list = query.getResultList();
+		
+		list.forEach(i -> logger.info(new StringBuilder().append("id: ")
+			.append(i.getId()).append("; Product: ").append(i.getName())));
 		
 		assertFalse(list.isEmpty());
 	}

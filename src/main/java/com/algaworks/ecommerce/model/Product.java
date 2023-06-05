@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
+import com.algaworks.ecommerce.dto.ProductDTO;
 import com.algaworks.ecommerce.listener.GenericListener;
 import com.algaworks.ecommerce.model.enums.ProductUnit;
 
@@ -12,6 +13,8 @@ import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ColumnResult;
+import jakarta.persistence.ConstructorResult;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -55,7 +58,11 @@ import lombok.Setter;
 				@FieldResult(name = "image", column = "prd_image"),
 				@FieldResult(name = "dateCreate", column = "prd_date_create"),
 				@FieldResult(name = "dateUpdate",
-					column = "prd_date_update") }) }) })
+					column = "prd_date_update") }) }),
+	@SqlResultSetMapping(name = "ecm_products.ProductDTO",
+		classes = { @ConstructorResult(targetClass = ProductDTO.class,
+			columns = { @ColumnResult(name = "prd_id", type = Long.class),
+				@ColumnResult(name = "prd_name", type = String.class) }) }) })
 @NamedQueries({
 	@NamedQuery(name = "Product.listAll", query = "select p from Product p"),
 	@NamedQuery(name = "Product.listByCategory",
