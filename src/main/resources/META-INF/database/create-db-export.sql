@@ -232,6 +232,8 @@
 
     create function calc_total_by_person(id long) returns double reads sql data return (select sum(o.col_total) from tbl_orders o where o.person_id = id);
 
+    create procedure findname_product_by_id(in product_id integer, out product_name varchar(150)) begin select p.col_name into product_name from tbl_products p where p.id = product_id; end;
+
     create table tbl_product_shop (
         id bigint not null auto_increment,
         col_name varchar(150) not null,
