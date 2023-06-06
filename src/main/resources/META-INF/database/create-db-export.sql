@@ -234,6 +234,8 @@
 
     create procedure findname_product_by_id(in product_id integer, out product_name varchar(150)) begin select p.col_name into product_name from tbl_products p where p.id = product_id; end;
 
+    create procedure purchases_above_average_by_year(in year_date year) begin select p.*, pd.* from tbl_persons p join tbl_person_detail pd on pd.person_id = p.id join tbl_orders o on o.person_id = p.id where o.col_status = 3 and year(o.col_date_create) = year_date group by o.person_id having sum(o.col_total) >= (select avg(total_by_person.sum_total) from (select sum(o1.col_total) as 'sum_total' from tbl_orders o1 where o1.col_status = 3 and year(o1.col_date_create) = year_date group by o1.person_id) as total_by_person); end;
+
     create table tbl_product_shop (
         id bigint not null auto_increment,
         col_name varchar(150) not null,

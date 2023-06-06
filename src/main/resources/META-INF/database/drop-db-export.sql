@@ -101,6 +101,8 @@
 
     drop procedure if exists findname_product_by_id;
 
+    drop procedure if exists purchases_above_average_by_year;
+
     drop table if exists tbl_product_shop;
 
     drop table if exists tbl_ecm_products;
