@@ -103,6 +103,8 @@
 
     drop procedure if exists purchases_above_average_by_year;
 
+    drop procedure if exists adjust_price_product;
+
     drop table if exists tbl_product_shop;
 
     drop table if exists tbl_ecm_products;
