@@ -16,3 +16,4 @@ drop table if exists tbl_erp_products;
 
 drop table if exists tbl_ecm_category;
 
+drop view if exists purchases_above_average_by_current_year;
