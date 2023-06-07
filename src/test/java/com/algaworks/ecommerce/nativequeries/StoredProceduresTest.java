@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.Person;
 import com.algaworks.ecommerce.model.Product;
+import com.algaworks.ecommerce.util.DatesFunctions;
 
 import jakarta.persistence.ParameterMode;
 import jakarta.persistence.StoredProcedureQuery;
@@ -91,4 +92,21 @@ class StoredProceduresTest extends EntityManagerTest {
 		assertEquals(newPrice, p1.getUnitPrice());
 	}
 	
+	@SuppressWarnings("unchecked")
+	@Test
+	void callNamedStoreProcedure() {
+		StoredProcedureQuery procedureQuery = entityManager
+			.createNamedStoredProcedureQuery("purchasesAboveAverageByYear");
+		
+		procedureQuery.setParameter("year_date", Year.of(2022).getValue());
+		
+		List<Person> list = procedureQuery.getResultList();
+		
+		list.forEach(p -> logger.info(new StringBuilder().append("Person Id: ")
+			.append(p.getId()).append("; Firstname: ").append(p.getFirstname())
+			.append("; Age: ").append(DatesFunctions.getAge(p.getBirthday()))
+			.append("; Birthday: ").append(p.getBirthday())));
+		
+		assertFalse(list.isEmpty());
+	}
 }

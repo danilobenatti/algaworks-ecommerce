@@ -23,19 +23,19 @@ INSERT INTO tbl_product_attribute (product_id, col_description, col_value) VALUE
 INSERT INTO tbl_product_category (product_id, category_id) VALUES (1, 1), (1, 4), (3, 1), (3, 2), (3, 8), (4, 3), (6, 1), (6, 2), (6, 8), (7, 1), (8, 1);
 --
 INSERT INTO tbl_persons (id, col_firstname, col_taxidnumber, col_date_create) VALUES (1, 'Luiz Fernando', '21470959828', date_sub(now(), interval(3) day));
-INSERT INTO tbl_person_detail (person_id, col_birthday, col_gender) VALUES (1, '1958-10-05', 'MALE');
+INSERT INTO tbl_person_detail (person_id, col_birthday, col_gender) VALUES (1, date_add(date_sub(current_date(), interval(65) year), interval(120) day), 'MALE');
 INSERT INTO tbl_person_phones (person_id, col_number, col_type) VALUES (1, '+55(11)97777-6666', 'M');
 --
 INSERT INTO tbl_persons (id, col_firstname, col_taxidnumber, col_date_create) VALUES(2, 'João Marcos', '54254667817', date_sub(now(), interval(4) week));
-INSERT INTO tbl_person_detail (person_id, col_birthday, col_gender) VALUES (2, '1974-05-17', 'MALE');
+INSERT INTO tbl_person_detail (person_id, col_birthday, col_gender) VALUES (2, date_sub(date_sub(current_date(), interval(49) year), interval(21) day), 'MALE');
 INSERT INTO tbl_person_phones (person_id, col_number, col_type) VALUES (2, '(049)9 4444-3333', 'H');
 --
 INSERT INTO tbl_persons (id, col_firstname, col_taxidnumber, col_date_create) VALUES(3, 'Maria Paula', '53558795008', date_sub(now(), interval(8) month));
-INSERT INTO tbl_person_detail (person_id, col_birthday, col_gender) VALUES (3, '1963-08-21', 'FEMALE');
+INSERT INTO tbl_person_detail (person_id, col_birthday, col_gender) VALUES (3, date_add(date_sub(current_date(), interval(60) year), interval(75) day), 'FEMALE');
 INSERT INTO tbl_person_phones (person_id, col_number, col_type) VALUES (3, '+55(011)3232-4545', 'W');
 --
 INSERT INTO tbl_persons (id, col_firstname, col_taxidnumber, col_date_create) VALUES(4, 'Maria', '53041253046', date_sub(now(), interval(2) year));
-INSERT INTO tbl_person_detail (person_id, col_birthday, col_gender) VALUES (4, '1963-10-05', 'FEMALE');
+INSERT INTO tbl_person_detail (person_id, col_birthday, col_gender) VALUES (4, date_add(date_sub(current_date(), interval(60) year), interval(120) day), 'FEMALE');
 INSERT INTO tbl_person_phones (person_id, col_number, col_type) VALUES (4, '+55(088)9999-7777', 'W');
 -- Person: Luiz Fernando
 INSERT INTO tbl_orders (id, col_date_create, col_date_update, col_execution_date, col_status, col_total, person_id) VALUES(1, date_sub(now(), interval 2 day), null, null, 1, 505.0, 1);

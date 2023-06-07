@@ -18,9 +18,13 @@ import jakarta.persistence.ForeignKey;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapKeyColumn;
+import jakarta.persistence.NamedStoredProcedureQueries;
+import jakarta.persistence.NamedStoredProcedureQuery;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.ParameterMode;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.SecondaryTable;
+import jakarta.persistence.StoredProcedureParameter;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.persistence.UniqueConstraint;
@@ -35,6 +39,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@NamedStoredProcedureQueries(
+	value = { @NamedStoredProcedureQuery(name = "purchasesAboveAverageByYear",
+		procedureName = "purchases_above_average_by_year",
+		parameters = { @StoredProcedureParameter(name = "year_date",
+			type = Integer.class, mode = ParameterMode.IN) },
+		resultClasses = Person.class) })
 @SecondaryTable(name = "tbl_person_detail",
 	foreignKey = @ForeignKey(name = "fk_persondetail__person_id"),
 	pkJoinColumns = @PrimaryKeyJoinColumn(name = "person_id"))

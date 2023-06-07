@@ -149,6 +149,12 @@ class BasicCriteriaTest extends EntityManagerTest {
 	
 	@Test
 	void sortResults() {
+		/*
+		 * SQL = select p.id, p.col_firstname as 'name', year(now()) -
+		 * year(pd.col_birthday) as 'age' from tbl_persons p join
+		 * tbl_person_detail pd on pd.person_id = p.id order by p.col_firstname
+		 * asc, pd.col_birthday desc;
+		 */
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Person> query = builder.createQuery(Person.class);
 		Root<Person> root = query.from(Person.class);
@@ -160,8 +166,11 @@ class BasicCriteriaTest extends EntityManagerTest {
 		TypedQuery<Person> typedQuery = entityManager.createQuery(query);
 		List<Person> resultList = typedQuery.getResultList();
 		
-		resultList.forEach(p -> logger.info(String.format("%d - %s - %d",
-			p.getId(), p.getFirstname(), getAge(p.getBirthday()))));
+		resultList.forEach(p -> logger
+			.info(new StringBuilder().append("Person Id: ").append(p.getId())
+				.append("; Firstname: ").append(p.getFirstname())
+				.append("; Age: ").append(getAge(p.getBirthday()))));
+		
 		assertFalse(resultList.isEmpty());
 	}
 	
