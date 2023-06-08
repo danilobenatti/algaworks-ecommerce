@@ -35,6 +35,10 @@
        drop 
        foreign key fk_persondetail__person_id;
 
+    alter table tbl_person_emails 
+       drop 
+       foreign key fk_personemail__person_id;
+
     alter table tbl_person_phones 
        drop 
        foreign key fk_personphone__person_id;
@@ -78,6 +82,8 @@
     drop table if exists tbl_payments_creditcard;
 
     drop table if exists tbl_person_detail;
+
+    drop table if exists tbl_person_emails;
 
     drop table if exists tbl_person_phones;
 

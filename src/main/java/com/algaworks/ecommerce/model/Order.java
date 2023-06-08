@@ -24,6 +24,8 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -48,17 +50,22 @@ public class Order extends BaseEntityLong implements Serializable {
 		cascade = CascadeType.REMOVE)
 	private Invoice invoice;
 	
+	@PositiveOrZero(message = "Total to be greater than or equal to zero[0]")
+	@NotNull(message = "Total it not be null")
 	@Column(name = "col_total", nullable = false)
 	private BigDecimal total = BigDecimal.ZERO;
 	
+	@NotNull(message = "Inform order status")
 	@Column(name = "col_status", nullable = false)
 	private Byte status;
 	
+	@NotNull(message = "Order must have a person")
 	@ManyToOne(optional = false, cascade = { CascadeType.PERSIST })
 	@JoinColumn(name = "person_id", nullable = false,
 		foreignKey = @ForeignKey(name = "fk_order__person_id"))
 	private Person person;
 	
+	@NotNull(message = "Order must have one or more items")
 	@OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = {
 		CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.MERGE })
 	private List<OrderItem> orderitems = new ArrayList<>();

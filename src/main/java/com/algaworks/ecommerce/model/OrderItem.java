@@ -17,6 +17,8 @@ import jakarta.persistence.PreUpdate;
 import jakarta.persistence.SqlResultSetMapping;
 import jakarta.persistence.SqlResultSetMappings;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -40,6 +42,7 @@ public class OrderItem implements Serializable {
 	@EmbeddedId
 	private OrderItemPk id;
 	
+	@NotNull
 	@MapsId(value = "orderId")
 	@ManyToOne(optional = false,
 		cascade = { CascadeType.REMOVE, CascadeType.MERGE })
@@ -49,6 +52,7 @@ public class OrderItem implements Serializable {
 //				+ " references tbl_orders(id) on delete cascade"))
 	private Order order;
 	
+	@NotNull
 	@MapsId(value = "productId")
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "product_id", nullable = false,
@@ -57,10 +61,14 @@ public class OrderItem implements Serializable {
 //				+ " references tbl_products(id) on delete cascade"))
 	private Product product;
 	
+	@PositiveOrZero(message = "Quantity to be greater than or equal to zero[0]")
+	@NotNull(message = "Quantity it not be null")
 	@Column(name = "col_quantity", columnDefinition = "double default 0",
 		nullable = false)
 	private Double quantity = 0d;
 	
+	@PositiveOrZero(message = "Subtotal to be greater than or equal to zero[0]")
+	@NotNull(message = "Subtotal it not be null")
 	@Column(name = "col_subtotal", nullable = false)
 	private BigDecimal subtotal = BigDecimal.ZERO;
 	

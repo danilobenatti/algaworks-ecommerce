@@ -6,6 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
@@ -19,9 +23,16 @@ class PersonCrudTest extends EntityManagerTest {
 	void createPerson() {
 		Person person = new Person();
 		person.setFirstname("José Lucas");
-		person.setTaxIdNumber("29225138075");
+		person.setTaxIdNumber("292.251.380-75");
 		person.setBirthday(LocalDate.of(1985, Month.OCTOBER, 14));
 		person.setGender(Gender.MALE);
+		Map<Character, String> phones = new HashMap<Character, String>();
+		phones.put('H', "8899995555");
+		person.setPhones(phones);
+		Set<String> emails = new HashSet<>();
+		emails.add("jose@web.com");
+		person.setEmails(emails);
+		person.setEmail("jose@mail.com");
 		
 		entityManager.getTransaction().begin();
 		entityManager.persist(person);
@@ -54,9 +65,13 @@ class PersonCrudTest extends EntityManagerTest {
 		Person person = new Person();
 		person.setId(1L);
 		person.setFirstname("Fernando Medeiros Júnior");
-		person.setTaxIdNumber("24685112040");
+		person.setTaxIdNumber("246.851.120-40");
 		person.setBirthday(LocalDate.of(1958, Month.NOVEMBER, 5));
 		person.setGender(Gender.MALE);
+		Map<Character, String> phones = new HashMap<Character, String>();
+		phones.put('W', "8899998888");
+		person.setPhones(phones);
+		person.setEmail("fernando@mail.com");
 		
 		entityManager.getTransaction().begin();
 		entityManager.merge(person);

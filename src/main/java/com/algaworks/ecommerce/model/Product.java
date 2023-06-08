@@ -36,6 +36,9 @@ import jakarta.persistence.SqlResultSetMapping;
 import jakarta.persistence.SqlResultSetMappings;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -86,18 +89,23 @@ import lombok.Setter;
 public class Product extends BaseEntityLong implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	@NotBlank
+	@Size(min = 2, max = 150,
+		message = "Product name '${validatedValue}' must be between {min} and {max} characters")
 	@Column(name = "col_name", length = 150, nullable = false)
 	private String name;
 	
+	@NotBlank(message = "Product description to must be informed")
 //	@Lob
 	@Basic(fetch = FetchType.LAZY)
-	@Column(name = "col_description", columnDefinition = "mediumtext",
+	@Column(name = "col_description", columnDefinition = "text",
 		nullable = false)
 	private String description;
 	
 	@Column(name = "col_unit")
 	private Byte unit;
 	
+	@PositiveOrZero
 	@Column(name = "col_unitprice",
 		columnDefinition = "decimal(12,2) unsigned not null default 0")
 	private BigDecimal unitPrice = BigDecimal.valueOf(0.00);

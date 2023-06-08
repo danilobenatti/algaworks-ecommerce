@@ -67,7 +67,14 @@
         col_birthday date,
         col_gender enum ('FEMALE','MALE'),
         person_id bigint not null,
+        col_email varchar(150),
         primary key (person_id)
+    ) engine=InnoDB;
+
+    create table tbl_person_emails (
+        person_id bigint not null,
+        col_email varchar(150) not null,
+        primary key (person_id, col_email)
     ) engine=InnoDB;
 
     create table tbl_person_phones (
@@ -89,7 +96,7 @@
     create table tbl_product_attribute (
         product_id bigint not null,
         col_description varchar(100) not null,
-        col_value varchar(255)
+        col_value varchar(255) not null
     ) engine=InnoDB;
 
     create table tbl_product_category (
@@ -125,7 +132,7 @@
         col_date_update timestamp null,
         id bigint not null auto_increment,
         col_name varchar(150) not null,
-        col_description mediumtext not null,
+        col_description text not null,
         col_image mediumblob,
         primary key (id)
     ) engine=InnoDB;
@@ -188,6 +195,11 @@
 
     alter table tbl_person_detail 
        add constraint fk_persondetail__person_id 
+       foreign key (person_id) 
+       references tbl_persons (id);
+
+    alter table tbl_person_emails 
+       add constraint fk_personemail__person_id 
        foreign key (person_id) 
        references tbl_persons (id);
 
@@ -311,17 +323,17 @@ INSERT INTO tbl_product_attribute (product_id, col_description, col_value) VALUE
 INSERT INTO tbl_product_attribute (product_id, col_description, col_value) VALUES (6, 'Manufacturer', 'Canon');
 INSERT INTO tbl_product_attribute (product_id, col_description, col_value) VALUES (6, 'Type', 'DSLR');
 INSERT INTO tbl_product_category (product_id, category_id) VALUES (1, 1), (1, 4), (3, 1), (3, 2), (3, 8), (4, 3), (6, 1), (6, 2), (6, 8), (7, 1), (8, 1);
-INSERT INTO tbl_persons (id, col_firstname, col_taxidnumber, col_date_create) VALUES (1, 'Luiz Fernando', '21470959828', date_sub(now(), interval(3) day));
-INSERT INTO tbl_person_detail (person_id, col_birthday, col_gender) VALUES (1, date_add(date_sub(current_date(), interval(65) year), interval(120) day), 'MALE');
+INSERT INTO tbl_persons (id, col_firstname, col_taxidnumber, col_date_create) VALUES (1, 'Luiz Fernando', '214.709.598-28', date_sub(now(), interval(3) day));
+INSERT INTO tbl_person_detail (person_id, col_email, col_birthday, col_gender) VALUES (1, 'luiz_fernando@email.com', date_add(date_sub(current_date(), interval(65) year), interval(120) day), 'MALE');
 INSERT INTO tbl_person_phones (person_id, col_number, col_type) VALUES (1, '+55(11)97777-6666', 'M');
-INSERT INTO tbl_persons (id, col_firstname, col_taxidnumber, col_date_create) VALUES(2, 'João Marcos', '54254667817', date_sub(now(), interval(4) week));
-INSERT INTO tbl_person_detail (person_id, col_birthday, col_gender) VALUES (2, date_sub(date_sub(current_date(), interval(49) year), interval(21) day), 'MALE');
+INSERT INTO tbl_persons (id, col_firstname, col_taxidnumber, col_date_create) VALUES(2, 'João Marcos', '542.546.678-17', date_sub(now(), interval(4) week));
+INSERT INTO tbl_person_detail (person_id, col_email, col_birthday, col_gender) VALUES (2, 'joao@mail.com', date_sub(date_sub(current_date(), interval(49) year), interval(21) day), 'MALE');
 INSERT INTO tbl_person_phones (person_id, col_number, col_type) VALUES (2, '(049)9 4444-3333', 'H');
-INSERT INTO tbl_persons (id, col_firstname, col_taxidnumber, col_date_create) VALUES(3, 'Maria Paula', '53558795008', date_sub(now(), interval(8) month));
-INSERT INTO tbl_person_detail (person_id, col_birthday, col_gender) VALUES (3, date_add(date_sub(current_date(), interval(60) year), interval(75) day), 'FEMALE');
+INSERT INTO tbl_persons (id, col_firstname, col_taxidnumber, col_date_create) VALUES(3, 'Maria Paula', '535.587.950-08', date_sub(now(), interval(8) month));
+INSERT INTO tbl_person_detail (person_id, col_email, col_birthday, col_gender) VALUES (3, 'mariapaula@send.com', date_add(date_sub(current_date(), interval(60) year), interval(75) day), 'FEMALE');
 INSERT INTO tbl_person_phones (person_id, col_number, col_type) VALUES (3, '+55(011)3232-4545', 'W');
-INSERT INTO tbl_persons (id, col_firstname, col_taxidnumber, col_date_create) VALUES(4, 'Maria', '53041253046', date_sub(now(), interval(2) year));
-INSERT INTO tbl_person_detail (person_id, col_birthday, col_gender) VALUES (4, date_add(date_sub(current_date(), interval(60) year), interval(120) day), 'FEMALE');
+INSERT INTO tbl_persons (id, col_firstname, col_taxidnumber, col_date_create) VALUES(4, 'Maria', '530.412.530-46', date_sub(now(), interval(2) year));
+INSERT INTO tbl_person_detail (person_id, col_email, col_birthday, col_gender) VALUES (4, 'maria99@email.com', date_add(date_sub(current_date(), interval(60) year), interval(120) day), 'FEMALE');
 INSERT INTO tbl_person_phones (person_id, col_number, col_type) VALUES (4, '+55(088)9999-7777', 'W');
 INSERT INTO tbl_orders (id, col_date_create, col_date_update, col_execution_date, col_status, col_total, person_id) VALUES(1, date_sub(now(), interval 2 day), null, null, 1, 505.0, 1);
 INSERT INTO tbl_order_items (col_quantity, col_subtotal, order_id, product_id) VALUES (1, 499.5, 1, 1);

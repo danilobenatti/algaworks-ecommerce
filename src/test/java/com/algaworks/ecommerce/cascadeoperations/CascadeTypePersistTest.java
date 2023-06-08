@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
@@ -91,7 +92,11 @@ class CascadeTypePersistTest extends EntityManagerTest {
 		person.setFirstname("José Carlos");
 		person.setBirthday(LocalDate.of(1987, Month.FEBRUARY, 15));
 		person.setGender(Gender.MALE);
-		person.setTaxIdNumber("03519442060");
+		person.setTaxIdNumber("035.194.420-60");
+		HashMap<Character, String> phones = new HashMap<Character, String>();
+		phones.put('H', "7788889999");
+		person.setPhones(phones);
+		person.setEmail("jose@mail.org");
 		
 		Order order = new Order();
 		order.setPerson(person);

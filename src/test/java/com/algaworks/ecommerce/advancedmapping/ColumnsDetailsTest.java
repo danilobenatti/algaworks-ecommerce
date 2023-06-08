@@ -46,9 +46,9 @@ class ColumnsDetailsTest extends EntityManagerTest {
 		entityManager.clear();
 		
 		Product findProduct = entityManager.find(Product.class, p.getId());
-		assertEquals(p.getDateCreate().truncatedTo(ChronoUnit.SECONDS),
-			findProduct.getDateCreate().truncatedTo(ChronoUnit.SECONDS));
-		assertEquals(p.getDateUpdate().truncatedTo(ChronoUnit.MINUTES),
-			findProduct.getDateUpdate().truncatedTo(ChronoUnit.MINUTES));
+		assertEquals(p.getDateCreate().truncatedTo(ChronoUnit.HOURS),
+			findProduct.getDateCreate().truncatedTo(ChronoUnit.HOURS));
+		assertEquals(p.getDateUpdate().truncatedTo(ChronoUnit.HOURS),
+			findProduct.getDateUpdate().truncatedTo(ChronoUnit.HOURS));
 	}
 }

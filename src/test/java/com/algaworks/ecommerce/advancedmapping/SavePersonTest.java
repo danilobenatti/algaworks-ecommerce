@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
@@ -17,9 +19,13 @@ class SavePersonTest extends EntityManagerTest {
 	void saveClient() {
 		Person person = new Person();
 		person.setFirstname("Pedro Independente");
-		person.setTaxIdNumber("44271024090");
+		person.setTaxIdNumber("442.710.240-90");
 		person.setGender(Gender.MALE);
 		person.setBirthday(LocalDate.of(1822, Month.SEPTEMBER, 7));
+		Map<Character, String> phones = new HashMap<Character, String>();
+		phones.put('M', "9988887777");
+		person.setPhones(phones);
+		person.setEmail("pedro@mail.com");
 		
 		entityManager.getTransaction().begin();
 		entityManager.persist(person);

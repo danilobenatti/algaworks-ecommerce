@@ -17,6 +17,9 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -37,17 +40,21 @@ public class Invoice implements Serializable {
 	@EqualsAndHashCode.Include
 	private Long id;
 	
+	@NotNull
 	@OneToOne
 	@MapsId
 	@JoinColumn(name = "order_id", nullable = false,
 		foreignKey = @ForeignKey(name = "fk_invoice__order_id"))
 	private Order order;
 	
+	@NotEmpty
 	@Lob
 //	@Column(name = "col_xml", columnDefinition = "BLOB")
 	@Column(name = "col_xml", length = 10485760) // 10485760 Bytes = 10MB
 	private byte[] xml;
 	
+	@PastOrPresent
+	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "col_issuedatetime", nullable = false)
 	private Date issuedatetime;

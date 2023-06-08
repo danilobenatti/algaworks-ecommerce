@@ -17,6 +17,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -37,6 +38,7 @@ import lombok.Setter;
 public abstract class Payment extends BaseEntityLong implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	@NotNull
 	@MapsId
 	@OneToOne(optional = false, fetch = FetchType.LAZY,
 		cascade = CascadeType.REMOVE)
@@ -44,6 +46,7 @@ public abstract class Payment extends BaseEntityLong implements Serializable {
 		foreignKey = @ForeignKey(name = "fk_payments__order_id"))
 	private Order order;
 	
+	@NotNull
 	@Column(name = "col_status")
 	private Byte status;
 	

@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,7 @@ import lombok.Setter;
 public class PaymentCreditCard extends Payment {
 	private static final long serialVersionUID = 1L;
 	
+	@NotNull
 	@Column(name = "col_number_installments")
 	private Integer numberOfInstallments;
 	

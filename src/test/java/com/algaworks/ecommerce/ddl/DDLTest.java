@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import org.junit.jupiter.api.Test;
 
@@ -16,6 +17,7 @@ import com.algaworks.ecommerce.model.Attribute;
 import com.algaworks.ecommerce.model.Person;
 import com.algaworks.ecommerce.model.Product;
 import com.algaworks.ecommerce.model.ProductStock;
+import com.algaworks.ecommerce.model.enums.Gender;
 import com.algaworks.ecommerce.model.enums.ProductUnit;
 
 class DDLTest extends EntityManagerTest {
@@ -24,8 +26,13 @@ class DDLTest extends EntityManagerTest {
 	void generatorDDL() {
 		Person person = new Person();
 		person.setFirstname("Peter");
-		person.setTaxIdNumber("05630385860");
+		person.setTaxIdNumber("056.303.858-60");
 		person.setBirthday(LocalDate.of(1987, Month.MARCH, 5));
+		person.setGender(Gender.MALE);
+		HashMap<Character, String> phones = new HashMap<Character, String>();
+		phones.put('H', "7788889999");
+		person.setPhones(phones);
+		person.setEmail("peter@mail.com");
 		
 		Product product = new Product();
 		product.setName("Product Test");

@@ -7,6 +7,7 @@
 	<mapping-file>META-INF/queries/order.xml</mapping-file>
 	<mapping-file>META-INF/queries/product.xml</mapping-file>
 	<mapping-file>META-INF/queries/category.xml</mapping-file>
+	<validation-mode>CALLBACK</validation-mode>
 		<properties>
 			<property name="jakarta.persistence.jdbc.url" 
 				value="jdbc:mysql://localhost:3306/algaworks_ecommerce?createDatabaseIfNotExist=true&amp;useTimezone=true&amp;useUnicode=true&amp;connectionCollation=utf8_bin&amp;characterSetResults=utf8" />

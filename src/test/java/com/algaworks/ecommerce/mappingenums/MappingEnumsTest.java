@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
@@ -16,21 +18,26 @@ class MappingEnumsTest extends EntityManagerTest {
 	
 	@Test
 	void enumTest() {
-		Person p = new Person();
-		p.setFirstname("Mary");
-		p.setTaxIdNumber("43684100099");
-		p.setBirthday(LocalDate.of(1945, Month.JANUARY, 9));
-		p.setGender(Gender.FEMALE);
+		Person person = new Person();
+		person.setFirstname("Mary");
+		person.setTaxIdNumber("436.841.000-99");
+		person.setBirthday(LocalDate.of(1945, Month.JANUARY, 9));
+		person.setGender(Gender.FEMALE);
+		Map<Character, String> phones = new HashMap<Character, String>();
+		phones.put('M', "7788889999");
+		person.setPhones(phones);
+		person.setEmail("mary@mail.com");
 		
 		entityManager.getTransaction().begin();
-		entityManager.persist(p);
+		entityManager.persist(person);
 		entityManager.getTransaction().commit();
 		
 		entityManager.clear();
 		
-		Person personFind = entityManager.find(Person.class, p.getId());
+		Person personFind = entityManager.find(Person.class, person.getId());
 		assertNotNull(personFind);
-		assertEquals(p.getGender().getCode(), personFind.getGender().getCode());
+		assertEquals(person.getGender().getCode(),
+			personFind.getGender().getCode());
 		
 	}
 }
