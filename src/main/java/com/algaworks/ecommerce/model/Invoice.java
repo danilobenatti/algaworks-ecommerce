@@ -6,8 +6,10 @@ import java.util.Date;
 
 import com.algaworks.ecommerce.exception.FileNotFoundException;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -41,7 +43,8 @@ public class Invoice implements Serializable {
 	private Long id;
 	
 	@NotNull
-	@OneToOne
+	@OneToOne(optional = false, fetch = FetchType.LAZY,
+		cascade = CascadeType.REMOVE)
 	@MapsId
 	@JoinColumn(name = "order_id", nullable = false,
 		foreignKey = @ForeignKey(name = "fk_invoice__order_id"))

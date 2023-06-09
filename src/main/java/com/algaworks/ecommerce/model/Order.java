@@ -40,12 +40,14 @@ import lombok.Setter;
 @EntityListeners({ GenerateInvoiceListener.class, GenericListener.class })
 @Entity
 @Table(name = "tbl_orders")
-public class Order extends BaseEntityLong implements Serializable {
+public class Order extends BaseEntityLong
+	implements Serializable/* , PersistentAttributeInterceptable */ {
 	private static final long serialVersionUID = 1L;
 	
 	@Column(name = "col_execution_date", columnDefinition = "timestamp")
 	private LocalDateTime executionDate;
 	
+//	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@OneToOne(mappedBy = "order", fetch = FetchType.LAZY,
 		cascade = CascadeType.REMOVE)
 	private Invoice invoice;
@@ -60,7 +62,8 @@ public class Order extends BaseEntityLong implements Serializable {
 	private Byte status;
 	
 	@NotNull(message = "Order must have a person")
-	@ManyToOne(optional = false, cascade = { CascadeType.PERSIST })
+	@ManyToOne(optional = false, cascade = { CascadeType.PERSIST },
+		fetch = FetchType.LAZY)
 	@JoinColumn(name = "person_id", nullable = false,
 		foreignKey = @ForeignKey(name = "fk_order__person_id"))
 	private Person person;
@@ -70,7 +73,8 @@ public class Order extends BaseEntityLong implements Serializable {
 		CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.MERGE })
 	private List<OrderItem> orderitems = new ArrayList<>();
 	
-	@OneToOne(mappedBy = "order",
+//	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@OneToOne(mappedBy = "order", fetch = FetchType.LAZY,
 		cascade = { CascadeType.REMOVE, CascadeType.PERSIST })
 	private Payment payment;
 	
@@ -128,4 +132,55 @@ public class Order extends BaseEntityLong implements Serializable {
 	private void orderUpdate() {
 		setTotal();
 	}
+//	
+//	@Getter(value = AccessLevel.NONE)
+//	@Setter(value = AccessLevel.NONE)
+//	@Transient
+//	private transient PersistentAttributeInterceptor persistentAttributeInterceptor;
+//	
+//	@Override
+//	public PersistentAttributeInterceptor $$_hibernate_getInterceptor() {
+//		return this.persistentAttributeInterceptor;
+//	}
+//	
+//	@Override
+//	public void $$_hibernate_setInterceptor(
+//		PersistentAttributeInterceptor interceptor) {
+//		this.persistentAttributeInterceptor = interceptor;
+//	}
+//	
+//	public Invoice getInvoice() {
+//		if (this.persistentAttributeInterceptor != null) {
+//			return (Invoice) persistentAttributeInterceptor.readObject(this,
+//				"invoice", this.invoice);
+//		}
+//		return this.invoice;
+//	}
+//	
+//	public void setInvoice(Invoice invoice) {
+//		if (this.persistentAttributeInterceptor != null) {
+//			persistentAttributeInterceptor.writeObject(this, "invoice",
+//				this.invoice, invoice);
+//		} else {
+//			this.invoice = invoice;
+//		}
+//	}
+//	
+//	public Payment getPayment() {
+//		if (this.persistentAttributeInterceptor != null) {
+//			return (Payment) persistentAttributeInterceptor.readObject(this,
+//				"payment", this.payment);
+//		}
+//		return this.payment;
+//	}
+//	
+//	public void setPayment(Payment payment) {
+//		if (this.persistentAttributeInterceptor != null) {
+//			persistentAttributeInterceptor.writeObject(this, "payment",
+//				this.payment, payment);
+//		} else {
+//			this.payment = payment;
+//		}
+//	}
+	
 }

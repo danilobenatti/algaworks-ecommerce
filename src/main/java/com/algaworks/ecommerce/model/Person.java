@@ -18,6 +18,7 @@ import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
@@ -91,7 +92,8 @@ public class Person extends BaseEntityLong implements Serializable {
 	@Column(name = "col_email", table = "tbl_person_detail", length = 150)
 	private String email;
 	
-	@OneToMany(mappedBy = "person", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "person", cascade = CascadeType.REMOVE,
+		fetch = FetchType.LAZY)
 	private List<Order> orders;
 	
 	@CPF(message = "Invalid CPF number [${validatedValue}]")
