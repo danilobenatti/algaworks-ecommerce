@@ -40,8 +40,7 @@ import lombok.Setter;
 @EntityListeners({ GenerateInvoiceListener.class, GenericListener.class })
 @Entity
 @Table(name = "tbl_orders")
-public class Order extends BaseEntityLong
-	implements Serializable/* , PersistentAttributeInterceptable */ {
+public class Order extends BaseEntityLong implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Column(name = "col_execution_date", columnDefinition = "timestamp")
@@ -132,55 +131,5 @@ public class Order extends BaseEntityLong
 	private void orderUpdate() {
 		setTotal();
 	}
-//	
-//	@Getter(value = AccessLevel.NONE)
-//	@Setter(value = AccessLevel.NONE)
-//	@Transient
-//	private transient PersistentAttributeInterceptor persistentAttributeInterceptor;
-//	
-//	@Override
-//	public PersistentAttributeInterceptor $$_hibernate_getInterceptor() {
-//		return this.persistentAttributeInterceptor;
-//	}
-//	
-//	@Override
-//	public void $$_hibernate_setInterceptor(
-//		PersistentAttributeInterceptor interceptor) {
-//		this.persistentAttributeInterceptor = interceptor;
-//	}
-//	
-//	public Invoice getInvoice() {
-//		if (this.persistentAttributeInterceptor != null) {
-//			return (Invoice) persistentAttributeInterceptor.readObject(this,
-//				"invoice", this.invoice);
-//		}
-//		return this.invoice;
-//	}
-//	
-//	public void setInvoice(Invoice invoice) {
-//		if (this.persistentAttributeInterceptor != null) {
-//			persistentAttributeInterceptor.writeObject(this, "invoice",
-//				this.invoice, invoice);
-//		} else {
-//			this.invoice = invoice;
-//		}
-//	}
-//	
-//	public Payment getPayment() {
-//		if (this.persistentAttributeInterceptor != null) {
-//			return (Payment) persistentAttributeInterceptor.readObject(this,
-//				"payment", this.payment);
-//		}
-//		return this.payment;
-//	}
-//	
-//	public void setPayment(Payment payment) {
-//		if (this.persistentAttributeInterceptor != null) {
-//			persistentAttributeInterceptor.writeObject(this, "payment",
-//				this.payment, payment);
-//		} else {
-//			this.payment = payment;
-//		}
-//	}
 	
 }
