@@ -2,10 +2,14 @@ package com.algaworks.ecommerce.util;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.Configurator;
 
 import com.algaworks.ecommerce.model.Product;
+import com.algaworks.ecommerce.service.InvoiceService;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -13,9 +17,12 @@ import jakarta.persistence.Persistence;
 
 public class StartPersistenceUnit {
 	
-	static Logger logger = Logger.getLogger("");
+	protected static Logger logger = LogManager.getLogger();
 	
 	public static void main(String[] args) {
+		
+		Configurator.initialize(InvoiceService.class.getName(),
+			"./src/main/resources/log4j2.properties");
 		
 		Map<String, String> env = System.getenv();
 		HashMap<Object, Object> configOverrides = new HashMap<>();

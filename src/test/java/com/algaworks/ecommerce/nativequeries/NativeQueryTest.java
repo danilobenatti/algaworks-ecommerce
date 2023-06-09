@@ -39,14 +39,15 @@ class NativeQueryTest extends EntityManagerTest {
 	@SuppressWarnings("unchecked")
 	@ParameterizedTest
 	@ValueSource(strings = {
-		"select id, col_name, col_description, col_image, col_unit, "
-			+ "col_unitprice, col_date_create, col_date_update from tbl_products",
-		"select id, col_name, col_description, col_image, col_unit, "
-			+ "col_unitprice, col_date_create, col_date_update from tbl_product_shop",
-		"select prd_id id, prd_name col_name, prd_description col_description, prd_image col_image, prd_unit col_unit, "
-			+ "prd_unitprice col_unitprice, prd_date_create col_date_create, prd_date_update col_date_update from tbl_ecm_products",
-		"select id, col_name, col_description, null col_image, col_unit, "
-			+ "col_unitprice, null col_date_create, null col_date_update from tbl_erp_products" })
+		"select id, col_name, col_description, col_image, col_unit, col_unitprice, "
+			+ "col_active, col_date_create, col_date_update from tbl_products",
+		"select id, col_name, col_description, col_image, col_unit, col_unitprice, "
+			+ "col_active, col_date_create, col_date_update from tbl_product_shop",
+		"select prd_id id, prd_name col_name, prd_description col_description, "
+			+ "prd_image col_image, prd_unit col_unit, prd_unitprice col_unitprice, "
+			+ "prd_active col_active, prd_date_create col_date_create, prd_date_update col_date_update from tbl_ecm_products",
+		"select id, col_name, col_description, null col_image, col_unit, col_unitprice, "
+			+ "col_active, null col_date_create, null col_date_update from tbl_erp_products" })
 	void executeSQLReturnEntity(String sql) {
 		Query query = entityManager.createNativeQuery(sql, Product.class);
 		
@@ -64,8 +65,8 @@ class NativeQueryTest extends EntityManagerTest {
 	void executeSQLReturnEntityById() {
 		String sql = "select prd_id id, prd_name col_name, prd_description col_description, "
 			+ "prd_image col_image, prd_unit col_unit, prd_unitprice col_unitprice, "
-			+ "prd_date_create col_date_create, prd_date_update col_date_update "
-			+ "from tbl_ecm_products where prd_id = :id";
+			+ "prd_date_create col_date_create, prd_date_update col_date_update, "
+			+ "prd_active col_active from tbl_ecm_products where prd_id = :id";
 		Query query = entityManager.createNativeQuery(sql, Product.class);
 		query.setParameter("id", Long.valueOf(201));
 		
@@ -81,8 +82,8 @@ class NativeQueryTest extends EntityManagerTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	void usingSQLResultSetMapping1() {
-		String sql = "select id, col_name, col_description, col_image, col_unit, "
-			+ "col_unitprice, col_date_create, col_date_update from tbl_product_shop";
+		String sql = "select id, col_name, col_description, col_image, col_unit, col_unitprice, "
+			+ "col_active, col_date_create, col_date_update from tbl_product_shop";
 		
 		Query query = entityManager.createNativeQuery(sql,
 			"product_shop.Product");
@@ -190,7 +191,8 @@ class NativeQueryTest extends EntityManagerTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	void usingFileXMLWithCategoryDTO() {
-		Query query = entityManager.createNamedQuery("ecm_category.listAll.dto");
+		Query query = entityManager
+			.createNamedQuery("ecm_category.listAll.dto");
 		
 		List<CategoryDTO> list = query.getResultList();
 		

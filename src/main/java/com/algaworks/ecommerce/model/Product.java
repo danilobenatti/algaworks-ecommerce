@@ -7,6 +7,7 @@ import java.util.Set;
 
 import com.algaworks.ecommerce.dto.ProductDTO;
 import com.algaworks.ecommerce.listener.GenericListener;
+import com.algaworks.ecommerce.model.converter.BooleanYesOrNoConverter;
 import com.algaworks.ecommerce.model.enums.ProductUnit;
 
 import jakarta.persistence.Basic;
@@ -15,6 +16,7 @@ import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ColumnResult;
 import jakarta.persistence.ConstructorResult;
+import jakarta.persistence.Convert;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -37,6 +39,7 @@ import jakarta.persistence.SqlResultSetMappings;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -62,8 +65,8 @@ import lombok.Setter;
 				@FieldResult(name = "unitPrice", column = "prd_unitprice"),
 				@FieldResult(name = "image", column = "prd_image"),
 				@FieldResult(name = "dateCreate", column = "prd_date_create"),
-				@FieldResult(name = "dateUpdate",
-					column = "prd_date_update") }) }),
+				@FieldResult(name = "dateUpdate", column = "prd_date_update"),
+				@FieldResult(name = "active", column = "prd_active") }) }),
 	@SqlResultSetMapping(name = "ecm_products.ProductDTO",
 		classes = { @ConstructorResult(targetClass = ProductDTO.class,
 			columns = { @ColumnResult(name = "prd_id", type = Long.class),
@@ -75,7 +78,7 @@ import lombok.Setter;
 			+ "join c2.products p2 where p2 = p1 and c2.id = :category)") })
 @NamedNativeQueries({ @NamedNativeQuery(name = "product_shop.listAll",
 	query = "select id, col_name, col_description, col_image, col_unit, col_unitprice, "
-		+ "col_date_create, col_date_update from tbl_product_shop",
+		+ "col_date_create, col_date_update, col_active from tbl_product_shop",
 	resultClass = Product.class),
 	@NamedNativeQuery(name = "ecm_products.listAll",
 		query = "select * from tbl_ecm_products",
@@ -102,11 +105,11 @@ public class Product extends BaseEntityLong implements Serializable {
 		nullable = false)
 	private String description;
 	
-	@Column(name = "col_unit")
-	private Byte unit;
+	@Column(name = "col_unit", nullable = false)
+	private Byte unit = ProductUnit.UNITY.getCode();
 	
 	@PositiveOrZero
-	@Column(name = "col_unitprice",
+	@Column(name = "col_unitprice", nullable = false,
 		columnDefinition = "decimal(12,2) unsigned not null default 0")
 	private BigDecimal unitPrice = BigDecimal.valueOf(0.00);
 	
@@ -153,6 +156,11 @@ public class Product extends BaseEntityLong implements Serializable {
 	
 	@Column(name = "col_image", length = 5242880) // 5242880 Bytes = 5MB
 	private byte[] image;
+	
+	@Convert(converter = BooleanYesOrNoConverter.class)
+	@NotNull
+	@Column(name = "col_active", length = 3, nullable = false)
+	private Boolean active = Boolean.FALSE;
 	
 	public ProductUnit getUnit() {
 		return ProductUnit.toEnum(this.unit);

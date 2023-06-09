@@ -45,6 +45,13 @@
 			<property name="eclipselink.logging.level" value="INFO"/>
 			<property name="eclipselink.logging.level.sql" value="FINE"/>
 			<property name="eclipselink.logging.parameters" value="true"/>
+			
+			<!-- configure hikaricp -->
+			<property name="hibernate.connection.provider_class" value="org.hibernate.hikaricp.internal.HikariCPConnectionProvider" />
+			<property name="hibernate.hikari.idleTimeout" value="200000" />
+			<property name="hibernate.hikari.minimumIdle" value="12" />
+			<property name="hibernate.hikari.maximumPoolSize" value="16" />
+			
 		</properties>
 	</persistence-unit>
 </persistence>

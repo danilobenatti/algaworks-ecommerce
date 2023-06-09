@@ -7,13 +7,13 @@ INSERT INTO tbl_categories (id, col_name, parent_category_id) VALUES (6, 'Notebo
 INSERT INTO tbl_categories (id, col_name, parent_category_id) VALUES (7, 'Smartphones', 1);
 INSERT INTO tbl_categories (id, col_name, parent_category_id) VALUES (8, 'Câmeras', 1);
 --
-INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image) VALUES (1, 'Conheça o novo Kindle, agora com mais memória', 'Kindle', 1, 799.5, date_sub(now(), interval(1) year), null);
-INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image) VALUES (3, 'Câmera de ação e alto desempenho', 'Câmera GoPro Hero', 1, 1606.72, date_sub(now(), interval(2) month), null);
-INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image) VALUES (4, 'Fita Adesiva Alta Aderência','Fita ColaTudo', 1, 5.0, date_sub(now(), interval(3) day), null);
-INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image) VALUES (5, 'Corda de Tecido Poliester Trançada Reforçada','Corda de Nylon para Varal', 3, 2.32, date_sub(now(), interval(4) week), null);
-INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image) VALUES (6, 'O melhor ajuste de foco','Câmera Canon 80D', 1, 3500.0, sysdate(), LOAD_FILE('C:/tmp/canon80d.jpg'));
-INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image) VALUES (7, 'Produto Teste 7 Nunca Vendido','Produto Teste 7', 1, 10.0, date_sub(now(), interval(12) hour), null);
-INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image) VALUES (8, 'Produto Teste 8 Nunca Vendido','Produto Teste 8', 1, 10.0, date_sub(now(), interval(12) hour), null);
+INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image, col_active) VALUES (1, 'Conheça o novo Kindle, agora com mais memória', 'Kindle', 1, 799.5, date_sub(now(), interval(1) year), null, 'yes');
+INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image, col_active) VALUES (3, 'Câmera de ação e alto desempenho', 'Câmera GoPro Hero', 1, 1606.72, date_sub(now(), interval(2) month), null, 'yes');
+INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image, col_active) VALUES (4, 'Fita Adesiva Alta Aderência','Fita ColaTudo', 1, 5.0, date_sub(now(), interval(3) day), null, 'yes');
+INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image, col_active) VALUES (5, 'Corda de Tecido Poliester Trançada Reforçada','Corda de Nylon para Varal', 3, 2.32, date_sub(now(), interval(4) week), null, 'yes');
+INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image, col_active) VALUES (6, 'O melhor ajuste de foco','Câmera Canon 80D', 1, 3500.0, sysdate(), LOAD_FILE('C:/tmp/canon80d.jpg'), 'yes');
+INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image, col_active) VALUES (7, 'Produto Teste 7 Nunca Vendido','Produto Teste 7', 1, 10.0, date_sub(now(), interval(12) hour), null, 'no');
+INSERT INTO tbl_products (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image, col_active) VALUES (8, 'Produto Teste 8 Nunca Vendido','Produto Teste 8', 1, 10.0, date_sub(now(), interval(12) hour), null, 'no');
 INSERT INTO tbl_product_attribute (product_id, col_description, col_value) VALUES (3, 'First attribute', 'Powerfull');
 INSERT INTO tbl_product_attribute (product_id, col_description, col_value) VALUES (4, 'Manufacturer', '6M');
 INSERT INTO tbl_product_attribute (product_id, col_description, col_value) VALUES (5, 'Max load', '432Kg');
@@ -72,29 +72,29 @@ INSERT INTO tbl_payments (order_id, col_date_create, col_status, col_payment_typ
 INSERT INTO tbl_payments_bankslip (col_expirationdate, col_payday, order_id) VALUES (date_add(now(), interval 3 day), date_sub(now(), interval 2 day), 6);
 INSERT INTO tbl_invoices (order_id, col_issuedatetime, col_xml) VALUES (6, sysdate(), '<xml />');
 --
-INSERT INTO tbl_product_shop (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image) VALUES (101, 'Conheça o novo Kindle, agora com mais memória', 'Kindle', 1, 799.5, date_sub(now(), interval(1) year), null);
-INSERT INTO tbl_product_shop (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image) VALUES (103, 'Câmera de ação e alto desempenho', 'Câmera GoPro Hero', 1, 1606.72, date_sub(now(), interval(2) month), null);
-INSERT INTO tbl_product_shop (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image) VALUES (104, 'Fita Adesiva Alta Aderência','Fita ColaTudo', 1, 5.0, date_sub(now(), interval(3) day), null);
-INSERT INTO tbl_product_shop (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image) VALUES (105, 'Corda de Tecido Poliester Trançada Reforçada','Corda de Nylon para Varal', 3, 2.32, date_sub(now(), interval(4) week), null);
-INSERT INTO tbl_product_shop (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image) VALUES (106, 'O melhor ajuste de foco','Câmera Canon 80D', 1, 3500.0, sysdate(), LOAD_FILE('C:/tmp/canon80d.jpg'));
-INSERT INTO tbl_product_shop (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image) VALUES (107, 'Produto Teste 7 Nunca Vendido','Produto Teste 7', 1, 10.0, date_sub(now(), interval(12) hour), null);
-INSERT INTO tbl_product_shop (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image) VALUES (108, 'Produto Teste 8 Nunca Vendido','Produto Teste 8', 1, 10.0, date_sub(now(), interval(12) hour), null);
+INSERT INTO tbl_product_shop (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image, col_active) VALUES (101, 'Conheça o novo Kindle, agora com mais memória', 'Kindle', 1, 799.5, date_sub(now(), interval(1) year), null, 'yes');
+INSERT INTO tbl_product_shop (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image, col_active) VALUES (103, 'Câmera de ação e alto desempenho', 'Câmera GoPro Hero', 1, 1606.72, date_sub(now(), interval(2) month), null, 'yes');
+INSERT INTO tbl_product_shop (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image, col_active) VALUES (104, 'Fita Adesiva Alta Aderência','Fita ColaTudo', 1, 5.0, date_sub(now(), interval(3) day), null, 'yes');
+INSERT INTO tbl_product_shop (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image, col_active) VALUES (105, 'Corda de Tecido Poliester Trançada Reforçada','Corda de Nylon para Varal', 3, 2.32, date_sub(now(), interval(4) week), null, 'yes');
+INSERT INTO tbl_product_shop (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image, col_active) VALUES (106, 'O melhor ajuste de foco','Câmera Canon 80D', 1, 3500.0, sysdate(), LOAD_FILE('C:/tmp/canon80d.jpg'), 'yes');
+INSERT INTO tbl_product_shop (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image, col_active) VALUES (107, 'Produto Teste 7 Nunca Vendido','Produto Teste 7', 1, 10.0, date_sub(now(), interval(12) hour), null, 'no');
+INSERT INTO tbl_product_shop (id, col_description, col_name, col_unit, col_unitprice, col_date_create, col_image, col_active) VALUES (108, 'Produto Teste 8 Nunca Vendido','Produto Teste 8', 1, 10.0, date_sub(now(), interval(12) hour), null, 'no');
 --
-INSERT INTO tbl_ecm_products (prd_id, prd_description, prd_name, prd_unit, prd_unitprice, prd_date_create, prd_image) VALUES (201, 'Conheça o novo Kindle, agora com mais memória', 'Kindle', 1, 799.5, date_sub(now(), interval(1) year), null);
-INSERT INTO tbl_ecm_products (prd_id, prd_description, prd_name, prd_unit, prd_unitprice, prd_date_create, prd_image) VALUES (203, 'Câmera de ação e alto desempenho', 'Câmera GoPro Hero', 1, 1606.72, date_sub(now(), interval(2) month), null);
-INSERT INTO tbl_ecm_products (prd_id, prd_description, prd_name, prd_unit, prd_unitprice, prd_date_create, prd_image) VALUES (204, 'Fita Adesiva Alta Aderência','Fita ColaTudo', 1, 5.0, date_sub(now(), interval(3) day), null);
-INSERT INTO tbl_ecm_products (prd_id, prd_description, prd_name, prd_unit, prd_unitprice, prd_date_create, prd_image) VALUES (205, 'Corda de Tecido Poliester Trançada Reforçada','Corda de Nylon para Varal', 3, 2.32, date_sub(now(), interval(4) week), null);
-INSERT INTO tbl_ecm_products (prd_id, prd_description, prd_name, prd_unit, prd_unitprice, prd_date_create, prd_image) VALUES (206, 'O melhor ajuste de foco','Câmera Canon 80D', 1, 3500.0, sysdate(), LOAD_FILE('C:/tmp/canon80d.jpg'));
-INSERT INTO tbl_ecm_products (prd_id, prd_description, prd_name, prd_unit, prd_unitprice, prd_date_create, prd_image) VALUES (207, 'Produto Teste 7 Nunca Vendido','Produto Teste 7', 1, 10.0, date_sub(now(), interval(12) hour), null);
-INSERT INTO tbl_ecm_products (prd_id, prd_description, prd_name, prd_unit, prd_unitprice, prd_date_create, prd_image) VALUES (208, 'Produto Teste 8 Nunca Vendido','Produto Teste 8', 1, 10.0, date_sub(now(), interval(12) hour), null);
+INSERT INTO tbl_ecm_products (prd_id, prd_description, prd_name, prd_unit, prd_unitprice, prd_date_create, prd_image, prd_active) VALUES (201, 'Conheça o novo Kindle, agora com mais memória', 'Kindle', 1, 799.5, date_sub(now(), interval(1) year), null, 'yes');
+INSERT INTO tbl_ecm_products (prd_id, prd_description, prd_name, prd_unit, prd_unitprice, prd_date_create, prd_image, prd_active) VALUES (203, 'Câmera de ação e alto desempenho', 'Câmera GoPro Hero', 1, 1606.72, date_sub(now(), interval(2) month), null, 'yes');
+INSERT INTO tbl_ecm_products (prd_id, prd_description, prd_name, prd_unit, prd_unitprice, prd_date_create, prd_image, prd_active) VALUES (204, 'Fita Adesiva Alta Aderência','Fita ColaTudo', 1, 5.0, date_sub(now(), interval(3) day), null, 'yes');
+INSERT INTO tbl_ecm_products (prd_id, prd_description, prd_name, prd_unit, prd_unitprice, prd_date_create, prd_image, prd_active) VALUES (205, 'Corda de Tecido Poliester Trançada Reforçada','Corda de Nylon para Varal', 3, 2.32, date_sub(now(), interval(4) week), null, 'yes');
+INSERT INTO tbl_ecm_products (prd_id, prd_description, prd_name, prd_unit, prd_unitprice, prd_date_create, prd_image, prd_active) VALUES (206, 'O melhor ajuste de foco','Câmera Canon 80D', 1, 3500.0, sysdate(), LOAD_FILE('C:/tmp/canon80d.jpg'), 'yes');
+INSERT INTO tbl_ecm_products (prd_id, prd_description, prd_name, prd_unit, prd_unitprice, prd_date_create, prd_image, prd_active) VALUES (207, 'Produto Teste 7 Nunca Vendido','Produto Teste 7', 1, 10.0, date_sub(now(), interval(12) hour), null, 'no');
+INSERT INTO tbl_ecm_products (prd_id, prd_description, prd_name, prd_unit, prd_unitprice, prd_date_create, prd_image, prd_active) VALUES (208, 'Produto Teste 8 Nunca Vendido','Produto Teste 8', 1, 10.0, date_sub(now(), interval(12) hour), null, 'no');
 --
-INSERT INTO tbl_erp_products (id, col_description, col_name, col_unit, col_unitprice) VALUES (301, 'Conheça o novo Kindle, agora com mais memória', 'Kindle', 1, 799.5);
-INSERT INTO tbl_erp_products (id, col_description, col_name, col_unit, col_unitprice) VALUES (303, 'Câmera de ação e alto desempenho', 'Câmera GoPro Hero', 1, 1606.72);
-INSERT INTO tbl_erp_products (id, col_description, col_name, col_unit, col_unitprice) VALUES (304, 'Fita Adesiva Alta Aderência','Fita ColaTudo', 1, 5.0);
-INSERT INTO tbl_erp_products (id, col_description, col_name, col_unit, col_unitprice) VALUES (305, 'Corda de Tecido Poliester Trançada Reforçada','Corda de Nylon para Varal', 3, 2.32);
-INSERT INTO tbl_erp_products (id, col_description, col_name, col_unit, col_unitprice) VALUES (306, 'O melhor ajuste de foco','Câmera Canon 80D', 1, 3500.0);
-INSERT INTO tbl_erp_products (id, col_description, col_name, col_unit, col_unitprice) VALUES (307, 'Produto Teste 7 Nunca Vendido','Produto Teste 7', 1, 10.0);
-INSERT INTO tbl_erp_products (id, col_description, col_name, col_unit, col_unitprice) VALUES (308, 'Produto Teste 8 Nunca Vendido','Produto Teste 8', 1, 10.0);
+INSERT INTO tbl_erp_products (id, col_description, col_name, col_unit, col_unitprice, col_active) VALUES (301, 'Conheça o novo Kindle, agora com mais memória', 'Kindle', 1, 799.5, 'yes');
+INSERT INTO tbl_erp_products (id, col_description, col_name, col_unit, col_unitprice, col_active) VALUES (303, 'Câmera de ação e alto desempenho', 'Câmera GoPro Hero', 1, 1606.72, 'yes');
+INSERT INTO tbl_erp_products (id, col_description, col_name, col_unit, col_unitprice, col_active) VALUES (304, 'Fita Adesiva Alta Aderência','Fita ColaTudo', 1, 5.0, 'yes');
+INSERT INTO tbl_erp_products (id, col_description, col_name, col_unit, col_unitprice, col_active) VALUES (305, 'Corda de Tecido Poliester Trançada Reforçada','Corda de Nylon para Varal', 3, 2.32, 'yes');
+INSERT INTO tbl_erp_products (id, col_description, col_name, col_unit, col_unitprice, col_active) VALUES (306, 'O melhor ajuste de foco','Câmera Canon 80D', 1, 3500.0, 'yes');
+INSERT INTO tbl_erp_products (id, col_description, col_name, col_unit, col_unitprice, col_active) VALUES (307, 'Produto Teste 7 Nunca Vendido','Produto Teste 7', 1, 10.0, 'no');
+INSERT INTO tbl_erp_products (id, col_description, col_name, col_unit, col_unitprice, col_active) VALUES (308, 'Produto Teste 8 Nunca Vendido','Produto Teste 8', 1, 10.0, 'no');
 --
 INSERT INTO tbl_ecm_category (cat_id, cat_name, cat_parent_category_id) VALUES (201, 'Eletrônicos', null);
 INSERT INTO tbl_ecm_category (cat_id, cat_name, cat_parent_category_id) VALUES (202, 'Informática', 201);
