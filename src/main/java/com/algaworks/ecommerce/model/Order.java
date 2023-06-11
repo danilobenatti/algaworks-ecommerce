@@ -19,6 +19,10 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.NamedEntityGraph;
+import jakarta.persistence.NamedEntityGraphs;
+import jakarta.persistence.NamedSubgraph;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
@@ -37,6 +41,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@NamedEntityGraphs(value = { @NamedEntityGraph(name = "Order.essentialData",
+	attributeNodes = { @NamedAttributeNode(value = "executionDate"),
+		@NamedAttributeNode(value = "status"),
+		@NamedAttributeNode(value = "total"),
+		@NamedAttributeNode(value = "person", subgraph = "p") },
+	subgraphs = { @NamedSubgraph(name = "p",
+		attributeNodes = { @NamedAttributeNode(value = "firstname"),
+			@NamedAttributeNode(value = "taxIdNumber") }) }) })
 @EntityListeners({ GenerateInvoiceListener.class, GenericListener.class })
 @Entity
 @Table(name = "tbl_orders")

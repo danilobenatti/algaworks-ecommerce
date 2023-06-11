@@ -121,4 +121,27 @@ class EntityGraphTest extends EntityManagerTest {
 				: "N/D")));
 		assertFalse(list.isEmpty());
 	}
+	
+	@Test
+	void searchEssentialAttributesForOrderWithNamedEntityGraph() {
+		EntityGraph<?> entityGraph = entityManager
+			.createEntityGraph("Order.essentialData");
+		entityGraph.addAttributeNodes("payment");
+//		entityGraph.addSubgraph("payment").addAttributeNodes("status");
+		
+		TypedQuery<Order> typedQuery = entityManager
+			.createQuery("select o from Order o", Order.class);
+		typedQuery.setHint("jakarta.persistence.fetchgraph", entityGraph);
+		
+		List<Order> list = typedQuery.getResultList();
+		
+		list.forEach(o -> logger.info(new StringBuilder().append(o.getId())
+			.append("; ").append(o.getDateCreate().format(isoDate)).append("; ")
+			.append(o.getStatus().getValue()).append("; ")
+			.append(currency.format(o.getTotal())).append("; ")
+			.append(o.getExecutionDate() != null
+				? o.getExecutionDate().format(isoDate)
+				: "N/D")));
+		assertFalse(list.isEmpty());
+	}
 }
