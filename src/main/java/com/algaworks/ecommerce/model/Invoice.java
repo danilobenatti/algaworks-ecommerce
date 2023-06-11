@@ -2,6 +2,7 @@ package com.algaworks.ecommerce.model;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 import com.algaworks.ecommerce.exception.FileNotFoundException;
@@ -70,6 +71,12 @@ public class Invoice implements Serializable {
 			throw new FileNotFoundException("File not found.", ex);
 		}
 		
+	}
+	
+	@Override
+	public String toString() {
+		return this.xml != null ? new String(this.xml, StandardCharsets.UTF_8)
+			: "N/D";
 	}
 	
 }

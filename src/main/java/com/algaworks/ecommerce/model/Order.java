@@ -46,7 +46,6 @@ public class Order extends BaseEntityLong implements Serializable {
 	@Column(name = "col_execution_date", columnDefinition = "timestamp")
 	private LocalDateTime executionDate;
 	
-//	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@OneToOne(mappedBy = "order", fetch = FetchType.LAZY,
 		cascade = CascadeType.REMOVE)
 	private Invoice invoice;
@@ -72,7 +71,6 @@ public class Order extends BaseEntityLong implements Serializable {
 		CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.MERGE })
 	private List<OrderItem> orderitems = new ArrayList<>();
 	
-//	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@OneToOne(mappedBy = "order", fetch = FetchType.LAZY,
 		cascade = { CascadeType.REMOVE, CascadeType.PERSIST })
 	private Payment payment;
