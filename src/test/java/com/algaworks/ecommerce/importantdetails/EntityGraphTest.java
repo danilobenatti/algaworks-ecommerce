@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.text.NumberFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 
@@ -13,7 +14,9 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.Order;
+import com.algaworks.ecommerce.model.Order_;
 import com.algaworks.ecommerce.model.Person;
+import com.algaworks.ecommerce.model.Person_;
 
 import jakarta.persistence.EntityGraph;
 import jakarta.persistence.Subgraph;
@@ -21,6 +24,7 @@ import jakarta.persistence.TypedQuery;
 
 class EntityGraphTest extends EntityManagerTest {
 	
+	DateTimeFormatter isoDate = DateTimeFormatter.ISO_DATE;
 	NumberFormat currency = NumberFormat.getCurrencyInstance();
 	
 	@ParameterizedTest
@@ -86,6 +90,35 @@ class EntityGraphTest extends EntityManagerTest {
 			.append("; ").append(o.getDateCreate()).append("; ")
 			.append(o.getStatus().getValue()).append("; ")
 			.append(currency.format(o.getTotal()))));
+		assertFalse(list.isEmpty());
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	void searchEssentialAttributesForOrder4() {
+		EntityGraph<Order> entityGraph = entityManager
+			.createEntityGraph(Order.class);
+		entityGraph.addAttributeNodes(Order_.executionDate, Order_.status,
+			Order_.total);
+		
+		Subgraph<Person> subgraphPerson = entityGraph
+			.addSubgraph(Order_.person);
+		subgraphPerson.addAttributeNodes(Person_.firstname, Person_.email,
+			Person_.emails, Person_.phones);
+		
+		TypedQuery<Order> typedQuery = entityManager
+			.createQuery("select o from Order o", Order.class);
+		typedQuery.setHint("jakarta.persistence.fetchgraph", entityGraph);
+		
+		List<Order> list = typedQuery.getResultList();
+		
+		list.forEach(o -> logger.info(new StringBuilder().append(o.getId())
+			.append("; ").append(o.getDateCreate().format(isoDate)).append("; ")
+			.append(o.getStatus().getValue()).append("; ")
+			.append(currency.format(o.getTotal())).append("; ")
+			.append(o.getExecutionDate() != null
+				? o.getExecutionDate().format(isoDate)
+				: "N/D")));
 		assertFalse(list.isEmpty());
 	}
 }
