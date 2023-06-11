@@ -13,8 +13,11 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.Order;
+import com.algaworks.ecommerce.model.Person;
 
 import jakarta.persistence.EntityGraph;
+import jakarta.persistence.Subgraph;
+import jakarta.persistence.TypedQuery;
 
 class EntityGraphTest extends EntityManagerTest {
 	
@@ -62,4 +65,27 @@ class EntityGraphTest extends EntityManagerTest {
 		assertFalse(list.isEmpty());
 	}
 	
+	@Test
+	void searchEssentialAttributesForOrder3() {
+		EntityGraph<Order> entityGraph = entityManager
+			.createEntityGraph(Order.class);
+		entityGraph.addAttributeNodes("dateCreate", "status", "total");
+		
+		Subgraph<Person> subgraphPerson = entityGraph.addSubgraph("person",
+			Person.class);
+		subgraphPerson.addAttributeNodes("firstname", "email", "emails",
+			"phones");
+		
+		TypedQuery<Order> typedQuery = entityManager
+			.createQuery("select o from Order o", Order.class);
+		typedQuery.setHint("jakarta.persistence.fetchgraph", entityGraph);
+		
+		List<Order> list = typedQuery.getResultList();
+		
+		list.forEach(o -> logger.info(new StringBuilder().append(o.getId())
+			.append("; ").append(o.getDateCreate()).append("; ")
+			.append(o.getStatus().getValue()).append("; ")
+			.append(currency.format(o.getTotal()))));
+		assertFalse(list.isEmpty());
+	}
 }
