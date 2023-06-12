@@ -34,6 +34,8 @@
 			<property name="jakarta.persistence.schema-generation.scripts.create-target" value="./src/main/resources/META-INF/database/create-db-export.sql" />
 			<property name="jakarta.persistence.schema-generation.scripts.drop-target" value="./src/main/resources/META-INF/database/drop-db-export.sql" />
 			
+			<property name="jakarta.persistence.sharedCache.mode" value="ALL"/>
+			
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.format_sql" value="true" />
