@@ -8,10 +8,13 @@ import org.apache.logging.log4j.core.config.Configurator;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.Order;
 
+import jakarta.persistence.Cache;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -65,8 +68,44 @@ public class CacheTest {
 		entityManager1.createQuery("select o from Order o", Order.class)
 			.getResultList();
 		
-		Order order2 = entityManager2.find(Order.class, 1L);
-		logger.info(String.format("Search by instance 2: %d", order2.getId()));
+		Order order1 = entityManager2.find(Order.class, 1L);
+		logger.info(String.format("Search by instance 1: %d", order1.getId()));
+		assertNotNull(order1);
+	}
+	
+	@ParameterizedTest
+	@ValueSource(ints = { 1, 2, 3 })
+	void removeOrderInCache(int i) {
+		Cache cache = entityManagerFactory.getCache();
+		
+		EntityManager entityManager1 = entityManagerFactory
+			.createEntityManager();
+		EntityManager entityManager2 = entityManagerFactory
+			.createEntityManager();
+		
+		entityManager1.createQuery("select o from Order o", Order.class)
+			.getResultList();
+		
+		logger.info(String.format("Remove instance n°1 from cache"));
+		switch (i) {
+			case 1:
+				cache.evict(Order.class, 1L);
+				break;
+			case 2:
+				cache.evict(Order.class);
+				break;
+			case 3:
+				cache.evictAll();
+				break;
+			default:
+				throw new IllegalArgumentException("Unexpected value: " + i);
+		}
+		
+		logger.info(String.format("Search by instance 1"));
+		Order order1 = entityManager2.find(Order.class, 1L);
+		assertNotNull(order1);
+		logger.info(String.format("Search by instance 2"));
+		Order order2 = entityManager2.find(Order.class, 3L);
 		assertNotNull(order2);
 	}
 }
