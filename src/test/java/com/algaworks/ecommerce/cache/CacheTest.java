@@ -82,7 +82,7 @@ public class CacheTest {
 			.createEntityManager();
 		
 		entityManager.createQuery("select o from Order o", Order.class)
-		.getResultList();
+			.getResultList();
 		
 		Order order = entityManager.find(Order.class, 1L);
 		logger.info(String.format("Search by instance 1: %d", order.getId()));
@@ -123,5 +123,18 @@ public class CacheTest {
 		logger.info(String.format("Search by instance 2"));
 		Order order2 = entityManager2.find(Order.class, 3L);
 		assertNotNull(order2);
+	}
+	
+	@Test
+	void analyzingCachingOptions() {
+		Cache cache = entityManagerFactory.getCache();
+		
+		EntityManager entityManager = entityManagerFactory
+			.createEntityManager();
+		
+		entityManager.createQuery("select o from Order o", Order.class)
+			.getResultList();
+		
+		assertTrue(cache.contains(Order.class, 1L));
 	}
 }

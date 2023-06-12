@@ -7,6 +7,7 @@
 	<mapping-file>META-INF/queries/order.xml</mapping-file>
 	<mapping-file>META-INF/queries/product.xml</mapping-file>
 	<mapping-file>META-INF/queries/category.xml</mapping-file>
+	<shared-cache-mode>ALL</shared-cache-mode>
 	<validation-mode>CALLBACK</validation-mode>
 		<properties>
 			<property name="jakarta.persistence.jdbc.url" 
@@ -33,8 +34,6 @@
 			<property name="jakarta.persistence.schema-generation.scripts.action" value="none" />
 			<property name="jakarta.persistence.schema-generation.scripts.create-target" value="./src/main/resources/META-INF/database/create-db-export.sql" />
 			<property name="jakarta.persistence.schema-generation.scripts.drop-target" value="./src/main/resources/META-INF/database/drop-db-export.sql" />
-			
-			<property name="jakarta.persistence.sharedCache.mode" value="ALL"/>
 			
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
 			<property name="hibernate.show_sql" value="true" />

@@ -10,6 +10,7 @@ import com.algaworks.ecommerce.listener.GenerateInvoiceListener;
 import com.algaworks.ecommerce.listener.GenericListener;
 import com.algaworks.ecommerce.model.enums.OrderStatus;
 
+import jakarta.persistence.Cacheable;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -36,6 +37,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Cacheable(value = true)
 @Getter
 @Setter
 @NoArgsConstructor
