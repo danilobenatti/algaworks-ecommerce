@@ -1,5 +1,6 @@
 package com.algaworks.ecommerce.cache;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.apache.logging.log4j.LogManager;
@@ -71,6 +72,21 @@ public class CacheTest {
 		Order order1 = entityManager2.find(Order.class, 1L);
 		logger.info(String.format("Search by instance 1: %d", order1.getId()));
 		assertNotNull(order1);
+	}
+	
+	@Test
+	void containsOrderInCache() {
+		Cache cache = entityManagerFactory.getCache();
+		
+		EntityManager entityManager = entityManagerFactory
+			.createEntityManager();
+		
+		entityManager.createQuery("select o from Order o", Order.class)
+		.getResultList();
+		
+		Order order = entityManager.find(Order.class, 1L);
+		logger.info(String.format("Search by instance 1: %d", order.getId()));
+		assertTrue(cache.contains(Order.class, order.getId()));
 	}
 	
 	@ParameterizedTest
