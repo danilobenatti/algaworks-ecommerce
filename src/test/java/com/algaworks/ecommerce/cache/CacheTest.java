@@ -54,4 +54,19 @@ public class CacheTest {
 		logger.info(String.format("Search by instance 3: %d", order3.getId()));
 		assertNotNull(order3);
 	}
+	
+	@Test
+	void addOrderInCache() {
+		EntityManager entityManager1 = entityManagerFactory
+			.createEntityManager();
+		EntityManager entityManager2 = entityManagerFactory
+			.createEntityManager();
+		
+		entityManager1.createQuery("select o from Order o", Order.class)
+			.getResultList();
+		
+		Order order2 = entityManager2.find(Order.class, 1L);
+		logger.info(String.format("Search by instance 2: %d", order2.getId()));
+		assertNotNull(order2);
+	}
 }
