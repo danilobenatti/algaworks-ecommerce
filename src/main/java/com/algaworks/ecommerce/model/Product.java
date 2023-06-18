@@ -28,9 +28,7 @@ import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.NamedNativeQueries;
 import jakarta.persistence.NamedNativeQuery;
-import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -38,6 +36,7 @@ import jakarta.persistence.SqlResultSetMapping;
 import jakarta.persistence.SqlResultSetMappings;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.Version;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -59,6 +58,7 @@ import lombok.Setter;
 	@SqlResultSetMapping(name = "ecm_products.Product",
 		entities = { @EntityResult(entityClass = Product.class,
 			fields = { @FieldResult(name = "id", column = "prd_id"),
+				@FieldResult(name = "version", column = "prd_version"),
 				@FieldResult(name = "name", column = "prd_name"),
 				@FieldResult(name = "description", column = "prd_description"),
 				@FieldResult(name = "unit", column = "prd_unit"),
@@ -71,18 +71,17 @@ import lombok.Setter;
 		classes = { @ConstructorResult(targetClass = ProductDTO.class,
 			columns = { @ColumnResult(name = "prd_id", type = Long.class),
 				@ColumnResult(name = "prd_name", type = String.class) }) }) })
-@NamedQueries({
-	@NamedQuery(name = "Product.listAll", query = "select p from Product p"),
-	@NamedQuery(name = "Product.listByCategory",
-		query = "select p1 from Product p1 where exists (select 1 from Category c2 "
-			+ "join c2.products p2 where p2 = p1 and c2.id = :category)") })
-@NamedNativeQueries({ @NamedNativeQuery(name = "product_shop.listAll",
-	query = "select id, col_name, col_description, col_image, col_unit, col_unitprice, "
+@NamedQuery(name = "Product.listAll", query = "select p from Product p")
+@NamedQuery(name = "Product.listByCategory",
+	query = "select p1 from Product p1 where exists (select 1 from Category c2 "
+		+ "join c2.products p2 where p2 = p1 and c2.id = :category)")
+@NamedNativeQuery(name = "product_shop.listAll",
+	query = "select id, col_version, col_name, col_description, col_image, col_unit, col_unitprice, "
 		+ "col_date_create, col_date_update, col_active from tbl_product_shop",
-	resultClass = Product.class),
-	@NamedNativeQuery(name = "ecm_products.listAll",
-		query = "select * from tbl_ecm_products",
-		resultSetMapping = "ecm_products.Product") })
+	resultClass = Product.class)
+@NamedNativeQuery(name = "ecm_products.listAll",
+	query = "select * from tbl_ecm_products",
+	resultSetMapping = "ecm_products.Product")
 @EntityListeners({ GenericListener.class })
 @Entity
 @Table(name = "tbl_products",
@@ -92,13 +91,17 @@ import lombok.Setter;
 public class Product extends BaseEntityLong implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	@NotBlank
+	@Version
+	@Column(name = "col_version")
+	private Long version;
+	
+	@NotBlank(message = "Field [name] for Product is required")
 	@Size(min = 2, max = 150,
 		message = "Product name '${validatedValue}' must be between {min} and {max} characters")
 	@Column(name = "col_name", length = 150, nullable = false)
 	private String name;
 	
-	@NotBlank(message = "Product description to must be informed")
+	@NotBlank(message = "Field [description] for Product is required")
 //	@Lob
 	@Basic(fetch = FetchType.LAZY)
 	@Column(name = "col_description", columnDefinition = "text",

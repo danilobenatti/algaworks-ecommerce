@@ -33,6 +33,7 @@ import jakarta.persistence.StoredProcedureParameter;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.Version;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -67,7 +68,11 @@ import lombok.Setter;
 public class Person extends BaseEntityLong implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	@NotBlank(message = "Firstname not be null")
+	@Version
+	@Column(name = "col_version")
+	private Long version;
+	
+	@NotBlank(message = "Field [firstname] for Person is required")
 	@Size(min = 2, max = 100,
 		message = "Field '${validatedValue}' must be between {min} and {max} characters long")
 	@Column(name = "col_firstname", length = 100, nullable = false)
@@ -77,18 +82,18 @@ public class Person extends BaseEntityLong implements Serializable {
 	@Column(name = "col_lastname")
 	private String lastname;
 	
-	@NotNull(message = "Inform date of birth")
+	@NotNull(message = "Field [birthday] for Person is required")
 	@Past(message = "Invalid date, ")
 	@Column(name = "col_birthday", table = "tbl_person_detail")
 	private LocalDate birthday;
 	
-	@NotNull(message = "Inform gender")
+	@NotNull(message = "Field [gender] for Person is required")
 	@Column(name = "col_gender", table = "tbl_person_detail", length = 6)
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
 	
 	@Email(message = "Invalid email")
-	@NotNull(message = "Inform principal email")
+	@NotNull(message = "Field [email] for Person is required")
 	@Column(name = "col_email", table = "tbl_person_detail", length = 150)
 	private String email;
 	
@@ -97,7 +102,7 @@ public class Person extends BaseEntityLong implements Serializable {
 	private List<Order> orders;
 	
 	@CPF(message = "Invalid CPF number [${validatedValue}]")
-	@NotBlank(message = "CPF number is blank")
+	@NotBlank(message = "Field [taxIdNumber] for Person is required")
 	@Column(name = "col_taxidnumber", length = 14, nullable = false)
 	private String taxIdNumber;
 	

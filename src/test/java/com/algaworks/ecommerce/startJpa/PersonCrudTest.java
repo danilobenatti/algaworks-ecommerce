@@ -62,8 +62,7 @@ class PersonCrudTest extends EntityManagerTest {
 	
 	@Test
 	void updatePerson() {
-		Person person = new Person();
-		person.setId(1L);
+		Person person = entityManager.find(Person.class, 1L);
 		person.setFirstname("Fernando Medeiros Júnior");
 		person.setTaxIdNumber("246.851.120-40");
 		person.setBirthday(LocalDate.of(1958, Month.NOVEMBER, 5));
@@ -86,7 +85,7 @@ class PersonCrudTest extends EntityManagerTest {
 	
 	@Test
 	void updatePersonManaged() {
-		Person person = entityManager.find(Person.class, 1);
+		Person person = entityManager.find(Person.class, 1L);
 		
 		entityManager.getTransaction().begin();
 		person.setBirthday(LocalDate.of(1958, Month.DECEMBER, 5));
@@ -94,7 +93,7 @@ class PersonCrudTest extends EntityManagerTest {
 		
 		entityManager.clear();
 		
-		Person updatedPerson = entityManager.find(Person.class, 1);
+		Person updatedPerson = entityManager.find(Person.class, 1L);
 		assertNotNull(updatedPerson);
 		assertEquals(LocalDate.of(1958, Month.DECEMBER, 5),
 			updatedPerson.getBirthday());

@@ -17,8 +17,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,7 +27,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true, exclude = "order")
 @Entity
 @Table(name = "tbl_payments")
@@ -37,6 +36,10 @@ import lombok.Setter;
 	columnDefinition = "TINYINT(1)")
 public abstract class Payment extends BaseEntityLong implements Serializable {
 	private static final long serialVersionUID = 1L;
+	
+	@Version
+	@Column(name = "col_version")
+	private Long version;
 	
 	@NotNull
 	@MapsId
@@ -56,6 +59,11 @@ public abstract class Payment extends BaseEntityLong implements Serializable {
 	
 	public void setStatus(PaymentStatus status) {
 		this.status = status.getCode();
+	}
+	
+	protected Payment(Order order, Byte status) {
+		this.order = order;
+		this.status = status;
 	}
 	
 }

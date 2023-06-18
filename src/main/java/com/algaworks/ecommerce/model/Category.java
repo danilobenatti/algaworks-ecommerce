@@ -14,6 +14,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.Version;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -34,7 +35,11 @@ import lombok.Setter;
 public class Category extends BaseEntityLong implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	@NotBlank(message = "")
+	@Version
+	@Column(name = "col_version")
+	private Long version;
+	
+	@NotBlank(message = "Field [name] for Category is required")
 	@Size(max = 100,
 		message = "Category '${validatedValue}' to must be max {max} characters long")
 	@Column(name = "col_name", length = 100, nullable = false)

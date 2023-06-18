@@ -99,8 +99,7 @@ class OperationWithTransactionTest extends EntityManagerTest {
 	
 	@Test
 	void updateObject() {
-		Product p = new Product();
-		p.setId(1L);
+		Product p = entityManager.find(Product.class, 1L);
 		p.setName("Kindle Paperwhite");
 		p.setDescription("Conheça o novo Kindle!");
 		p.setUnitPrice(new BigDecimal(599.99));

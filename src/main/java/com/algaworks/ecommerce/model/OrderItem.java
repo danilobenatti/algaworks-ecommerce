@@ -85,7 +85,7 @@ public class OrderItem implements Serializable {
 	}
 	
 	public BigDecimal calcSubTotal() {
-		if (!product.getUnitPrice().equals(BigDecimal.ZERO)
+		if (!this.product.getUnitPrice().equals(BigDecimal.ZERO)
 			&& this.quantity > 0) {
 			return this.product.getUnitPrice()
 				.multiply(BigDecimal.valueOf(this.quantity));
@@ -100,7 +100,7 @@ public class OrderItem implements Serializable {
 	
 	@PreUpdate
 	public void itemUpdate() {
-		if (!this.quantity.equals(getQuantity())) {
+		if (this.order.isWaitting()) {
 			setSubtotal();
 		}
 	}

@@ -69,11 +69,11 @@ public class Order extends BaseEntityLong implements Serializable {
 	@Column(name = "col_total", nullable = false)
 	private BigDecimal total = BigDecimal.ZERO;
 	
-	@NotNull(message = "Inform order status")
+	@NotNull(message = "Field [status] is required")
 	@Column(name = "col_status", nullable = false)
 	private Byte status;
 	
-	@NotNull(message = "Order must have a person")
+	@NotNull(message = "Field [person] is required")
 	@ManyToOne(optional = false, cascade = { CascadeType.PERSIST },
 		fetch = FetchType.LAZY)
 	@JoinColumn(name = "person_id", nullable = false,
@@ -101,7 +101,15 @@ public class Order extends BaseEntityLong implements Serializable {
 	}
 	
 	public boolean isPaid() {
-		return OrderStatus.PAID.getCode().equals(status);
+		return OrderStatus.PAID.getCode().equals(this.status);
+	}
+	
+	public boolean isWaitting() {
+		return OrderStatus.WAITING.getCode().equals(this.status);
+	}
+	
+	public boolean isCanceled() {
+		return OrderStatus.CANCELED.getCode().equals(this.status);
 	}
 	
 	public void setTotal() {
@@ -141,7 +149,9 @@ public class Order extends BaseEntityLong implements Serializable {
 	
 	@PreUpdate
 	private void orderUpdate() {
-		setTotal();
+		if (!isPaid()) {
+			setTotal();
+		}
 	}
 	
 }
