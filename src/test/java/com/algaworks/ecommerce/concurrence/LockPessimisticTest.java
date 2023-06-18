@@ -51,6 +51,7 @@ class LockPessimisticTest {
 	private static final Long timeout = 10L;
 	
 	private static final LockModeType PESSIMISTIC_READ = LockModeType.PESSIMISTIC_READ;
+	private static final LockModeType PESSIMISTIC_WRITE = LockModeType.PESSIMISTIC_WRITE;
 	
 	@ParameterizedTest
 	@ValueSource(chars = { 'A', 'B', 'C', 'D' })
@@ -104,6 +105,106 @@ class LockPessimisticTest {
 				case 'B' -> em.find(Product.class, 1L);
 				case 'C' -> em.find(Product.class, 1L, PESSIMISTIC_READ);
 				case 'D' -> em.find(Product.class, 1L, PESSIMISTIC_READ);
+				default -> null;
+			};
+			
+			log("Change Product by Runnable 2");
+			product.setDescription(newDescription);
+			
+			log("Wait 2 seconds - Runnable 2");
+			waiting(2L, timeout);
+			
+			log("Transaction confirmation by Runnable 2");
+			em.getTransaction().commit();
+			
+			log("Ending Runnable 2");
+			em.close();
+		};
+		
+		Thread thread_1 = new Thread(runnable_1);
+		Thread thread_2 = new Thread(runnable_2);
+		
+		thread_1.start();
+		waiting(1L, timeout);
+		thread_2.start();
+		
+		try {
+			thread_1.join();
+			thread_2.join();
+		} catch (Exception ex) {
+			throw new RuntimeException(ex);
+		}
+		
+		EntityManager em = entityManagerFactory.createEntityManager();
+		Product product = em.find(Product.class, 1L);
+		em.close();
+		
+		switch (lockScene) {
+			case 'A' -> assertTrue(
+				product.getDescription().startsWith("Descrição completa"));
+			case 'B' -> assertTrue(
+				product.getDescription().startsWith("Descrição detalhada"));
+			case 'C' -> assertTrue(
+				product.getDescription().startsWith("Descrição completa"));
+			case 'D' -> assertTrue(
+				product.getDescription().startsWith("Descrição completa"));
+			default -> assertTrue(false);
+		}
+		log("Finalizing test method");
+	}
+	
+	@ParameterizedTest
+	@ValueSource(chars = { 'A', 'B', 'C', 'D' })
+	void usingLockPessimisticLockModeTypePessimisticWrite(char lockScene) {
+		
+		Runnable runnable_1 = () -> {
+			log("Start Runnable 1");
+			
+			String newDescription = new StringBuilder()
+				.append("Descrição detalhada. CTM: ")
+				.append(System.currentTimeMillis()).toString();
+			
+			EntityManager em = entityManagerFactory.createEntityManager();
+			em.getTransaction().begin();
+			
+			log("Load Product by Runnable 1");
+			Product product = switch (lockScene) {
+				case 'A' -> em.find(Product.class, 1L);
+				case 'B' -> em.find(Product.class, 1L, PESSIMISTIC_WRITE);
+				case 'C' -> em.find(Product.class, 1L);
+				case 'D' -> em.find(Product.class, 1L, PESSIMISTIC_WRITE);
+				default -> null;
+			};
+			
+			log("Change Product by Runnable 1");
+			product.setDescription(newDescription);
+			
+			log("Wait 4 seconds - Runnable 1");
+			waiting(4L, timeout);
+			
+			log("Transaction confirmation by Runnable 1");
+			em.getTransaction().commit();
+			
+			log("Ending Runnable 1");
+			em.close();
+		};
+		
+		Runnable runnable_2 = () -> {
+			log("Start Runnable 2");
+			
+			String newDescription = new StringBuilder()
+				.append("Descrição completa. CTM: ")
+				.append(System.currentTimeMillis()).toString();
+			
+			EntityManager em = entityManagerFactory.createEntityManager();
+			em.getTransaction().begin();
+			
+			log("Load Product by Runnable 2");
+			Product product = switch (lockScene) {
+				case 'A' -> em.find(Product.class, 1L);
+				case 'B' -> em.find(Product.class, 1L);
+				case 'C' -> em.find(Product.class, 1L, PESSIMISTIC_WRITE);
+				case 'D' -> em.find(Product.class, 1L, PESSIMISTIC_WRITE);
 				default -> null;
 			};
 			
