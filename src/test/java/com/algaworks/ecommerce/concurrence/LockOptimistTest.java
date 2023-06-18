@@ -17,7 +17,6 @@ import com.algaworks.ecommerce.model.Product;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.OptimisticLockException;
 import jakarta.persistence.Persistence;
 
 class LockOptimistTest {
@@ -42,10 +41,12 @@ class LockOptimistTest {
 			System.currentTimeMillis(), obj.toString()));
 	}
 	
-	private static void waiting(Duration seconds) {
-		await().atMost(Duration.ofSeconds(10)).during(seconds)
-			.until(() -> true);
+	private static void waiting(Long seconds, Long limit) {
+		await().atMost(Duration.ofSeconds(limit))
+			.during(Duration.ofSeconds(seconds)).until(() -> true);
 	}
+	
+	private static final Long timeout = 10L;
 	
 	@Test
 	void usingLockOptimist() {
@@ -57,7 +58,7 @@ class LockOptimistTest {
 			log("Runnable 1: charge product 1 by João");
 			
 			log("Runnable 1: waiting for 6 seconds");
-			waiting(Duration.ofSeconds(6));
+			waiting(6L, timeout);
 			
 			log("Runnable 1: updating a product by João");
 			product.setDescription("Mais memória, novas cores");
@@ -75,7 +76,7 @@ class LockOptimistTest {
 			log("Runnable 2: charge product 1 by Maria");
 			
 			log("Runnable 2: waiting for 3 seconds");
-			waiting(Duration.ofSeconds(3));
+			waiting(3L, timeout);
 			
 			log("Runnable 2: updating a product by Maria");
 			product.setDescription("Novo Kindle, mais memória e novas cores!");
@@ -89,12 +90,13 @@ class LockOptimistTest {
 		Thread thread_2 = new Thread(runnable_2);
 		
 		thread_1.start();
+		waiting(1L, timeout);
 		thread_2.start();
 		
 		try {
 			thread_1.join();
 			thread_2.join();
-		} catch (OptimisticLockException | InterruptedException ex) {
+		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
 		
