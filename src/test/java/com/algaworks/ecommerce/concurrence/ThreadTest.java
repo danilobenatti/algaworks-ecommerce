@@ -1,44 +1,32 @@
 package com.algaworks.ecommerce.concurrence;
 
-import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.lang.Thread.State;
-import java.time.Duration;
 
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.message.StringFormattedMessage;
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
 
 class ThreadTest extends EntityManagerTest {
 	
-	private static void log(Object obj, Object... args) {
-		logger.log(Level.INFO, new StringFormattedMessage("[%d] %s",
-			System.currentTimeMillis(), obj.toString()));
-	}
-	
-	private static void wait(Duration seconds) {
-		await().atMost(Duration.ofSeconds(15)).during(seconds)
-			.until(() -> true);
-	}
+	private static final Long timeout = 15L;
 	
 	@Test
 	void usingLock() {
 		Runnable runnable_1 = () -> {
 			log("Runnable A: waiting 7 seconds");
-			wait(Duration.ofSeconds(7));
+			waiting(7L, timeout);
 			log("Runnable A: concluded");
 		};
 		Runnable runnable_2 = () -> {
 			log("Runnable B: waiting 3 seconds");
-			wait(Duration.ofSeconds(3));
+			waiting(3L, timeout);
 			log("Runnable B: concluded");
 		};
 		Runnable runnable_3 = () -> {
 			log("Runnable C: waiting 12 seconds");
-			wait(Duration.ofSeconds(12));
+			waiting(12L, timeout);
 			log("Runnable C: concluded");
 		};
 		

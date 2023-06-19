@@ -1,54 +1,20 @@
 package com.algaworks.ecommerce.concurrence;
 
-import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.time.Duration;
 import java.util.List;
 
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.message.StringFormattedMessage;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.Product;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.LockModeType;
-import jakarta.persistence.Persistence;
 
-class LockPessimisticTest {
-	
-	protected static EntityManagerFactory entityManagerFactory;
-	
-	protected static Logger logger = LogManager.getLogger();
-	
-	@BeforeAll
-	static void setUpBeforeClass() {
-		entityManagerFactory = Persistence
-			.createEntityManagerFactory("algaworks-ecommerce");
-	}
-	
-	@AfterAll
-	static void tearDownAfterClass() {
-		entityManagerFactory.close();
-	}
-	
-	private static void log(Object obj, Object... args) {
-		logger.log(Level.INFO, new StringFormattedMessage("[%d] %s",
-			System.currentTimeMillis(), obj.toString()));
-	}
-	
-	private static void waiting(Long seconds, Long limit) {
-		await().atMost(Duration.ofSeconds(limit))
-			.during(Duration.ofSeconds(seconds)).until(() -> true);
-	}
+class LockPessimisticTest extends EntityManagerTest {
 	
 	private static final Long timeout = 10L;
 	
