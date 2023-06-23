@@ -11,6 +11,11 @@ public class ExecuteDDL {
 		
 		HashMap<String, String> prop = new HashMap<>();
 		
+		prop.put("jakarta.persistence.jdbc.url",
+			"jdbc:mysql://localhost:3306/ecosensor_ecommerce?"
+				+ "createDatabaseIfNotExist=true&useTimezone=true&useUnicode=true"
+				+ "&connectionCollation=utf8_bin&characterSetResults=utf8");
+		
 		prop.put("jakarta.persistence.schema-generation.database.action",
 			"drop-and-create");
 		

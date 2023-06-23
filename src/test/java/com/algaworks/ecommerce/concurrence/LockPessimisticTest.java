@@ -9,6 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import com.algaworks.ecommerce.EntityManagerTest;
+import com.algaworks.ecommerce.hibernate.SchemaTenantResolver;
 import com.algaworks.ecommerce.model.Product;
 
 import jakarta.persistence.EntityManager;
@@ -32,6 +33,7 @@ class LockPessimisticTest extends EntityManagerTest {
 				.append("Descrição detalhada. CTM: ")
 				.append(System.currentTimeMillis()).toString();
 			
+			SchemaTenantResolver.setTenantIdentifier("algaworks_ecommerce");
 			EntityManager em = entityManagerFactory.createEntityManager();
 			em.getTransaction().begin();
 			
@@ -64,6 +66,7 @@ class LockPessimisticTest extends EntityManagerTest {
 				.append("Descrição completa. CTM: ")
 				.append(System.currentTimeMillis()).toString();
 			
+			SchemaTenantResolver.setTenantIdentifier("algaworks_ecommerce");
 			EntityManager em = entityManagerFactory.createEntityManager();
 			em.getTransaction().begin();
 			
@@ -132,6 +135,7 @@ class LockPessimisticTest extends EntityManagerTest {
 				.append("Descrição detalhada. CTM: ")
 				.append(System.currentTimeMillis()).toString();
 			
+			SchemaTenantResolver.setTenantIdentifier("algaworks_ecommerce");
 			EntityManager em = entityManagerFactory.createEntityManager();
 			em.getTransaction().begin();
 			
@@ -164,6 +168,7 @@ class LockPessimisticTest extends EntityManagerTest {
 				.append("Descrição completa. CTM: ")
 				.append(System.currentTimeMillis()).toString();
 			
+			SchemaTenantResolver.setTenantIdentifier("algaworks_ecommerce");
 			EntityManager em = entityManagerFactory.createEntityManager();
 			em.getTransaction().begin();
 			
@@ -231,6 +236,7 @@ class LockPessimisticTest extends EntityManagerTest {
 				.append("Descrição detalhada. CTM: ")
 				.append(System.currentTimeMillis()).toString();
 			
+			SchemaTenantResolver.setTenantIdentifier("algaworks_ecommerce");
 			EntityManager em = entityManagerFactory.createEntityManager();
 			em.getTransaction().begin();
 			
@@ -261,6 +267,7 @@ class LockPessimisticTest extends EntityManagerTest {
 				.append("Descrição completa. CTM: ")
 				.append(System.currentTimeMillis()).toString();
 			
+			SchemaTenantResolver.setTenantIdentifier("algaworks_ecommerce");
 			EntityManager em = entityManagerFactory.createEntityManager();
 			em.getTransaction().begin();
 			

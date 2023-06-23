@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
+import com.algaworks.ecommerce.hibernate.SchemaTenantResolver;
 import com.algaworks.ecommerce.model.Product;
 
 import jakarta.persistence.EntityManager;
@@ -16,6 +17,7 @@ class LockOptimistTest extends EntityManagerTest{
 	@Test
 	void usingLockOptimist() {
 		Runnable runnable_1 = () -> {
+			SchemaTenantResolver.setTenantIdentifier("algaworks_ecommerce");
 			EntityManager em_1 = entityManagerFactory.createEntityManager();
 			em_1.getTransaction().begin();
 			
@@ -34,6 +36,7 @@ class LockOptimistTest extends EntityManagerTest{
 		};
 		
 		Runnable runnable_2 = () -> {
+			SchemaTenantResolver.setTenantIdentifier("algaworks_ecommerce");
 			EntityManager em_2 = entityManagerFactory.createEntityManager();
 			em_2.getTransaction().begin();
 			

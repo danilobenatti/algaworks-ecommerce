@@ -14,6 +14,8 @@ import org.apache.logging.log4j.message.StringFormattedMessage;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
+import com.algaworks.ecommerce.hibernate.SchemaTenantResolver;
+
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
@@ -38,6 +40,8 @@ public class EntityManagerFactoryTest {
 					env.get(envName));
 			}
 		}
+		
+		SchemaTenantResolver.setTenantIdentifier("algaworks_ecommerce");
 		entityManagerFactory = Persistence
 			.createEntityManagerFactory("algaworks-ecommerce", configOverrides);
 		
@@ -48,6 +52,7 @@ public class EntityManagerFactoryTest {
 	@AfterAll
 	public static void tearDownAfterClass() {
 		entityManagerFactory.close();
+		SchemaTenantResolver.unload();
 	}
 	
 	public static void log(Object obj, Object... args) {

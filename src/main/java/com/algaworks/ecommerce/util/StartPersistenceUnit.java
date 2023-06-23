@@ -8,8 +8,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 
+import com.algaworks.ecommerce.hibernate.SchemaTenantResolver;
 import com.algaworks.ecommerce.model.Product;
-import com.algaworks.ecommerce.service.InvoiceService;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -21,7 +21,7 @@ public class StartPersistenceUnit {
 	
 	public static void main(String[] args) {
 		
-		Configurator.initialize(InvoiceService.class.getName(),
+		Configurator.initialize(StartPersistenceUnit.class.getName(),
 			"./src/main/resources/log4j2.properties");
 		
 		Map<String, String> env = System.getenv();
@@ -37,13 +37,15 @@ public class StartPersistenceUnit {
 			}
 		}
 		
+		SchemaTenantResolver.setTenantIdentifier("algaworks_ecommerce");
 		EntityManagerFactory entityManagerFactory = Persistence
 			.createEntityManagerFactory("algaworks-ecommerce", configOverrides);
 		EntityManager entityManager = entityManagerFactory
 			.createEntityManager();
 		
 		Product product = entityManager.find(Product.class, 1L);
-		logger.log(Level.INFO, "{0}", product.getDescription());
+		logger.log(Level.INFO,
+			() -> String.format("%s", product.getDescription()));
 		
 		entityManager.close();
 		entityManagerFactory.close();
