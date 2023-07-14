@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
+import com.algaworks.ecommerce.hibernate.SchemaTenantResolver;
 import com.algaworks.ecommerce.model.Category;
 
 import jakarta.persistence.EntityManager;
@@ -18,6 +19,7 @@ class HybridApproachTest extends EntityManagerTest {
 	
 	@BeforeAll
 	public static void setUpBeforeClass() {
+		SchemaTenantResolver.setTenantIdentifier("algaworks_ecommerce");
 		entityManagerFactory = Persistence
 			.createEntityManagerFactory("algaworks-ecommerce");
 		EntityManager em = entityManagerFactory.createEntityManager();

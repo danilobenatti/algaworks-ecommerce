@@ -11,7 +11,7 @@
 	<validation-mode>CALLBACK</validation-mode>
 		<properties>
 			<property name="jakarta.persistence.jdbc.url" 
-				value="jdbc:mysql://localhost:3306/algaworks_ecommerce?createDatabaseIfNotExist=true&amp;useTimezone=true&amp;useUnicode=true&amp;connectionCollation=utf8_bin&amp;characterSetResults=utf8" />
+				value="jdbc:mysql://localhost:3306/algaworks_ecommerce?createDatabaseIfNotExist=true&amp;useTimezone=true&amp;serverTimezone=UTC&amp;useUnicode=true&amp;connectionCollation=utf8_bin&amp;characterSetResults=utf8" />
 				<!-- createDatabaseIfNotExist=true&useUnicode=true&connectionCollation=utf8_bin&characterSetResults=utf8 -->
 			<property name="jakarta.persistence.jdbc.user" value="root" />
 			<property name="jakarta.persistence.jdbc.password" value="123456" />
@@ -41,21 +41,22 @@
 			<property name="hibernate.use_sql_comments" value="true" />
 			<property name="hibernate.hbm2ddl.auto" value="create" />
 			<property name="hibernate.jdbc.time_zone" value="America/Sao_Paulo" />
+			<property name="hibernate.discriminator.ignore_explicit_for_joined" value="false" />
 			
 			<!-- configure logging -->
-			<property name="eclipselink.logging.level" value="FINER" />
+			<property name="eclipselink.logging.level" value="FINE" />
 			<property name="eclipselink.logging.level.sql" value="FINEST" />
 			<property name="eclipselink.logging.parameters" value="true" />
 			
 			<!-- configure hikaricp -->
 			<property name="hibernate.connection.provider_class" value="org.hibernate.hikaricp.internal.HikariCPConnectionProvider" />
 			<property name="hibernate.hikari.idleTimeout" value="200000" />
-			<property name="hibernate.hikari.minimumIdle" value="12" />
-			<property name="hibernate.hikari.maximumPoolSize" value="16" />
+			<property name="hibernate.hikari.minimumIdle" value="6" />
+			<property name="hibernate.hikari.maximumPoolSize" value="8" />
 			
-			<property name="hibernate.multiTenancy" value="SCHEMA" />
+			<property name="hibernate.multiTenancy" value="SCHEMA" /> <!-- SCHEMA | DATABASE -->
 			<property name="hibernate.tenant_identifier_resolver" value="com.algaworks.ecommerce.hibernate.SchemaTenantResolver" />
-			<property name="hibernate.multi_tenant_connection_provider" value="com.algaworks.ecommerce.hibernate.SchemaMultiTenantProvider" />
+			<property name="hibernate.multi_tenant_connection_provider" value="com.algaworks.ecommerce.hibernate.SchemaMultiTenantProvider" /> <!-- SchemaMultiTenantProvider | MachineMultiTenantProvider -->
 		</properties>
 	</persistence-unit>
 </persistence>

@@ -54,23 +54,23 @@ public class SchemaMultiTenantProvider implements MultiTenantConnectionProvider,
 	public void releaseAnyConnection(Connection connection)
 		throws SQLException {
 		connectionProvider.closeConnection(connection);
+		connection.close();
 	}
 	
 	@Override
-	public Connection getConnection(String tenantIdentifier)
-		throws SQLException {
+	public Connection getConnection(String tenantId) throws SQLException {
 		try (Statement statement = getAnyConnection().createStatement()) {
-			statement.execute("use " + tenantIdentifier);
+			statement.execute(String.format("USE %s", tenantId));
 			return statement.getConnection();
 		} catch (SQLException ex) {
-			throw new HibernateException(
-				"Unable change to schema " + tenantIdentifier, ex);
+			throw new HibernateException("Unable change to schema " + tenantId,
+				ex);
 		}
 	}
 	
 	@Override
-	public void releaseConnection(String tenantIdentifier,
-		Connection connection) throws SQLException {
+	public void releaseConnection(String tenantId, Connection connection)
+		throws SQLException {
 		releaseAnyConnection(connection);
 	}
 	

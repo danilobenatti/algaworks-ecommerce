@@ -40,7 +40,6 @@ public class EntityManagerFactoryTest {
 					env.get(envName));
 			}
 		}
-		
 		SchemaTenantResolver.setTenantIdentifier("algaworks_ecommerce");
 		entityManagerFactory = Persistence
 			.createEntityManagerFactory("algaworks-ecommerce", configOverrides);
