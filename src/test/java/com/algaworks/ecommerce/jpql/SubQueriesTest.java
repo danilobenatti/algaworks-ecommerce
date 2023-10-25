@@ -39,7 +39,6 @@ class SubQueriesTest extends EntityManagerTest {
 		
 	}
 	
-	@SuppressWarnings("preview")
 	public static String message(Object object) {
 		Locale locale = new Locale.Builder().setLanguage("pt").setRegion("BR")
 			.build();
@@ -126,7 +125,6 @@ class SubQueriesTest extends EntityManagerTest {
 		resultList.stream().forEach(i -> logger.info(msg(i)));
 	}
 	
-	@SuppressWarnings("preview")
 	public static String msg(Object object) {
 		Locale locale = new Locale.Builder().setLanguage("pt").setRegion("BR")
 			.build();

@@ -23,7 +23,6 @@ class FunctionsTest extends EntityManagerTest {
 		return list;
 	}
 	
-	@SuppressWarnings("preview")
 	@ParameterizedTest
 	@ValueSource(strings = { "select avg(o.total) from Order o",
 		"select count(o) from Order o", "select min(o.total) from Order o",
