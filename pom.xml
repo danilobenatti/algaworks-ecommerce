@@ -7,14 +7,12 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<description>Project Study Jakarta Persistence API</description>
 	<properties>
-		<java.version>20</java.version>
-		<hibernate.version>6.2.6.Final</hibernate.version>
-		<junit.version>5.9.3</junit.version>
-		<log4j.version>2.20.0</log4j.version>
-		<mysql.version>8.0.33</mysql.version>
-		<lombok.version>1.18.28</lombok.version>
-		<maven.compiler.source>${java.version}</maven.compiler.source>
-		<maven.compiler.traget>${java.version}</maven.compiler.traget>
+		<java.version>21</java.version>
+		<hibernate.version>6.4.1.Final</hibernate.version>
+		<junit.version>5.10.1</junit.version>
+		<log4j.version>2.22.1</log4j.version>
+		<mysql.version>8.2.0</mysql.version>
+		<lombok.version>1.18.30</lombok.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
@@ -30,6 +28,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate.orm</groupId>
+			<artifactId>hibernate-jpamodelgen</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.orm</groupId>
 			<artifactId>hibernate-testing</artifactId>
 			<version>${hibernate.version}</version>
 			<scope>test</scope>
@@ -40,9 +43,24 @@
 			<version>8.0.1.Final</version>
 		</dependency>
 		<dependency>
+			<groupId>org.hibernate.common</groupId>
+			<artifactId>hibernate-commons-annotations</artifactId>
+			<version>6.0.6.Final</version>
+		</dependency>
+		<dependency>
 			<groupId>org.glassfish.expressly</groupId>
 			<artifactId>expressly</artifactId>
 			<version>5.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jaxb</groupId>
+			<artifactId>jaxb-runtime</artifactId>
+			<version>4.0.4</version>
+		</dependency>
+		<dependency>
+			<groupId>io.smallrye</groupId>
+			<artifactId>jandex</artifactId>
+			<version>3.1.6</version>
 		</dependency>
 		<dependency>
 			<groupId>com.mysql</groupId>
@@ -57,7 +75,7 @@
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>2.13.0</version>
+			<version>2.15.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
@@ -79,7 +97,7 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-nop</artifactId>
-			<version>2.0.7</version>
+			<version>2.0.11</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -94,23 +112,16 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.11.0</version>
+				<version>3.12.1</version>
 				<configuration>
-					<source>20</source>
-					<target>20</target>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
 					<compilerArguments>
 						<processor>
 							org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor
 						</processor>
 					</compilerArguments>
 				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>org.hibernate.orm</groupId>
-						<artifactId>hibernate-jpamodelgen</artifactId>
-						<version>${hibernate.version}</version>
-					</dependency>
-				</dependencies>
 			</plugin>
 		</plugins>
 	</build>

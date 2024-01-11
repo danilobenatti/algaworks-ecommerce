@@ -99,26 +99,23 @@ class FunctionsCriteriaTest extends EntityManagerTest {
 	
 	@Test
 	void applyingNumberFunction() {
-		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<Object[]> criteriaQuery = criteriaBuilder
-			.createQuery(Object[].class);
-		Root<Order> root = criteriaQuery.from(Order.class);
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Object[]> query = builder.createQuery(Object[].class);
+		Root<Order> root = query.from(Order.class);
 		
-		criteriaQuery.multiselect(root.get(Order_.id),
-			criteriaBuilder
-				.abs(criteriaBuilder.prod(root.get(Order_.total), -1)),
-			criteriaBuilder.mod(root.get(Order_.TOTAL), 2),
-			criteriaBuilder.sqrt(root.get(Order_.total)));
-		criteriaQuery.where(criteriaBuilder
-			.greaterThan(criteriaBuilder.sqrt(root.get(Order_.total)), 20.0));
+		query.multiselect(root.get(Order_.id),
+				builder.abs(builder.prod(root.get(Order_.total), -1)),
+				builder.mod(root.get(Order_.total).as(Integer.class), 2),
+				builder.sqrt(root.get(Order_.total)));
+		query.where(builder.greaterThan(builder.sqrt(root.get(Order_.total)),
+				20.0));
 		
-		TypedQuery<Object[]> typedQuery = entityManager
-			.createQuery(criteriaQuery);
+		TypedQuery<Object[]> typedQuery = entityManager.createQuery(query);
 		List<Object[]> list = typedQuery.getResultList();
 		
 		list.forEach(o -> logger.info(new StringBuilder().append("Order: ")
-			.append(o[0]).append(", abs: ").append(o[1]).append(", mod: ")
-			.append(o[2]).append(", sqrt: ").append(o[3])));
+				.append(o[0]).append(", abs: ").append(o[1]).append(", mod: ")
+				.append(o[2]).append(", sqrt: ").append(o[3])));
 		
 		assertFalse(list.isEmpty());
 	}

@@ -1,8 +1,8 @@
 package com.algaworks.ecommerce.criteria;
 
 import static com.algaworks.ecommerce.util.DatesFunctions.getAge;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.math.BigDecimal;
@@ -36,7 +36,7 @@ class BasicCriteriaTest extends EntityManagerTest {
 		query.select(root); // it is implied
 		query.where(builder.equal(root.get("id"), 1L));
 		/*
-		 * String jpql = "select o from Order o where o.id = 1";
+		 * String JPQL = "select o from Order o where o.id = 1";
 		 */
 		TypedQuery<Order> typedQuery = entityManager.createQuery(query);
 		Order order = typedQuery.getSingleResult();
@@ -52,7 +52,7 @@ class BasicCriteriaTest extends EntityManagerTest {
 		query.select(root.get("person"));
 		query.where(builder.equal(root.get("id"), 1L));
 		/*
-		 * String jpql = "select o.person from Order o where o.id = 1";
+		 * String JPQL = "select o.person from Order o where o.id = 1";
 		 */
 		TypedQuery<Person> typedQuery = entityManager.createQuery(query);
 		Person person = typedQuery.getSingleResult();
@@ -68,11 +68,12 @@ class BasicCriteriaTest extends EntityManagerTest {
 		query.select(root.get("total"));
 		query.where(builder.equal(root.get("id"), 1L));
 		/*
-		 * String jpql = "select o.total from Order o where o.id = 1"
+		 * String JPQL = "select o.total from Order o where o.id = 1"
 		 */
 		TypedQuery<BigDecimal> typedQuery = entityManager.createQuery(query);
 		BigDecimal total = typedQuery.getSingleResult();
 		assertEquals(new BigDecimal("505.00"), total);
+		assertEquals(BigDecimal.valueOf(5.05E2).setScale(2), total);
 	}
 	
 	@Test
@@ -83,7 +84,7 @@ class BasicCriteriaTest extends EntityManagerTest {
 		
 		query.select(root);
 		/*
-		 * String jpql = "select p from Product p"
+		 * String JPQL = "select p from Product p"
 		 */
 		TypedQuery<Product> typedQuery = entityManager.createQuery(query);
 		List<Product> resultList = typedQuery.getResultList();
@@ -96,16 +97,14 @@ class BasicCriteriaTest extends EntityManagerTest {
 		CriteriaQuery<Object[]> query = builder.createQuery(Object[].class);
 		Root<Product> root = query.from(Product.class);
 		
-		query.multiselect(root.get("id"), root.get("name"));
+		query.multiselect(root.get("id"),root.get("name"));
 		/*
-		 * String jpql = "select p.id, p.name from Product p"
+		 * String JPQL = "select p.id, p.name from Product p"
 		 */
 		TypedQuery<Object[]> typedQuery = entityManager.createQuery(query);
-		List<Object[]> resultList = typedQuery.getResultList();
-		
-		resultList
-			.forEach(o -> logger.info(String.format("%s - %s", o[0], o[1])));
-		assertFalse(resultList.isEmpty());
+		List<Object[]> list = typedQuery.getResultList();
+		list.forEach(p -> logger.info(String.format("%s - %s", p[0], p[1])));
+		assertFalse(list.isEmpty());
 	}
 	
 	@Test

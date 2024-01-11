@@ -14,7 +14,7 @@ import org.hibernate.service.spi.ServiceRegistryAwareService;
 import org.hibernate.service.spi.ServiceRegistryImplementor;
 import org.hibernate.service.spi.Startable;
 
-public class SchemaMultiTenantProvider implements MultiTenantConnectionProvider,
+public class SchemaMultiTenantProvider implements MultiTenantConnectionProvider<Object>,
 	ServiceRegistryAwareService, Startable {
 	private static final long serialVersionUID = 1L;
 	
@@ -58,7 +58,7 @@ public class SchemaMultiTenantProvider implements MultiTenantConnectionProvider,
 	}
 	
 	@Override
-	public Connection getConnection(String tenantId) throws SQLException {
+	public Connection getConnection(Object tenantId) throws SQLException {
 		try (Statement statement = getAnyConnection().createStatement()) {
 			statement.execute(String.format("USE %s", tenantId));
 			return statement.getConnection();
@@ -69,7 +69,7 @@ public class SchemaMultiTenantProvider implements MultiTenantConnectionProvider,
 	}
 	
 	@Override
-	public void releaseConnection(String tenantId, Connection connection)
+	public void releaseConnection(Object tenantId, Connection connection)
 		throws SQLException {
 		releaseAnyConnection(connection);
 	}

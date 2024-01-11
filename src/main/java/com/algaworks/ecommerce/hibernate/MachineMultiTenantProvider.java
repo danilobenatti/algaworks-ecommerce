@@ -14,7 +14,7 @@ import org.hibernate.service.spi.ServiceRegistryImplementor;
 import org.hibernate.service.spi.Startable;
 
 public class MachineMultiTenantProvider implements
-	MultiTenantConnectionProvider, ServiceRegistryAwareService, Startable {
+	MultiTenantConnectionProvider<Object>, ServiceRegistryAwareService, Startable {
 	private static final long serialVersionUID = 1L;
 	
 	private transient Map<String, Object> properties = null;
@@ -71,13 +71,13 @@ public class MachineMultiTenantProvider implements
 	}
 	
 	@Override
-	public Connection getConnection(String tenantIdentifier)
+	public Connection getConnection(Object tenantIdentifier)
 		throws SQLException {
 		return connectionProviders.get(tenantIdentifier).getConnection();
 	}
 	
 	@Override
-	public void releaseConnection(String tenantIdentifier,
+	public void releaseConnection(Object tenantIdentifier,
 		Connection connection) throws SQLException {
 		releaseAnyConnection(connection);
 		
