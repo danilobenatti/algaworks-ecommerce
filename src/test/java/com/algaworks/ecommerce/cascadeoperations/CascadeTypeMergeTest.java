@@ -95,8 +95,9 @@ class CascadeTypeMergeTest extends EntityManagerTest {
 	
 	@Test
 	void updateProductWithCategory() {
-		Product product = new Product();
-		product.setId(1L);
+//		Product product = new Product();
+		Product product = entityManager.find(Product.class, 1L);
+//		product.setId(1L);
 		product.setUnit(ProductUnit.UNITY);
 		product.setUnitPrice(BigDecimal.valueOf(699.5));
 		product.setName("Kindle Special Edition");
@@ -108,8 +109,8 @@ class CascadeTypeMergeTest extends EntityManagerTest {
 		product.setCategories(Set.of(category));
 		
 		entityManager.getTransaction().begin();
-		entityManager.merge(product);
-//		entityManager.persist(product);
+//		entityManager.merge(product);
+		entityManager.persist(product);
 		entityManager.getTransaction().commit();
 		
 		entityManager.clear();
