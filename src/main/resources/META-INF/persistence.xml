@@ -11,7 +11,7 @@
 	<validation-mode>CALLBACK</validation-mode>
 		<properties>
 			<property name="jakarta.persistence.jdbc.url" 
-				value="jdbc:mysql://localhost:3306/algaworks_ecommerce?createDatabaseIfNotExist=true&amp;useTimezone=true&amp;serverTimezone=UTC&amp;useUnicode=true&amp;connectionCollation=utf8_bin&amp;characterSetResults=utf8" />
+				value="jdbc:mysql://localhost:3306/algaworks_ecommerce?createDatabaseIfNotExist=true&amp;useTimezone=true&amp;serverTimezone=America/Sao_Paulo&amp;useUnicode=true&amp;connectionCollation=utf8_bin&amp;characterSetResults=utf8" />
 				<!-- createDatabaseIfNotExist=true&useUnicode=true&connectionCollation=utf8_bin&characterSetResults=utf8 -->
 			<property name="jakarta.persistence.jdbc.user" value="root" />
 			<property name="jakarta.persistence.jdbc.password" value="123456" />
@@ -20,17 +20,12 @@
 			<!-- DON'T USE THIS IN PRODUCTION -->
 			<!-- automatically drop and create required database tables -->
 			<property name="jakarta.persistence.schema-generation.create-database-schemas" value="true" />
-			
 			<property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create" />
-			
 			<property name="jakarta.persistence.schema-generation.create-source" value="metadata-then-script" />
 			<property name="jakarta.persistence.schema-generation.drop-source" value="metadata-then-script" />
-			
 			<property name="jakarta.persistence.schema-generation.create-script-source" value="META-INF/database/create-db.sql" />
 			<property name="jakarta.persistence.schema-generation.drop-script-source" value="META-INF/database/drop-db.sql" />
-			
 			<property name="jakarta.persistence.sql-load-script-source" value="META-INF/database/initial_data.sql" />
-			
 			<property name="jakarta.persistence.schema-generation.scripts.action" value="none" />
 			<property name="jakarta.persistence.schema-generation.scripts.create-target" value="./src/main/resources/META-INF/database/create-db-export.sql" />
 			<property name="jakarta.persistence.schema-generation.scripts.drop-target" value="./src/main/resources/META-INF/database/drop-db-export.sql" />
