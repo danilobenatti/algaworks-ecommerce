@@ -12,7 +12,7 @@
 		<junit.version>5.10.2</junit.version>
 		<log4j.version>2.23.1</log4j.version>
 		<mysql.version>8.3.0</mysql.version>
-		<lombok.version>1.18.30</lombok.version>
+		<lombok.version>1.18.32</lombok.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
