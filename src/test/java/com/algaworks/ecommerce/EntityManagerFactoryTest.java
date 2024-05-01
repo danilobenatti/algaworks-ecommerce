@@ -33,35 +33,37 @@ public class EntityManagerFactoryTest {
 		for (String envName : env.keySet()) {
 			if (envName.contains("DB_USERNAME")) {
 				configOverrides.put("jakarta.persistence.jdbc.user",
-					env.get(envName));
+						env.get(envName));
 			}
 			if (envName.contains("DB_PASSWORD")) {
 				configOverrides.put("jakarta.persistence.jdbc.password",
-					env.get(envName));
+						env.get(envName));
 			}
 		}
 		SchemaTenantResolver.setTenantIdentifier("algaworks_ecommerce");
-		entityManagerFactory = Persistence
-			.createEntityManagerFactory("algaworks-ecommerce", configOverrides);
+		entityManagerFactory = Persistence.createEntityManagerFactory(
+				"algaworks-ecommerce", configOverrides);
 		
 		Configurator.initialize(EntityManagerTest.class.getName(),
-			"./src/main/resources/log4j2.properties");
+				"./src/main/resources/log4j2.properties");
 	}
 	
 	@AfterAll
 	public static void tearDownAfterClass() {
-		entityManagerFactory.close();
+		if (entityManagerFactory.isOpen()) {
+			entityManagerFactory.close();
+		}
 		SchemaTenantResolver.unload();
 	}
 	
 	public static void log(Object obj, Object... args) {
 		logger.log(Level.INFO, new StringFormattedMessage("[%d] %s",
-			System.currentTimeMillis(), obj.toString(), args));
+				System.currentTimeMillis(), obj.toString(), args));
 	}
 	
 	public static void waiting(Long seconds, Long limit) {
 		await().atMost(Duration.ofSeconds(limit))
-			.during(Duration.ofSeconds(seconds)).until(() -> true);
+				.during(Duration.ofSeconds(seconds)).until(() -> true);
 	}
 	
 }

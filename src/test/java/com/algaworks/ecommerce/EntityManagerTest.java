@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 
 import jakarta.persistence.EntityManager;
 
-public class EntityManagerTest extends EntityManagerFactoryTest{
+public class EntityManagerTest extends EntityManagerFactoryTest {
 	
 	protected static EntityManager entityManager;
 	
@@ -16,7 +16,9 @@ public class EntityManagerTest extends EntityManagerFactoryTest{
 	
 	@AfterEach
 	public void tearDown() {
-		entityManager.close();
+		if (entityManager.isOpen()) {
+			entityManager.close();
+		}
 	}
 	
 }
