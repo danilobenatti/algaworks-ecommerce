@@ -79,7 +79,7 @@ class BasicJPQLTest extends EntityManagerTest {
 		
 		assertEquals(2, list.get(0).length);
 		
-		list.forEach(i -> logger.info(i[0] + ", " + i[1]));
+		list.forEach(i -> logger.info("{}; {}", i[0], i[1]));
 		
 	}
 	
@@ -93,7 +93,7 @@ class BasicJPQLTest extends EntityManagerTest {
 		
 		assertFalse(list.isEmpty());
 		
-		list.forEach(i -> logger.info(i.getId() + ", " + i.getName()));
+		list.forEach(i -> logger.info("{}; {}", i.getId(), i.getName()));
 		
 	}
 	
@@ -107,7 +107,7 @@ class BasicJPQLTest extends EntityManagerTest {
 		
 		assertFalse(list.isEmpty());
 		
-		list.forEach(p -> logger.info(p.getId() + "; " + p.getFirstname()));
+		list.forEach(p -> logger.info("{}; {}", p.getId(), p.getBirthday()));
 		
 	}
 	

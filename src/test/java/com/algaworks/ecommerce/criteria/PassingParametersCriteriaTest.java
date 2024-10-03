@@ -34,9 +34,9 @@ class PassingParametersCriteriaTest extends EntityManagerTest {
 		ParameterExpression<Long> parameter = builder.parameter(Long.class,
 			"parameterId");
 		query.where(builder.equal(root.get("id"), parameter));
-		/*
+		/**
 		 * String jpql = "select o from Order o where o.id = 1";
-		 */
+		 **/
 		TypedQuery<Order> typedQuery = entityManager.createQuery(query);
 		typedQuery.setParameter("parameterId", 1L);
 		
@@ -54,9 +54,9 @@ class PassingParametersCriteriaTest extends EntityManagerTest {
 		query.select(root);
 		query.where(builder.greaterThan(root.get("issuedatetime"),
 			builder.parameter(Date.class, "dateSearch")));
-		/*
+		/**
 		 * String jpql = "select i from Invoice i where i.issuedatetime = 1";
-		 */
+		 **/
 		TypedQuery<Invoice> typedQuery = entityManager.createQuery(query);
 		
 		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC-3"),

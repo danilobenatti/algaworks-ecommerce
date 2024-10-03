@@ -35,9 +35,9 @@ class BasicCriteriaTest extends EntityManagerTest {
 		
 		query.select(root); // it is implied
 		query.where(builder.equal(root.get("id"), 1L));
-		/*
+		/**
 		 * String JPQL = "select o from Order o where o.id = 1";
-		 */
+		 **/
 		TypedQuery<Order> typedQuery = entityManager.createQuery(query);
 		Order order = typedQuery.getSingleResult();
 		assertNotNull(order);
@@ -51,9 +51,9 @@ class BasicCriteriaTest extends EntityManagerTest {
 		
 		query.select(root.get("person"));
 		query.where(builder.equal(root.get("id"), 1L));
-		/*
+		/**
 		 * String JPQL = "select o.person from Order o where o.id = 1";
-		 */
+		 **/
 		TypedQuery<Person> typedQuery = entityManager.createQuery(query);
 		Person person = typedQuery.getSingleResult();
 		assertEquals("Luiz Fernando", person.getFirstname());
@@ -148,12 +148,12 @@ class BasicCriteriaTest extends EntityManagerTest {
 	
 	@Test
 	void sortResults() {
-		/*
+		/**
 		 * SQL = select p.id, p.col_firstname as 'name', year(now()) -
 		 * year(pd.col_birthday) as 'age' from tbl_persons p join
 		 * tbl_person_detail pd on pd.person_id = p.id order by p.col_firstname
 		 * asc, pd.col_birthday desc;
-		 */
+		 **/
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Person> query = builder.createQuery(Person.class);
 		Root<Person> root = query.from(Person.class);
